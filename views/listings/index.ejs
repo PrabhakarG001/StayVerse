@@ -1,0 +1,470 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- City Sliders -->
+<div class="mt-4">
+  
+
+
+
+<%
+  const activeFilter = (typeof filter !== 'undefined') ? filter : 'all';
+  
+  const foreignCities = [
+    { title: "Explore New York Stays", city: "New York", id: "newyorkSlider", region: "foreign" },
+    { title: "Available in London", city: "London", id: "londonSlider", region: "foreign" },
+    { title: "Stay in Paris", city: "Paris", id: "parisSlider", region: "foreign" },
+    { title: "Popular homes in Dubai", city: "Dubai", id: "dubaiSlider", region: "foreign" },
+    { title: "Available in Rome next weekend", city: "Rome", id: "romeSlider", region: "foreign" },
+    { title: "Stay in Tokyo", city: "Tokyo", id: "tokyoSlider", region: "foreign" },
+    { title: "Popular homes in Singapore", city: "Singapore", id: "singaporeSlider", region: "foreign" },
+    { title: "Explore Bangkok Stays", city: "Bangkok", id: "bangkokSlider", region: "foreign" },
+    { title: "Relax in Bali", city: "Bali", id: "baliSlider", region: "foreign" },
+    { title: "Stunning views in Santorini", city: "Santorini", id: "santoriniSlider", region: "foreign" },
+    { title: "Luxury stays in Maldives", city: "Maldives", id: "maldivesSlider", region: "foreign" },
+    { title: "Tropical Phuket Stays", city: "Phuket", id: "phuketSlider", region: "foreign" },
+    { title: "Majestic Swiss Alps", city: "Swiss Alps", id: "swissalpsSlider", region: "foreign" },
+    { title: "Explore Iceland", city: "Iceland", id: "icelandSlider", region: "foreign" },
+    { title: "Unique stays in Cappadocia", city: "Cappadocia", id: "cappadociaSlider", region: "foreign" },
+    { title: "Historic Athens Stays", city: "Athens", id: "athensSlider", region: "foreign" },
+    { title: "Romantic stays in Venice", city: "Venice", id: "veniceSlider", region: "foreign" },
+    { title: "Explore Sydney Stays", city: "Sydney", id: "sydneySlider", region: "foreign" },
+    { title: "Stunning views in Cape Town", city: "Cape Town", id: "capetownSlider", region: "foreign" },
+    { title: "Ski in Zermatt", city: "Zermatt", id: "zermattSlider", region: "foreign" },
+    { title: "Historic Barcelona Stays", city: "Barcelona", id: "barcelonaSlider", region: "foreign" },
+    { title: "Relax in Rio de Janeiro", city: "Rio de Janeiro", id: "rioSlider", region: "foreign" },
+    { title: "Explore Istanbul", city: "Istanbul", id: "istanbulSlider", region: "foreign" },
+    { title: "Modern stays in Seoul", city: "Seoul", id: "seoulSlider", region: "foreign" },
+    { title: "Vibrant Marrakech", city: "Marrakech", id: "marrakechSlider", region: "foreign" },
+    { title: "Stay in Amsterdam", city: "Amsterdam", id: "amsterdamSlider", region: "foreign" },
+    { title: "Explore Reykjavik", city: "Reykjavik", id: "reykjavikSlider", region: "foreign" },
+    { title: "Historic Cairo Stays", city: "Cairo", id: "cairoSlider", region: "foreign" }
+  ];
+  const indianCities = [
+    { title: "Popular homes in Bangalore", city: "Bangalore", id: "bangaloreSlider", region: "india" },
+    { title: "Available in Hyderabad", city: "Hyderabad", id: "hyderabadSlider", region: "india" },
+    { title: "Stay in Pune", city: "Pune", id: "puneSlider", region: "india" },
+    { title: "Popular homes in Gurgaon", city: "Gurgaon", id: "gurgaonSlider", region: "india" },
+    { title: "Available in Noida", city: "Noida", id: "noidaSlider", region: "india" },
+    { title: "Stay in Chennai", city: "Chennai", id: "chennaiSlider", region: "india" },
+    { title: "Popular homes in Mumbai", city: "Mumbai", id: "mumbaiSlider", region: "india" },
+    { title: "Explore Goa Stays", city: "Goa", id: "goaSlider", region: "india" },
+    { title: "Available in Varanasi next weekend", city: "Varanasi", id: "varanasiSlider", region: "india" },
+    { title: "Stay in Jaipur", city: "Jaipur", id: "jaipurSlider", region: "india" },
+    { title: "Popular homes in Agra", city: "Agra", id: "agraSlider", region: "india" },
+    { title: "Available in Udaipur", city: "Udaipur", id: "udaipurSlider", region: "india" },
+    { title: "Stay in New Delhi", city: "New Delhi", id: "newdelhiSlider", region: "india" },
+    { title: "Popular homes in Kolkata", city: "Kolkata", id: "kolkataSlider", region: "india" },
+    { title: "Available in Ahmedabad", city: "Ahmedabad", id: "ahmedabadSlider", region: "india" },
+    { title: "Explore Kochi Stays", city: "Kochi", id: "kochiSlider", region: "india" },
+    { title: "Stay in Rishikesh", city: "Rishikesh", id: "rishikeshSlider", region: "india" },
+    { title: "Popular homes in Chandigarh", city: "Chandigarh", id: "chandigarhSlider", region: "india" },
+    { title: "Stay in Shimla", city: "Shimla", id: "shimlaSlider", region: "india" },
+    { title: "Explore Munnar Stays", city: "Munnar", id: "munnarSlider", region: "india" },
+    { title: "Stay in Darjeeling", city: "Darjeeling", id: "darjeelingSlider", region: "india" },
+    { title: "Mountain retreat in Manali", city: "Manali", id: "manaliSlider", region: "india" },
+    { title: "Backwaters of Kerala", city: "Kerala", id: "keralaSlider", region: "india" },
+    { title: "Tropical Andaman", city: "Andaman", id: "andamanSlider", region: "india" },
+    { title: "French charm in Pondicherry", city: "Pondicherry", id: "pondicherrySlider", region: "india" },
+    { title: "Adventure in Leh-Ladakh", city: "Leh-Ladakh", id: "lehladakhSlider", region: "india" },
+    { title: "Queen of Hills Mussoorie", city: "Mussoorie", id: "mussoorieSlider", region: "india" },
+    { title: "Desert magic in Jaisalmer", city: "Jaisalmer", id: "jaisalmerSlider", region: "india" },
+    { title: "Coffee land Coorg", city: "Coorg", id: "coorgSlider", region: "india" },
+    { title: "Nature's beauty Wayanad", city: "Wayanad", id: "wayanadSlider", region: "india" },
+    { title: "Explore Meghalaya", city: "Meghalaya", id: "meghalayaSlider", region: "india" },
+    { title: "Historic ruins in Hampi", city: "Hampi", id: "hampiSlider", region: "india" },
+    { title: "Houseboats in Alleppey", city: "Alleppey", id: "alleppeySlider", region: "india" },
+    { title: "Cool breeze in Ooty", city: "Ooty", id: "ootySlider", region: "india" }
+  ];
+  
+  let citySections = [...foreignCities, ...indianCities];
+%>
+<% citySections.forEach(section => { 
+    let initialDisplay = "";
+    if (activeFilter !== 'all' && activeFilter !== section.region) {
+      initialDisplay = "d-none";
+    }
+%>
+<div class="mb-5 pb-2 position-relative group-slider <%= initialDisplay %>" data-region="<%= section.region %>" onmouseenter="showSliderBtns(this)" onmouseleave="hideSliderBtns(this)">
+  <div class="d-flex align-items-center mb-4">
+    <h3 class="fw-bold m-0" style="font-size: 1.35rem; color: #222;"><%= section.title %></h3>
+    <a href="/listings?search=<%= section.city %>" class="text-dark d-flex align-items-center justify-content-center text-decoration-none ms-3" style="width: 24px; height: 24px; border-radius: 50%; background: #f7f7f7; transition: background 0.2s;">
+      <i class="fa-solid fa-chevron-right" style="font-size: 0.75rem;"></i>
+    </a>
+  </div>
+  
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4 pb-3 slider-container" id="<%= section.id %>">
+    <!-- Skeleton Loaders -->
+    <% for(let i=0; i<5; i++) { %>
+      <div class="col">
+        <div class="card border-0 skeleton-card bg-transparent h-100">
+          <div class="skeleton-img rounded-4 mb-2"></div>
+          <div class="skeleton-text w-75 mb-1"></div>
+          <div class="skeleton-text w-50 mb-1"></div>
+          <div class="skeleton-text w-25 mt-2"></div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</div>
+<% }) %>
+</div>
+
+<style>
+  /* Hero Styles */
+  .hero-search-btn {
+    transition: transform 0.2s, background 0.2s;
+  }
+  .hero-search-btn:hover {
+    transform: scale(1.05);
+    background: #e31c5f;
+  }
+  .hover-bg-light {
+    transition: background 0.2s;
+  }
+  .hover-bg-light:hover {
+    background: #ebebeb;
+  }
+  
+  /* City Cards */
+  .city-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .city-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
+
+  /* Hide scrollbar classes no longer needed */
+
+  /* Internal Card Hover */
+  .hotel-card-hover {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .hotel-card-hover:hover {
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 15px 35px rgba(255, 56, 92, 0.12) !important;
+  }
+  .heart-wishlist-icon {
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .heart-wishlist-icon:hover {
+    transform: scale(1.2);
+  }
+  @keyframes bounce-subtle {
+    0%, 100% { transform: translateY(0) translateX(-50%); }
+    50% { transform: translateY(4px) translateX(-50%); }
+  }
+  @keyframes bounce-fast {
+    0%, 100% { transform: translateY(2px) translateX(-50%); }
+    50% { transform: translateY(6px) translateX(-50%); }
+  }
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    color: #222;
+    opacity: 0.75;
+    animation: bounce-subtle 1.5s infinite ease-in-out;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .hotel-card-hover:hover .scroll-indicator {
+    opacity: 1;
+    animation: bounce-fast 0.8s infinite ease-in-out;
+  }
+
+  /* See All Card Hover Effects */
+  .see-all-card { cursor: pointer; }
+  .see-all-card:hover .see-all-bg { 
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 15px 35px rgba(255, 56, 92, 0.12) !important; 
+  }
+  .see-all-card .see-img-1 { transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); transform: rotate(-8deg); left: 0; top: 15px; z-index: 1; }
+  .see-all-card .see-img-2 { transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); transform: rotate(8deg); right: 0; top: 15px; z-index: 2; }
+  .see-all-card .see-img-3 { transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); transform: translateY(-5px); top: 0; z-index: 3; }
+  .see-all-card:hover .see-img-1 { transform: rotate(-14deg) translate(-8px, 4px) !important; }
+  .see-all-card:hover .see-img-2 { transform: rotate(14deg) translate(8px, 4px) !important; }
+  .see-all-card:hover .see-img-3 { transform: scale(1.08) !important; }
+  .see-all-card:hover .see-all-text { text-decoration: underline; }
+
+  /* Skeletons */
+  .skeleton-img {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    background: #e0e0e0;
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+  .skeleton-text {
+    height: 16px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+  @keyframes pulse {
+    0% { background-color: #e0e0e0; }
+    50% { background-color: #f0f0f0; }
+    100% { background-color: #e0e0e0; }
+  }
+</style>
+
+<script>
+  // Helper to generate consistent INR price based on propertyId
+  const getMockPrice = (propertyId) => {
+    const seed = parseInt(propertyId) || 12345;
+    const price = Math.floor(Math.abs((seed * 9301 + 49297) % 233280) / 233280 * (15000 - 3000 + 1)) + 3000;
+    return `₹${price.toLocaleString('en-IN')}`;
+  };
+
+  const createSeeAllCard = (city, hotels) => {
+    const imgs = [];
+    for (let h of hotels) {
+      if (h.images && h.images.length > 0) {
+        imgs.push(h.images[0]);
+        if (imgs.length === 3) break;
+      }
+    }
+    while (imgs.length < 3) {
+      imgs.push('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=500&q=60');
+    }
+
+    return `
+      <div class="col">
+        <a href="/hotels/search?query=${encodeURIComponent(city)}" class="text-decoration-none text-dark d-block h-100">
+          <div class="card border-0 h-100 bg-transparent hotel-card-hover see-all-card rounded-4 position-relative pb-3">
+            <div class="position-relative rounded-4 mb-2 d-flex flex-column align-items-center justify-content-center bg-white shadow-sm border see-all-bg" style="aspect-ratio: 1 / 1; width: 100%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+              <div class="position-relative" style="width: 140px; height: 100px; margin-bottom: 20px;">
+                <img src="${imgs[0]}" class="position-absolute rounded-3 shadow-sm see-img-1" style="width: 70px; height: 70px; object-fit: cover;">
+                <img src="${imgs[1]}" class="position-absolute rounded-3 shadow-sm see-img-2" style="width: 70px; height: 70px; object-fit: cover;">
+                <img src="${imgs[2]}" class="position-absolute rounded-3 shadow see-img-3" style="width: 90px; height: 90px; object-fit: cover;">
+              </div>
+              <span class="fw-bold fs-6 text-dark see-all-text">See all</span>
+            </div>
+            <div class="pt-1" style="visibility: hidden;">
+              <h6 class="fw-bold mb-0 text-truncate">Spacer</h6><p class="mb-0 text-truncate">Spacer</p><p class="mb-1">Spacer</p><div class="mt-1">Spacer</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    `;
+  };
+
+  const createHotelCard = (hotel) => {
+    const imageUrl = (hotel.images && hotel.images.length > 0) ? hotel.images[0] : 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=500&q=60';
+    const price = getMockPrice(hotel.propertyId);
+    const rating = hotel.reviewScore ? (hotel.reviewScore / 2).toFixed(2) : (Math.random() * (5.0 - 4.5) + 4.5).toFixed(2);
+    
+    const propTypeRaw = hotel.accommodationType || hotel.propertyType || 'Hotel';
+    let propType = typeof propTypeRaw === 'object' ? (propTypeRaw.name || 'Hotel') : propTypeRaw;
+    if (propType.toLowerCase() === 'apartment') propType = 'Flat';
+    
+    let badgeHtml = '';
+    if (hotel.reviewScore && hotel.reviewScore >= 8.5) {
+      badgeHtml = `
+            <div class="position-absolute top-0 start-0 m-2 ms-3 mt-3">
+              <span class="badge bg-white text-dark rounded-pill shadow-sm px-2 py-1 d-flex align-items-center" style="font-size: 0.8rem;">
+                <span class="fw-bold me-1">Guest</span> <span class="fw-medium">favourite</span>
+              </span>
+            </div>`;
+    }
+    
+    return `
+      <div class="col">
+        <a href="/hotels/show/${hotel.propertyId}" class="text-decoration-none text-dark d-block h-100">
+          <div class="card border-0 h-100 bg-transparent hotel-card-hover rounded-4 position-relative pb-3">
+            <div class="position-relative overflow-hidden rounded-4 mb-2" style="aspect-ratio: 1 / 1; width: 100%;">
+              <img src="${imageUrl}" class="w-100 h-100 object-fit-cover" alt="Hotel Image" loading="lazy" style="transition: transform 0.4s ease;">
+              
+              ${badgeHtml}
+              
+              <div class="position-absolute top-0 end-0 m-3" style="z-index: 10;">
+                <i class="fa-regular fa-heart fs-5 text-white heart-wishlist-icon" 
+                   data-id="${hotel.propertyId}" 
+                   style="text-shadow: 0 1px 3px rgba(0,0,0,0.5); cursor: pointer;" 
+                   onclick="toggleWishlist(event, '${hotel.propertyId}', '${hotel.name.replace(/'/g, "&apos;")}', '${hotel.city.replace(/'/g, "&apos;")}', '${price}', '${rating}', '${imageUrl}', ${hotel.isPremium})"></i>
+              </div>
+            </div>
+            <div class="pt-1 pe-1">
+              <div class="d-flex justify-content-between align-items-start mb-1">
+                <h6 class="fw-bold text-dark mb-0 pe-2 text-truncate" style="font-size: 0.98rem; line-height: 1.3; max-width: 85%;">${hotel.name}</h6>
+                <div class="ms-1 d-flex align-items-center flex-shrink-0 mt-1">
+                  <i class="fa-solid fa-star me-1" style="font-size: 0.75rem; color: #222;"></i>
+                  <span style="font-size: 0.9rem; color: #222; font-weight: 600;">${rating}</span>
+                </div>
+              </div>
+              <p class="text-secondary mb-1 text-truncate" style="font-size: 0.9rem; line-height: 1.4;">${hotel.area ? hotel.area + ', ' : ''}${hotel.city}${hotel.country && hotel.country.toLowerCase() !== 'india' ? ' (' + hotel.country + ')' : ''}</p>
+              <div class="d-flex align-items-center mt-1 pb-1">
+                <span class="fw-bold text-dark" style="font-size: 0.98rem;">${price}</span>
+                <span class="text-dark" style="font-size: 0.9rem;">&nbsp;for 2 nights</span>
+              </div>
+              <div class="tax-info d-none text-secondary" style="font-size: 0.8rem; margin-top: -2px;">Includes taxes & fees</div>
+            </div>
+            <i class="fa-solid fa-chevron-down scroll-indicator"></i>
+          </div>
+        </a>
+      </div>
+    `;
+  };
+
+  const loadCityHotels = async (city, containerId) => {
+    try {
+      const response = await fetch(`/api/hotels?city=${city}`);
+      const data = await response.json();
+      
+      const container = document.getElementById(containerId);
+      container.innerHTML = ''; // Clear skeletons
+      
+      if (data.searchResults && data.searchResults.length > 0) {
+        // Show up to 4 hotels in the row, 5th card is See All
+        data.searchResults.slice(0, 4).forEach(hotel => {
+          container.innerHTML += createHotelCard(hotel);
+        });
+        container.innerHTML += createSeeAllCard(city, data.searchResults);
+      } else {
+        container.innerHTML = '<p class="text-secondary">No homes found.</p>';
+      }
+    } catch (err) {
+      console.error(`Error loading ${city}:`, err);
+      document.getElementById(containerId).innerHTML = '<p class="text-danger">Failed to load homes.</p>';
+    }
+  };
+
+  // Slider functions removed as we are now using a responsive grid
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const activeFilter = '<%= typeof filter !== "undefined" ? filter : "all" %>';
+    
+    const foreignCities = [
+      { city: 'New York', id: 'newyorkSlider' },
+      { city: 'London', id: 'londonSlider' },
+      { city: 'Paris', id: 'parisSlider' },
+      { city: 'Dubai', id: 'dubaiSlider' },
+      { city: 'Rome', id: 'romeSlider' },
+      { city: 'Tokyo', id: 'tokyoSlider' },
+      { city: 'Singapore', id: 'singaporeSlider' },
+      { city: 'Bangkok', id: 'bangkokSlider' },
+      { city: 'Bali', id: 'baliSlider' },
+      { city: 'Santorini', id: 'santoriniSlider' },
+      { city: 'Maldives', id: 'maldivesSlider' },
+      { city: 'Phuket', id: 'phuketSlider' },
+      { city: 'Swiss Alps', id: 'swissalpsSlider' },
+      { city: 'Iceland', id: 'icelandSlider' },
+      { city: 'Cappadocia', id: 'cappadociaSlider' },
+      { city: 'Venice', id: 'veniceSlider' },
+      { city: 'Sydney', id: 'sydneySlider' },
+      { city: 'Cape Town', id: 'capetownSlider' },
+      { city: 'Zermatt', id: 'zermattSlider' },
+      { city: 'Barcelona', id: 'barcelonaSlider' },
+      { city: 'Rio de Janeiro', id: 'rioSlider' },
+      { city: 'Istanbul', id: 'istanbulSlider' },
+      { city: 'Seoul', id: 'seoulSlider' },
+      { city: 'Marrakech', id: 'marrakechSlider' },
+      { city: 'Amsterdam', id: 'amsterdamSlider' },
+      { city: 'Reykjavik', id: 'reykjavikSlider' },
+      { city: 'Cairo', id: 'cairoSlider' }
+    ];
+    
+    const indianCities = [
+      { city: 'Bangalore', id: 'bangaloreSlider' },
+      { city: 'Hyderabad', id: 'hyderabadSlider' },
+      { city: 'Pune', id: 'puneSlider' },
+      { city: 'Gurgaon', id: 'gurgaonSlider' },
+      { city: 'Noida', id: 'noidaSlider' },
+      { city: 'Chennai', id: 'chennaiSlider' },
+      { city: 'Mumbai', id: 'mumbaiSlider' },
+      { city: 'Goa', id: 'goaSlider' },
+      { city: 'Varanasi', id: 'varanasiSlider' },
+      { city: 'Jaipur', id: 'jaipurSlider' },
+      { city: 'Agra', id: 'agraSlider' },
+      { city: 'Udaipur', id: 'udaipurSlider' },
+      { city: 'New Delhi', id: 'newdelhiSlider' },
+      { city: 'Kolkata', id: 'kolkataSlider' },
+      { city: 'Ahmedabad', id: 'ahmedabadSlider' },
+      { city: 'Kochi', id: 'kochiSlider' },
+      { city: 'Rishikesh', id: 'rishikeshSlider' },
+      { city: 'Chandigarh', id: 'chandigarhSlider' },
+      { city: 'Shimla', id: 'shimlaSlider' },
+      { city: 'Munnar', id: 'munnarSlider' },
+      { city: 'Darjeeling', id: 'darjeelingSlider' },
+      { city: 'Manali', id: 'manaliSlider' },
+      { city: 'Kerala', id: 'keralaSlider' },
+      { city: 'Andaman', id: 'andamanSlider' },
+      { city: 'Pondicherry', id: 'pondicherrySlider' },
+      { city: 'Leh-Ladakh', id: 'lehladakhSlider' },
+      { city: 'Mussoorie', id: 'mussoorieSlider' },
+      { city: 'Jaisalmer', id: 'jaisalmerSlider' },
+      { city: 'Coorg', id: 'coorgSlider' },
+      { city: 'Wayanad', id: 'wayanadSlider' },
+      { city: 'Meghalaya', id: 'meghalayaSlider' },
+      { city: 'Hampi', id: 'hampiSlider' },
+      { city: 'Alleppey', id: 'alleppeySlider' },
+      { city: 'Ooty', id: 'ootySlider' }
+    ];
+    
+    let prioritizedCities = [];
+    if (activeFilter === 'india') {
+      prioritizedCities = [...indianCities, ...foreignCities];
+    } else if (activeFilter === 'foreign') {
+      prioritizedCities = [...foreignCities, ...indianCities];
+    } else {
+      prioritizedCities = [...indianCities, ...foreignCities]; // Default to all, interleave or just append
+    }
+
+    // Keep track of what we've loaded to avoid duplicate fetches if we dynamically switch
+    const loadedCities = new Set();
+
+    const loadSequential = async () => {
+      for (const item of prioritizedCities) {
+        if (!loadedCities.has(item.city)) {
+          loadedCities.add(item.city);
+          await loadCityHotels(item.city, item.id);
+          // Wait 1.2 seconds before the next request to avoid RapidAPI Rate Limit (429)
+          await new Promise(resolve => setTimeout(resolve, 1200));
+        }
+      }
+    };
+    
+    loadSequential();
+    
+    // Expose a function to re-prioritize the queue when a user clicks a dynamic filter
+    window.prioritizeFilterQueue = function(filterName) {
+      // If we are already loading, it will finish the current 1.2s sleep, 
+      // but we can reorder the remaining unloaded cities to the front!
+      const isIndia = (filterName === 'india');
+      const isForeign = (filterName === 'foreign');
+      
+      prioritizedCities.sort((a, b) => {
+        const aIsLoaded = loadedCities.has(a.city);
+        const bIsLoaded = loadedCities.has(b.city);
+        if (aIsLoaded && !bIsLoaded) return 1;
+        if (!aIsLoaded && bIsLoaded) return -1;
+        
+        // Neither loaded (or both loaded). Sort by requested filter!
+        const aInIndia = indianCities.some(c => c.city === a.city);
+        const bInIndia = indianCities.some(c => c.city === b.city);
+        
+        if (isIndia) {
+          if (aInIndia && !bInIndia) return -1;
+          if (!aInIndia && bInIndia) return 1;
+        } else if (isForeign) {
+          if (!aInIndia && bInIndia) return -1;
+          if (aInIndia && !bInIndia) return 1;
+        }
+        return 0;
+      });
+    };
+    
+    // Add hover zoom effect via CSS injection
+    const style = document.createElement('style');
+    style.textContent = `
+      .hotel-card-hover:hover img {
+        transform: scale(1.05) !important;
+      }
+      .hover-scale:hover {
+        transform: translateY(-50%) scale(1.1) !important;
+      }
+    `;
+    document.head.appendChild(style);
+  });
+</script>

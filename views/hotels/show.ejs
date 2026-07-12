@@ -1,0 +1,472 @@
+<% layout("/layouts/boilerplate") %>
+
+<% 
+// Helper to generate consistent random data based on propertyId
+const seed = parseInt(hotel.propertyId) || 12345;
+const random = (min, max) => Math.floor(Math.abs((seed * 9301 + 49297) % 233280) / 233280 * (max - min + 1)) + min;
+// Realistic INR price between ₹3,000 and ₹18,000
+const price = hotel.price || random(3000, 18000);
+const currency = hotel.currency || 'INR';
+const checkin = hotel.checkin || '14:00';
+const checkout = hotel.checkout || '12:00';
+const distance = hotel.distanceToCityCenter || '';
+
+const allAmenities = [
+  { name: "Free Fast WiFi", icon: "fa-wifi" },
+  { name: "Swimming Pool", icon: "fa-water-ladder" },
+  { name: "Free Parking", icon: "fa-square-parking" },
+  { name: "Air Conditioning", icon: "fa-snowflake" },
+  { name: "Restaurant", icon: "fa-utensils" },
+  { name: "Room Service", icon: "fa-bell-concierge" },
+  { name: "Fitness Center", icon: "fa-dumbbell" },
+  { name: "Spa & Wellness", icon: "fa-spa" },
+  { name: "Bar/Lounge", icon: "fa-martini-glass" },
+  { name: "Airport Shuttle", icon: "fa-van-shuttle" }
+];
+
+// Pick 6 pseudo-random amenities safely
+const amenities = [];
+let tempAmenities = [...allAmenities];
+for(let i=0; i<6; i++) {
+  const index = Math.abs((seed * (i + 7)) ^ 0x555555) % tempAmenities.length;
+  amenities.push(tempAmenities.splice(index, 1)[0]);
+}
+
+const roomTypes = [
+  { name: "Standard Room", desc: "1 Queen Bed, City View", extra: 0 },
+  { name: "Deluxe Room", desc: "1 King Bed, Balcony", extra: 2500 },
+  { name: "Executive Suite", desc: "1 King Bed, Living Area, Premium View", extra: 6000 }
+];
+
+// Fallback just in case apiReviews is empty
+const defaultReviews = [
+  { user: "Rahul S.", rating: "4.8", comment: "Absolutely loved our stay! The staff was incredibly welcoming and the room was spotless. Will definitely return.", date: "June 2026" },
+  { user: "Priya M.", rating: "4.5", comment: "Great location and fantastic amenities. The breakfast buffet had so many options. Highly recommend!", date: "May 2026" },
+  { user: "Amit K.", rating: "4.2", comment: "Very good hotel. Clean rooms and prompt room service. The pool area is very relaxing.", date: "April 2026" }
+];
+const reviewsToDisplay = (typeof apiReviews !== 'undefined' && apiReviews.length > 0) ? apiReviews : defaultReviews;
+%>
+
+<div class="row mt-4">
+  <!-- Title & Info Section -->
+  <div class="col-12 mb-4">
+    <h2 class="text-dark fw-bold mb-1"><%= hotel.name %></h2>
+    <p class="text-secondary mb-2 fs-6">
+      <i class="fa-solid fa-location-dot text-rose me-1"></i><%= hotel.area ? hotel.area + ', ' : '' %><%= hotel.city %>
+      <% if(hotel.starRating && hotel.starRating >= 1) { %>
+        <% const propTypeRaw = hotel.accommodationType || hotel.propertyType || 'Hotel'; %>
+        <% let propType = typeof propTypeRaw === 'object' ? (propTypeRaw.name || 'Hotel') : propTypeRaw; %>
+        <% if (propType.toLowerCase() === 'apartment') propType = 'Flat'; %>
+        <span class="mx-2">&middot;</span>
+        <span class="fw-bold text-dark"><i class="fa-solid fa-star text-warning me-1"></i><%= Math.floor(hotel.starRating) %> Star <%= propType %></span>
+      <% } %>
+      <% if(hotel.reviewScore) { %>
+        <span class="mx-2">&middot;</span>
+        <span class="fw-semibold text-dark"><i class="fa-solid fa-thumbs-up text-primary me-1"></i><%= hotel.reviewScore %> Rating (<%= hotel.reviewCount || 0 %> reviews)</span>
+      <% } %>
+    </p>
+    
+    <!-- Image Gallery -->
+    <div class="row g-2 my-3 rounded-4 overflow-hidden position-relative" style="height: 450px;">
+      <% 
+      let images = [];
+      let mainUrl = 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80';
+      if (hotel.images && hotel.images.length > 0) {
+        images = hotel.images;
+      } else {
+        images.push(mainUrl);
+      }
+      
+      while(images.length < 4) {
+        images.push("https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=60");
+      }
+      %>
+      <!-- Main Image (Left) -->
+      <div class="col-md-6 col-12 h-100">
+        <div class="h-100 position-relative overflow-hidden rounded-start">
+          <img src="<%= images[0] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="main_image" style="transition: all 0.3s ease; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageGalleryModal">
+        </div>
+      </div>
+      <!-- Sub Images (Right) -->
+      <div class="col-md-6 h-100 d-none d-md-block">
+        <div class="row h-100 g-2">
+          <!-- Top Full Width -->
+          <div class="col-12 h-50">
+            <div class="h-100 overflow-hidden position-relative rounded-end-top">
+              <img src="<%= images[1] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_1" style="transition: all 0.3s ease; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageGalleryModal">
+            </div>
+          </div>
+          <!-- Bottom Left -->
+          <div class="col-6 h-50">
+            <div class="h-100 overflow-hidden position-relative">
+              <img src="<%= images[2] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_2" style="transition: all 0.3s ease; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageGalleryModal">
+            </div>
+          </div>
+          <!-- Bottom Right -->
+          <div class="col-6 h-50">
+            <div class="h-100 overflow-hidden position-relative rounded-end-bottom">
+              <img src="<%= images[3] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_3" style="transition: all 0.3s ease; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageGalleryModal">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Left: Details & Amenities -->
+  <div class="col-lg-7 col-12 pe-lg-5">
+    
+    <div class="details-card mb-4 pb-4 border-bottom">
+      <h4 class="text-dark fw-bold mb-3">About this hotel</h4>
+      <div class="mb-3">
+        <span class="badge bg-light text-dark border me-2"><i class="fa-solid fa-clock me-1"></i>Check-in: <%= checkin %></span>
+        <span class="badge bg-light text-dark border me-2"><i class="fa-solid fa-clock me-1"></i>Check-out: <%= checkout %></span>
+        <% if(distance) { %>
+          <span class="badge bg-light text-dark border"><i class="fa-solid fa-location-arrow me-1"></i><%= distance %></span>
+        <% } %>
+      </div>
+      <p class="text-secondary leading-relaxed" style="white-space: pre-line; line-height: 1.7;">
+        Experience world-class service at <%= hotel.name %>. Located in <%= hotel.address %>, this <%= hotel.starRating %>-star luxury property offers unparalleled comfort and convenience. 
+        
+        Guests can enjoy state-of-the-art facilities, beautifully designed rooms with stunning views, and exquisite dining options prepared by award-winning chefs. Whether you're traveling for business or leisure, <%= hotel.name %> provides the perfect sanctuary for a memorable stay.
+      </p>
+    </div>
+
+    <!-- Amenities Section -->
+    <div class="amenities-section mb-4 pb-4 border-bottom">
+      <h4 class="text-dark fw-bold mb-4">What this place offers</h4>
+      <div class="row g-3">
+        <% amenities.forEach(amenity => { %>
+          <div class="col-6 d-flex align-items-center mb-2">
+            <i class="fa-solid <%= amenity.icon %> fs-4 me-3 text-secondary" style="width: 30px;"></i>
+            <span class="fs-6 text-dark"><%= amenity.name %></span>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <!-- Room Types Section -->
+    <div class="room-types-section mb-4 pb-4 border-bottom">
+      <h4 class="text-dark fw-bold mb-4">Available Room Types</h4>
+      <div class="d-flex flex-column gap-3">
+        <% roomTypes.forEach(room => { %>
+          <div class="card border rounded-4 p-3 shadow-sm bg-white">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="fw-bold text-dark mb-1"><%= room.name %></h6>
+                <p class="text-secondary mb-0 small"><i class="fa-solid fa-bed me-2 text-muted"></i><%= room.desc %></p>
+              </div>
+              <div class="text-end">
+                <span class="fw-bold text-dark fs-5"><%= room.extra === 0 ? 'Base' : '+₹' + room.extra.toLocaleString('en-IN') %></span>
+                <% if(room.extra > 0) { %><p class="text-muted mb-0" style="font-size: 0.75rem;">/ night</p><% } %>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="reviews-section mb-4 pb-4 border-bottom">
+      <div class="d-flex align-items-center mb-4">
+        <i class="fa-solid fa-star fs-3 text-dark me-2"></i>
+        <h4 class="text-dark fw-bold m-0"><%= hotel.reviewScore ? (hotel.reviewScore / 2).toFixed(1) : 4.5 %> / 5.0 · <%= hotel.reviewCount || 120 %> reviews</h4>
+      </div>
+      <div class="row gx-4 gy-4 mt-1">
+        <% reviewsToDisplay.forEach(review => { %>
+          <div class="col-md-6">
+            <div class="d-flex align-items-center mb-2">
+              <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-3" style="width: 45px; height: 45px; font-size: 1.2rem;">
+                <%= review.user.charAt(0) %>
+              </div>
+              <div>
+                <h6 class="fw-bold text-dark mb-0"><%= review.user %></h6>
+                <small class="text-muted"><%= review.date %></small>
+              </div>
+            </div>
+            <div class="mb-2">
+              <% for(let i=1; i<=5; i++) { %>
+                <i class="fa-solid fa-star <%= i <= Math.round(review.rating) ? 'text-warning' : 'text-muted opacity-25' %>" style="font-size: 0.85rem;"></i>
+              <% } %>
+            </div>
+            <p class="text-secondary" style="font-size: 0.95rem; line-height: 1.5;"><%= review.comment %></p>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <!-- Interactive Map Section -->
+    <div class="map-section mb-5">
+      <h4 class="text-dark fw-bold mb-4">Where you'll be</h4>
+      <p class="text-secondary mb-3"><%= hotel.area ? hotel.area + ', ' : '' %><%= hotel.city %>, India</p>
+      <div id="map" class="rounded-4 border shadow-sm" style="height: 400px; width: 100%; z-index: 1;"></div>
+    </div>
+
+
+
+  </div>
+
+  <!-- Right: Booking Form -->
+  <div class="col-lg-5 col-12 mt-lg-0 mt-4 position-relative">
+    <div class="card border shadow-lg rounded-4 p-4 mb-4 bg-white sticky-card" style="top: 100px; z-index: 10;">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold m-0 text-dark">
+          <%= currency === 'INR' ? '₹' : (currency + ' ') %><%= price.toLocaleString('en-IN') %> <span class="fw-normal text-muted fs-6">/ night</span>
+        </h3>
+        <% if(hotel.reviewScore) { %>
+          <span class="text-dark fw-semibold" style="font-size: 0.9rem;">
+            <i class="fa-solid fa-star me-1 text-warning small"></i><%= hotel.reviewScore %>
+            <span class="text-muted text-decoration-underline ms-1">(<%= hotel.reviewCount || 0 %>)</span>
+          </span>
+        <% } %>
+      </div>
+      
+      <form id="internalBookingForm" class="booking-form">
+        <div class="border rounded-4 overflow-hidden mb-3">
+          <div class="d-flex border-bottom">
+            <div class="w-50 p-2 border-end form-group-custom">
+              <label class="text-uppercase fw-bold text-muted" style="font-size: 0.65rem;">Check-in</label>
+              <input type="date" class="form-control border-0 p-0 shadow-none text-dark fw-semibold" required>
+            </div>
+            <div class="w-50 p-2 form-group-custom">
+              <label class="text-uppercase fw-bold text-muted" style="font-size: 0.65rem;">Check-out</label>
+              <input type="date" class="form-control border-0 p-0 shadow-none text-dark fw-semibold" required>
+            </div>
+          </div>
+          <div class="p-2 border-bottom form-group-custom">
+            <label class="text-uppercase fw-bold text-muted" style="font-size: 0.65rem;">Guests</label>
+            <select class="form-select border-0 p-0 shadow-none text-dark fw-semibold" required>
+              <option value="1">1 Guest</option>
+              <option value="2" selected>2 Guests</option>
+              <option value="3">3 Guests</option>
+              <option value="4">4 Guests</option>
+              <option value="5">5+ Guests</option>
+            </select>
+          </div>
+          <div class="p-2 form-group-custom bg-light">
+            <label class="text-uppercase fw-bold text-muted" style="font-size: 0.65rem;">Room Type</label>
+            <select class="form-select border-0 p-0 shadow-none text-dark fw-semibold bg-light" required>
+              <option value="Standard Room">Standard Room</option>
+              <option value="Deluxe Room">Deluxe Room (+₹2,500)</option>
+              <option value="Executive Suite">Executive Suite (+₹6,000)</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-rose rounded-3 w-100 py-3 fw-bold fs-5 text-white mb-3" style="background: linear-gradient(to right, #e61e4d 0%, #e31c5f 50%, #d70466 100%);">
+          Book Now
+        </button>
+      </form>
+      
+      <div class="text-center">
+        <p class="m-0 text-secondary" style="font-size: 0.85rem;">You won't be charged yet</p>
+      </div>
+      
+      <!-- Compare Prices Button using StayAPI -->
+      <hr class="my-4">
+      <button class="btn btn-outline-dark rounded-pill w-100 fw-semibold" onclick="openMetaModal('<%= hotel.name.replace(/'/g, "\\'").replace(/"/g, '&quot;') %>', '<%= hotel.city.replace(/'/g, "\\'").replace(/"/g, '&quot;') %>', '<%= hotel.url || '#' %>')">
+        <i class="fa-solid fa-magnifying-glass-dollar me-2"></i>Compare Prices on Other Sites
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Image Gallery Modal (Slider) -->
+<div class="modal fade" id="imageGalleryModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-header border-0 pb-0 justify-content-end">
+        <button type="button" class="btn-close btn-close-white fs-4" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div id="hotelImageCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner rounded-4 shadow-lg">
+            <% images.forEach((img, idx) => { %>
+              <div class="carousel-item <%= idx === 0 ? 'active' : '' %>">
+                <img src="<%= img %>" class="d-block w-100" style="max-height: 80vh; object-fit: contain; background: #000;" alt="Hotel Image">
+              </div>
+            <% }) %>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#hotelImageCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true" style="width: 3rem; height: 3rem;"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#hotelImageCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true" style="width: 3rem; height: 3rem;"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="bookingSuccessModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 shadow-lg p-3">
+      <div class="modal-body text-center py-5">
+        <div class="mb-4">
+          <i class="fa-solid fa-circle-check text-success" style="font-size: 5rem;"></i>
+        </div>
+        <h3 class="fw-bold text-dark mb-3">Booking Confirmed!</h3>
+        <p class="text-secondary mb-4 fs-6">Your reservation at <strong><%= hotel.name %></strong> has been successfully placed. We've sent a confirmation email with your itinerary details.</p>
+        <button type="button" class="btn btn-dark rounded-pill px-5 py-2 fw-semibold" data-bs-dismiss="modal">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- StayAPI Meta Booking Modal -->
+<div class="modal fade" id="metaBookingModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 shadow-lg">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold" id="metaModalTitle">Booking Options</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center pt-2 pb-4">
+        <p class="text-muted small mb-4" id="metaModalLocation">Loading booking options...</p>
+        
+        <div id="metaModalLoader" class="py-4">
+          <div class="spinner-border text-danger" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-3 mb-0 text-secondary small">Searching multiple platforms...</p>
+        </div>
+
+        <div id="metaModalLinks" class="d-none d-flex flex-column gap-3">
+          <!-- Dynamically inserted links -->
+        </div>
+        
+        <div id="metaModalError" class="d-none py-3">
+          <i class="fa-solid fa-circle-exclamation text-danger fs-3 mb-2"></i>
+          <p class="text-secondary small mb-3">Could not find alternative booking links.</p>
+          <a id="metaModalFallbackLink" href="#" target="_blank" class="btn btn-outline-danger w-100 rounded-pill">Continue to Agoda</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .form-group-custom input[type="date"] {
+    font-size: 0.9rem;
+  }
+  .form-group-custom select {
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  .sticky-card {
+    position: sticky;
+  }
+  .rounded-end-top {
+    border-top-right-radius: 1rem;
+  }
+  .rounded-end-bottom {
+    border-bottom-right-radius: 1rem;
+  }
+  .btn-rose:hover {
+    opacity: 0.9;
+  }
+</style>
+
+<script>
+  // Handle booking form
+  document.getElementById('internalBookingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const successModal = new bootstrap.Modal(document.getElementById('bookingSuccessModal'));
+    successModal.show();
+    this.reset();
+  });
+
+  // StayAPI Modal Logic
+  let metaModalInstance = null;
+  window.openMetaModal = async (hotelName, location, fallbackAgodaUrl) => {
+    if (!metaModalInstance) {
+      metaModalInstance = new bootstrap.Modal(document.getElementById('metaBookingModal'));
+    }
+    document.getElementById('metaModalTitle').textContent = hotelName;
+    document.getElementById('metaModalLocation').textContent = location;
+    
+    document.getElementById('metaModalLoader').classList.remove('d-none');
+    document.getElementById('metaModalLinks').classList.add('d-none');
+    document.getElementById('metaModalError').classList.add('d-none');
+    
+    metaModalInstance.show();
+
+    try {
+      const response = await fetch(`/api/hotels/meta?hotel_name=${encodeURIComponent(hotelName)}&location=${encodeURIComponent(location)}`);
+      const data = await response.json();
+      document.getElementById('metaModalLoader').classList.add('d-none');
+      
+      if (data.success && data.links && Object.keys(data.links).length > 0) {
+        const linksContainer = document.getElementById('metaModalLinks');
+        linksContainer.innerHTML = `
+          <a href="${fallbackAgodaUrl}" target="_blank" class="btn btn-outline-danger rounded-pill w-100 text-start px-4 py-2 d-flex justify-content-between align-items-center">
+            <span class="fw-bold">Agoda</span>
+            <i class="fa-solid fa-arrow-up-right-from-square small"></i>
+          </a>
+        `;
+        Object.entries(data.links).forEach(([platform, url]) => {
+          const platformName = platform.charAt(0).toUpperCase() + platform.slice(1).replace('_', ' ');
+          linksContainer.innerHTML += `
+            <a href="${url}" target="_blank" class="btn btn-dark rounded-pill w-100 text-start px-4 py-2 d-flex justify-content-between align-items-center">
+              <span class="fw-bold">${platformName}</span>
+              <i class="fa-solid fa-arrow-up-right-from-square small"></i>
+            </a>
+          `;
+        });
+        linksContainer.classList.remove('d-none');
+      } else {
+        throw new Error("No links found");
+      }
+    } catch (err) {
+      console.error("StayAPI Error:", err);
+      document.getElementById('metaModalLoader').classList.add('d-none');
+      document.getElementById('metaModalFallbackLink').href = fallbackAgodaUrl;
+      document.getElementById('metaModalError').classList.remove('d-none');
+    }
+  };
+
+  // Interactive Map Initialization (OpenStreetMap / Leaflet)
+  document.addEventListener("DOMContentLoaded", () => {
+    const hotelCity = "<%= hotel.city.replace(/'/g, "\\'") %>";
+    const hotelArea = "<%= (hotel.area || '').replace(/'/g, "\\'") %>";
+    const hotelName = "<%= hotel.name.replace(/'/g, "\\'") %>";
+    const searchQuery = (hotelArea ? hotelArea + ', ' : '') + hotelCity + ', India';
+    
+    const map = L.map('map', { scrollWheelZoom: false }).setView([20.5937, 78.9629], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.length > 0) {
+          const lat = parseFloat(data[0].lat);
+          const lon = parseFloat(data[0].lon);
+          map.setView([lat, lon], 14);
+          L.marker([lat, lon]).addTo(map)
+            .bindPopup(`<b>${hotelName}</b><br>${hotelArea ? hotelArea + ', ' : ''}${hotelCity}`)
+            .openPopup();
+        } else {
+          // Fallback to city search if area is too specific
+          fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(hotelCity + ', India')}`)
+            .then(res => res.json())
+            .then(cData => {
+              if (cData && cData.length > 0) {
+                const lat = parseFloat(cData[0].lat);
+                const lon = parseFloat(cData[0].lon);
+                map.setView([lat, lon], 12);
+                L.marker([lat, lon]).addTo(map)
+                  .bindPopup(`<b>${hotelName}</b><br>${hotelCity}`)
+                  .openPopup();
+              }
+            });
+        }
+      })
+      .catch(err => console.error("Geocoding map load failure:", err));
+  });
+</script>

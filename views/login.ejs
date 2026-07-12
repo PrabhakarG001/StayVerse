@@ -1,0 +1,87 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- Full screen background container -->
+<div class="d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 160px); background: url('/images/travel_bg.png') center/cover no-repeat; margin: -20px 0 -40px 0;">
+  
+  <!-- The Auth Box -->
+  <div class="card border-0 shadow-lg p-4" style="border-radius: 16px; width: 100%; max-width: 480px; z-index: 10;">
+    
+    <div class="card-body p-0 mt-2 text-center">
+      <!-- Logo -->
+      <div class="mb-3 d-flex justify-content-center align-items-center">
+        <img src="/images/logo.svg" alt="StayVerse Logo" style="height: 36px;">
+        <span class="ms-2" style="color: #FF385C; font-weight: 700; font-size: 1.6rem;">StayVerse</span>
+      </div>
+      
+      <!-- Title -->
+      <h3 class="fw-bold mb-4" style="color: #222; font-size: 1.5rem; letter-spacing: -0.5px;">Log in or sign up</h3>
+      
+      <form id="standaloneAuthForm">
+        <!-- Input -->
+        <div class="mb-2">
+          <input type="text" class="form-control" id="standaloneAuthEmail" placeholder="Phone number or email" required style="border-radius: 8px; padding: 14px 16px; border: 1px solid #b0b0b0; font-size: 1rem; color: #222; box-shadow: none;">
+        </div>
+        <style>
+          #standaloneAuthEmail:focus {
+            border-color: #FF385C !important;
+            border-width: 2px !important;
+            padding: 13px 15px !important;
+            outline: none !important;
+            box-shadow: none !important;
+          }
+        </style>
+        
+        <!-- Disclaimer -->
+        <div class="text-start mb-4" style="font-size: 0.75rem; color: #222;">
+          We'll send a confirmation code by text or email. Message and data rates apply. <a href="#" class="text-dark fw-bold text-decoration-underline">Privacy Policy</a>
+        </div>
+        
+        <!-- Continue Button -->
+        <button type="submit" class="btn w-100 fw-bold text-white mb-4" style="background-color: #E61E4D; border-radius: 8px; font-size: 1rem; padding: 14px; transition: background 0.2s; box-shadow: none !important;" onmouseover="this.style.backgroundColor='#d4184c'" onmouseout="this.style.backgroundColor='#E61E4D'">Continue</button>
+        
+        <!-- Divider -->
+        <div class="d-flex align-items-center justify-content-center mb-4">
+          <hr class="flex-grow-1 m-0" style="border-color: #ebebeb;">
+          <span class="mx-3 text-secondary" style="font-size: 0.85rem;">or</span>
+          <hr class="flex-grow-1 m-0" style="border-color: #ebebeb;">
+        </div>
+        
+        <!-- Social Buttons Horizontal -->
+        <div class="d-flex justify-content-center gap-3">
+          <button type="button" class="btn bg-white border d-flex align-items-center justify-content-center" style="border-color: #b0b0b0 !important; border-radius: 8px; width: 60px; height: 60px; transition: background 0.2s; box-shadow: none !important;" onmouseover="this.style.backgroundColor='#f7f7f7'" onmouseout="this.style.backgroundColor='#fff'">
+            <i class="fa-brands fa-google fs-4" style="color: #222;"></i>
+          </button>
+          <button type="button" class="btn bg-white border d-flex align-items-center justify-content-center" style="border-color: #b0b0b0 !important; border-radius: 8px; width: 60px; height: 60px; transition: background 0.2s; box-shadow: none !important;" onmouseover="this.style.backgroundColor='#f7f7f7'" onmouseout="this.style.backgroundColor='#fff'">
+            <i class="fa-brands fa-apple fs-4" style="color: #222;"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+    
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('standaloneAuthForm');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var ident = document.getElementById('standaloneAuthEmail').value;
+        if (ident) {
+          sessionStorage.setItem('sv_logged_in', 'true');
+          sessionStorage.setItem('sv_user', ident);
+          
+          // Check for redirect_url
+          const urlParams = new URLSearchParams(window.location.search);
+          const redirect = urlParams.get('redirect_url');
+          if (redirect) {
+            window.location.href = redirect;
+          } else {
+            window.location.href = '/';
+          }
+        }
+      });
+    }
+  });
+</script>

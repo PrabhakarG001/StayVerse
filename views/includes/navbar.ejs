@@ -1,0 +1,348 @@
+<!-- ===================== NAVBAR STYLES ===================== -->
+<style>
+  .sv-header {
+    position: sticky; top: 0; z-index: 1030;
+    background: #ffffff; transition: background 0.3s ease, box-shadow 0.3s ease;
+    border-bottom: 1px solid #ebebeb;
+  }
+  .sv-header-row1 {
+    display: flex; align-items: center; justify-content: space-between; padding: 20px 0 0;
+    position: relative;
+  }
+  .sv-logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+  .sv-logo img { height: 34px; width: auto; margin-right: 8px; mix-blend-mode: multiply; background-color: transparent !important; }
+  .sv-logo span { font-weight: 800; font-size: 1.25rem; color: #FF385C; letter-spacing: -0.5px; }
+  /* Ensure ALL navbar images have no background */
+  .sv-header img { mix-blend-mode: multiply !important; background-color: transparent !important; }
+  
+  /* Prevent Bootstrap blue background on dropdown click */
+  .dropdown-item:active { background-color: #f7f7f7 !important; color: #222 !important; }
+  
+  /* Category Tabs - centered via absolute positioning */
+  .sv-category-tabs {
+    display: flex; align-items: center; justify-content: center; gap: 40px;
+    position: absolute; left: 50%; transform: translateX(-50%);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 5;
+    pointer-events: auto;
+  }
+  .cat-tab {
+    display: flex; flex-direction: row; align-items: center; justify-content: center;
+    text-decoration: none; color: #717171; min-width: 60px; padding-bottom: 10px;
+    gap: 2px; transition: all 0.2s ease; position: relative;
+    cursor: pointer;
+  }
+  .cat-tab i, .cat-tab svg { font-size: 1.5rem; width: 24px; height: 24px; fill: currentColor; }
+  .cat-tab img { width: 54px; height: 54px; object-fit: contain; mix-blend-mode: multiply; transition: transform 0.2s ease; }
+  .cat-tab span { font-size: 0.85rem; font-weight: 600; line-height: 1; }
+  .cat-tab:hover { color: #222; }
+  .cat-tab:hover img { transform: scale(1.1); }
+  .cat-tab.active { color: #222; }
+  .cat-tab.active::after {
+    content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; height: 2px; background: #222;
+  }
+  
+  /* Scroll Search Pill - the outer wrapper (not a form) */
+  .sv-scroll-pill {
+    opacity: 0; pointer-events: none; 
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    position: absolute; left: 50%; transform: translateX(-50%) scale(0.9) translateY(10px);
+    display: flex; align-items: center;
+    border: 1px solid #dddddd; border-radius: 40px; background: #ffffff;
+    height: 48px; box-shadow: 0 1px 2px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05);
+    z-index: 5;
+  }
+  .sv-scroll-pill:hover {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  }
+  .sv-header.scrolled .sv-scroll-pill {
+    opacity: 1; transform: translateX(-50%) scale(1) translateY(0); pointer-events: auto;
+  }
+  
+  .sv-header.scrolled .sv-category-tabs {
+    opacity: 0; transform: translateX(-50%) translateY(-20px); pointer-events: none;
+  }
+  
+  .sv-booking-bar-container {
+    display: flex; justify-content: center; padding-top: 28px; padding-bottom: 24px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: top center;
+  }
+  .sv-header.scrolled .sv-booking-bar-container {
+    height: 0; padding-top: 0; padding-bottom: 0; opacity: 0; 
+    transform: scale(0.85) translateY(-30px); pointer-events: none; overflow: hidden;
+  }
+
+  /* Scroll state classes */
+  .sv-header.scrolled {
+    box-shadow: 0 1px 12px rgba(0,0,0,0.08);
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(12px);
+  }
+  .sv-header.scrolled .sv-header-row1 {
+    padding: 12px 0 !important;
+  }
+
+  /* Right links - ensure they stay above center content */
+  .sv-right-links {
+    position: relative;
+    z-index: 2;
+  }
+  .sv-right-links a.host-link:hover { background: #f7f7f7; }
+
+  /* Logo area - ensure clickable */
+  .sv-logo-wrapper {
+    position: relative;
+    z-index: 2;
+    flex-grow: 1;
+    flex-basis: 0;
+  }
+
+  /* Scroll pill filter links - these are <a> tags, NOT inside a form */
+  .sv-scroll-pill .scroll-filter-link {
+    display: flex; align-items: center; padding: 0 20px;
+    text-decoration: none; height: 100%;
+    border-right: 1px solid #dddddd;
+    transition: background 0.2s ease;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .sv-scroll-pill .scroll-filter-link:first-child {
+    border-radius: 40px 0 0 40px;
+  }
+  .sv-scroll-pill .scroll-filter-link:hover {
+    background: #f7f7f7;
+  }
+  .sv-scroll-pill .scroll-filter-link span {
+    font-weight: 600; font-size: 0.88rem; color: #222222;
+    white-space: nowrap;
+  }
+  .sv-scroll-pill .scroll-filter-link img {
+    width: 22px; height: 22px; mix-blend-mode: multiply; margin-right: 6px;
+    transition: transform 0.2s ease;
+  }
+  .sv-scroll-pill .scroll-filter-link:hover img {
+    transform: scale(1.12) translateY(-1px);
+  }
+
+  /* Search form inside the pill */
+  .sv-scroll-pill .scroll-search-form {
+    display: flex; align-items: center; height: 100%;
+    margin: 0; padding: 0 8px 0 0; border: none;
+    border-radius: 0 40px 40px 0;
+    transition: background 0.2s ease;
+  }
+  .sv-scroll-pill .scroll-search-form:hover {
+    background: #f7f7f7;
+  }
+
+  /* Mobile */
+  @media (max-width: 767.98px) {
+    .sv-header-row1 .sv-right-links, .sv-category-tabs, .sv-scroll-pill, .sv-booking-bar-container { display: none !important; }
+    .sv-logo span { display: inline; font-size: 1.1rem; }
+    
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  }
+</style>
+
+
+<!-- ===================== NAVBAR HTML ===================== -->
+<% const currentFilter = (typeof filter !== 'undefined') ? filter : 'all'; %>
+<header class="sv-header" id="sv-header">
+  <div class="container px-4" style="max-width: 100%;">
+    <!-- Row 1: Logo + Links -->
+    <div class="sv-header-row1 d-flex align-items-center justify-content-between" style="padding: 18px 0;">
+      
+      <!-- Left: Logo -->
+      <div class="sv-logo-wrapper">
+        <a class="sv-logo" href="/" style="transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+          <img src="/images/logo.svg" alt="StayVerse Logo" style="height: 32px;">
+          <span class="ms-1" style="color: #FF385C; font-weight: 700; font-size: 1.4rem;">StayVerse</span>
+        </a>
+      </div>
+      
+      <% if (typeof hideSearch === 'undefined' || !hideSearch) { %>
+      
+      <!-- Center: Category Tabs (visible at top, hidden on scroll) -->
+      <div class="sv-category-tabs d-none d-md-flex">
+        <a href="/listings?filter=all" class="cat-tab <%= currentFilter === 'all' ? 'active' : '' %>">
+          <img src="/images/cat_all.png" alt="All">
+          <span>All</span>
+        </a>
+        <a href="/listings?filter=india" class="cat-tab <%= currentFilter === 'india' ? 'active' : '' %>">
+          <img src="/images/cat_india.png" alt="India">
+          <span>India</span>
+        </a>
+        <a href="/listings?filter=foreign" class="cat-tab <%= currentFilter === 'foreign' ? 'active' : '' %>">
+          <img src="/images/cat_foreign.png" alt="Foreign">
+          <span>Foreign</span>
+        </a>
+      </div>
+
+      <!-- Scroll Pill (appears on scroll) - links are OUTSIDE form to stay clickable -->
+      <div class="sv-scroll-pill d-none d-md-flex">
+        <a href="/listings?filter=all" class="scroll-filter-link <%= currentFilter === 'all' ? 'active' : '' %>">
+          <img src="/images/cat_all.png" alt="All">
+          <span>All</span>
+        </a>
+        <a href="/listings?filter=india" class="scroll-filter-link <%= currentFilter === 'india' ? 'active' : '' %>">
+          <img src="/images/cat_india.png" alt="India">
+          <span>India</span>
+        </a>
+        <a href="/listings?filter=foreign" class="scroll-filter-link <%= currentFilter === 'foreign' ? 'active' : '' %>">
+          <img src="/images/cat_foreign.png" alt="Foreign">
+          <span>Foreign</span>
+        </a>
+        <form action="/hotels/search" method="GET" class="scroll-search-form">
+          <div class="d-flex align-items-center px-3" style="height:100%; cursor: text;" onclick="this.querySelector('input').focus()">
+            <input type="search" name="query" placeholder="Search destinations" class="form-control border-0 shadow-none p-0" style="background: transparent; width: 140px; font-weight: 400; font-size: 0.95rem; color: #222;">
+          </div>
+          <button type="submit" class="btn text-white rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="background: #FF385C; width: 32px; height: 32px; min-width: 32px; padding:0; transition: background 0.2s;" onmouseover="this.style.background='#E31C5F'" onmouseout="this.style.background='#FF385C'">
+            <i class="fa-solid fa-magnifying-glass" style="font-size: 0.8rem;"></i>
+          </button>
+        </form>
+      </div>
+      <% } %>
+
+      <!-- Right: Actions & Profile -->
+      <div class="sv-right-links d-none d-lg-flex align-items-center justify-content-end" style="flex-grow: 1; flex-basis: 0;">
+        <a href="/listings/new" class="host-link fw-semibold text-dark border-0 bg-transparent rounded-pill ps-3 pe-2 py-2 auth-required" data-auth-action="host" style="font-size: 0.95rem; text-decoration: none; transition: background 0.2s;">
+          Become a host
+        </a>
+        <button class="btn border-0 rounded-circle bg-transparent text-dark p-2 me-1 host-link" style="width: 40px; height: 40px; margin-left: -4px;">
+          <i class="fa-solid fa-globe"></i>
+        </button>
+        
+        <div class="dropdown">
+          <button class="btn border-0 rounded-circle bg-transparent d-flex align-items-center justify-content-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 16px; padding: 12px 0; min-width: 300px; box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;">
+            <li><a class="dropdown-item py-2 fw-semibold" href="#" style="font-size: 0.95rem;">Help Centre</a></li>
+            <li><hr class="dropdown-divider my-2"></li>
+            <li>
+              <a class="dropdown-item py-3 px-3 d-flex align-items-center justify-content-between auth-required" href="/listings/new" data-auth-action="host" style="white-space: normal; margin: 4px 0;">
+                <div style="padding-right: 16px;">
+                  <div class="fw-bold text-dark" style="font-size: 0.95rem;">Become a host</div>
+                  <div class="text-muted mt-1" style="font-size: 0.85rem; line-height: 1.3;">It's easy to start hosting and earn extra income.</div>
+                </div>
+                <img src="/images/host_cartoon.png" alt="Host Illustration" style="height: 54px; width: auto; flex-shrink: 0; object-fit: contain; mix-blend-mode: multiply;">
+              </a>
+            </li>
+            <li><a class="dropdown-item py-2" href="#" style="font-size: 0.95rem;">Refer a host</a></li>
+            <li><a class="dropdown-item py-2" href="#" style="font-size: 0.95rem;">Find a co-host</a></li>
+            <li><hr class="dropdown-divider my-2"></li>
+            <li><a class="dropdown-item py-2 fw-semibold" href="#" data-bs-toggle="modal" data-bs-target="#authModal" style="font-size: 0.95rem;">Log in or sign up</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Mobile Hamburger Trigger -->
+      <button class="btn d-md-none border-0 bg-transparent text-dark ms-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar">
+        <i class="fa-solid fa-bars" style="font-size: 1.2rem;"></i>
+      </button>
+    </div>
+
+    <% if (typeof hideSearch === 'undefined' || !hideSearch) { %>
+    <!-- Mobile Search Pill (Visible only on mobile) -->
+    <div class="d-md-none w-100 pb-3" style="padding-top: 4px;">
+      <form action="/hotels/search" method="GET" class="w-100 m-0 position-relative">
+        <div class="sv-mobile-search-pill d-flex align-items-center bg-white border" style="border-radius: 40px; box-shadow: 0 3px 10px rgba(0,0,0,0.08); padding: 8px 12px; height: 54px; cursor: text;" onclick="this.querySelector('input').focus()">
+          <div class="d-flex align-items-center justify-content-center me-3" style="width: 38px; height: 38px; color: #222;">
+            <i class="fa-solid fa-magnifying-glass fs-5"></i>
+          </div>
+          <div class="flex-grow-1 d-flex flex-column justify-content-center h-100 position-relative">
+            <input type="search" name="query" placeholder="Where to?" class="form-control border-0 shadow-none p-0 fw-bold" style="background: transparent; height: 22px; font-size: 0.95rem; color: #222;">
+            <div class="text-secondary" style="font-size: 0.75rem; line-height: 1.1; margin-top: 1px;">Anywhere &middot; Any week</div>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+    <!-- Mobile Categories Filter (Visible only on mobile) -->
+    <div class="d-md-none w-100 pb-2 overflow-auto hide-scrollbar" style="display: flex; gap: 24px; padding-top: 4px;">
+        <a href="/listings?filter=all" class="cat-tab <%= currentFilter === 'all' ? 'active' : '' %>" style="min-width: max-content; padding-bottom: 6px;">
+          <img src="/images/cat_all.png" alt="All" style="width: 26px; height: 26px;">
+          <span style="font-size: 0.75rem;">All</span>
+        </a>
+        <a href="/listings?filter=india" class="cat-tab <%= currentFilter === 'india' ? 'active' : '' %>" style="min-width: max-content; padding-bottom: 6px;">
+          <img src="/images/cat_india.png" alt="India" style="width: 26px; height: 26px;">
+          <span style="font-size: 0.75rem;">India</span>
+        </a>
+        <a href="/listings?filter=foreign" class="cat-tab <%= currentFilter === 'foreign' ? 'active' : '' %>" style="min-width: max-content; padding-bottom: 6px;">
+          <img src="/images/cat_foreign.png" alt="Foreign" style="width: 26px; height: 26px;">
+          <span style="font-size: 0.75rem;">Foreign</span>
+        </a>
+    </div>
+    <% } %>
+
+    <!-- Mobile Sidebar Menu -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
+      <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title fw-bold text-dark" id="mobileSidebarLabel" style="color: #FF385C !important;">StayVerse</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-0">
+        <div class="list-group list-group-flush border-0">
+          <a href="/" class="list-group-item list-group-item-action py-3 fw-semibold border-0"><i class="fa-solid fa-house me-3 text-secondary"></i>Home</a>
+          <a href="/wishlists" class="list-group-item list-group-item-action py-3 fw-semibold border-0 auth-required" data-auth-action="wishlist"><i class="fa-solid fa-heart me-3 text-secondary"></i>Wishlists</a>
+          <a href="/listings/new" class="list-group-item list-group-item-action py-3 fw-semibold border-0 auth-required" data-auth-action="host"><i class="fa-solid fa-house-user me-3 text-secondary"></i>Become a Host</a>
+          <a href="#" class="list-group-item list-group-item-action py-3 fw-semibold border-0" data-bs-toggle="modal" data-bs-target="#authModal"><i class="fa-solid fa-right-to-bracket me-3 text-secondary"></i>Login / Sign up</a>
+        </div>
+      </div>
+    </div>
+
+    <% if (typeof hideSearch === 'undefined' || !hideSearch) { %>
+    <div class="sv-booking-bar-container d-none d-md-flex" style="position: relative;">
+      <div id="sv-booking-bar"></div>
+    </div>
+    <% } %>
+  </div>
+</header>
+
+<style>
+/* Scroll pill search input styles */
+.sv-scroll-pill input:focus {
+  outline: none;
+  background: transparent !important;
+}
+.sv-scroll-pill input::placeholder {
+  color: #666;
+  font-weight: 500;
+}
+
+
+
+</style>
+
+<script>
+  // Search Submit Handler
+  function handleSearch(e) {
+    return true;
+  }
+
+
+
+  // Scroll Logic for navbar
+  window.addEventListener('scroll', function() {
+    const header = document.getElementById('sv-header');
+    const destPopup = document.getElementById('sv-dest-popup');
+    const whereBtn = document.getElementById('sv-where-btn');
+    const whereInput = document.getElementById('sv-where-input');
+    
+    if(window.scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  });
+
+  // Close offcanvas menu when clicking links
+  document.querySelectorAll('#mobileSidebar .list-group-item').forEach(link => {
+    link.addEventListener('click', () => {
+      const bsOffcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('mobileSidebar'));
+      if (bsOffcanvas) bsOffcanvas.hide();
+    });
+  });
+</script>

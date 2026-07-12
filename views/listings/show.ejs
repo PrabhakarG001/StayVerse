@@ -1,0 +1,260 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="row mt-4">
+  <style>
+    .show-gallery-container { height: 450px; }
+    @media (max-width: 768px) {
+      .show-gallery-container { height: 300px; }
+    }
+    
+    /* Mobile bottom bar fixes padding on body so it doesn't overlap content */
+    @media (max-width: 992px) {
+      body { padding-bottom: 80px; }
+    }
+  </style>
+  <!-- Title & Gallery Section -->
+  <div class="col-12 mb-4">
+    <h2 class="text-dark fw-bold mb-1"><%= listing.title %></h2>
+    <p class="text-secondary mb-2">
+      <i class="fa-solid fa-location-dot text-rose me-1"></i><%= listing.location %>, <%= listing.country %>
+      <span class="mx-2">&middot;</span>
+      <span class="badge bg-light text-dark border"><%= listing.category %></span>
+    </p>
+    
+    <div class="row g-2 my-3 rounded-4 overflow-hidden position-relative show-gallery-container">
+      <% 
+      let images = [];
+      // Always resolve and push the current main image first
+      let mainUrl = 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80';
+      if (listing.image) {
+        if (typeof listing.image === 'string' && listing.image.trim() !== '') {
+          mainUrl = listing.image;
+        } else if (typeof listing.image === 'object' && listing.image.url) {
+          mainUrl = listing.image.url;
+        }
+      }
+      images.push(mainUrl);
+
+      // Add the other 4 images from the gallery
+      if (listing.images && listing.images.length >= 5) {
+        for (let i = 1; i < 5; i++) {
+          images.push(listing.images[i].url);
+        }
+      } else {
+        // Fallback related images if not enough images are present
+        images.push(
+          "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=60",
+          "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=60",
+          "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=60",
+          "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=60"
+        );
+      }
+      %>
+      <!-- Main Image (Left) -->
+      <div class="col-md-6 col-12 h-100">
+        <div class="h-100 position-relative overflow-hidden">
+          <img src="<%= images[0] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="main_image" style="transition: all 0.3s ease;">
+        </div>
+      </div>
+      <!-- Sub Images (Right) -->
+      <div class="col-md-6 h-100 d-none d-md-block">
+        <div class="row h-100 g-2">
+          <div class="col-6 h-50">
+            <div class="h-100 overflow-hidden position-relative">
+              <img src="<%= images[1] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_1" style="transition: all 0.3s ease;">
+            </div>
+          </div>
+          <div class="col-6 h-50">
+            <div class="h-100 overflow-hidden position-relative">
+              <img src="<%= images[2] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_2" style="transition: all 0.3s ease;">
+            </div>
+          </div>
+          <div class="col-6 h-50">
+            <div class="h-100 overflow-hidden position-relative">
+              <img src="<%= images[3] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_3" style="transition: all 0.3s ease;">
+            </div>
+          </div>
+          <div class="col-6 h-50">
+            <div class="h-100 overflow-hidden position-relative">
+              <img src="<%= images[4] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_4" style="transition: all 0.3s ease;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Left: Details & Reviews -->
+  <div class="col-lg-7 col-12 pe-lg-5">
+    <div class="details-card mb-4 pb-4 border-bottom">
+      <h4 class="text-dark fw-bold mb-3">About this destination</h4>
+      <p class="text-secondary leading-relaxed" style="white-space: pre-line;"><%= listing.description %></p>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="reviews-section my-4">
+      <h4 class="text-dark fw-bold mb-3">
+        Reviews (<%= listing.reviews.length %>)
+      </h4>
+      
+      <% if (listing.reviews.length === 0) { %>
+        <div class="alert alert-light border text-center py-4 rounded-3 text-secondary">
+          <i class="fa-regular fa-comment-dots fs-3 mb-2"></i>
+          <p class="m-0">No reviews yet. Be the first to share your stay experience!</p>
+        </div>
+      <% } else { %>
+        <div class="row g-3">
+          <% for(let r of listing.reviews) { %>
+            <div class="col-md-6 col-12">
+              <div class="card review-card h-100 border-0 bg-light p-3 rounded-4 position-relative">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <div>
+                    <h6 class="fw-bold text-dark mb-0" style="font-size: 0.95rem;">Guest User</h6>
+                    <small class="text-muted" style="font-size: 0.8rem;"><%= new Date(r.createdAt).toLocaleDateString() %></small>
+                  </div>
+                  <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= r._id %>?_method=DELETE" class="m-0">
+                    <button class="btn btn-sm btn-outline-danger border-0 p-1"><i class="fa-regular fa-trash-can"></i></button>
+                  </form>
+                </div>
+                <div class="text-warning mb-2" style="font-size: 0.85rem;">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <i class="fa-<%= i <= r.rating ? 'solid' : 'regular' %> fa-star"></i>
+                  <% } %>
+                </div>
+                <p class="card-text text-secondary mb-0" style="font-size: 0.9rem; line-height: 1.4;"><%= r.comment %></p>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Leave Review Form -->
+    <div class="create-review-section border-top pt-4 mt-4">
+      <h4 class="text-dark fw-bold mb-3">Leave a Review</h4>
+      <form method="POST" action="/listings/<%= listing._id %>/reviews" novalidate class="needs-validation">
+        
+        <div class="mb-3">
+          <label class="form-label fw-semibold text-secondary">Your Rating</label>
+          <div class="star-rating-group d-flex flex-row-reverse justify-content-end gap-1 fs-3">
+            <input type="radio" id="star5" name="review[rating]" value="5" class="d-none" required />
+            <label for="star5" class="star-label text-muted" style="cursor: pointer;"><i class="fa-solid fa-star"></i></label>
+            
+            <input type="radio" id="star4" name="review[rating]" value="4" class="d-none" />
+            <label for="star4" class="star-label text-muted" style="cursor: pointer;"><i class="fa-solid fa-star"></i></label>
+            
+            <input type="radio" id="star3" name="review[rating]" value="3" class="d-none" />
+            <label for="star3" class="star-label text-muted" style="cursor: pointer;"><i class="fa-solid fa-star"></i></label>
+            
+            <input type="radio" id="star2" name="review[rating]" value="2" class="d-none" />
+            <label for="star2" class="star-label text-muted" style="cursor: pointer;"><i class="fa-solid fa-star"></i></label>
+            
+            <input type="radio" id="star1" name="review[rating]" value="1" class="d-none" />
+            <label for="star1" class="star-label text-muted" style="cursor: pointer;"><i class="fa-solid fa-star"></i></label>
+          </div>
+          <div class="invalid-feedback">Please select a star rating.</div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="comment" class="form-label fw-semibold text-secondary">Review Comment</label>
+          <textarea name="review[comment]" id="comment" cols="30" rows="4" class="form-control rounded-3" placeholder="Tell us about your experience during the stay..." required></textarea>
+          <div class="invalid-feedback">Please enter a review comment.</div>
+        </div>
+        
+        <button class="btn btn-rose rounded-pill px-4">Submit Review</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Right: Reservation Card & Map -->
+  <div class="col-lg-5 col-12 mt-lg-0 mt-4">
+    <!-- Booking Mock Card -->
+    <div class="card border shadow-sm rounded-4 p-4 mb-4 bg-white sticky-card">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold m-0 text-dark">
+          Rs. <%= listing.price ? listing.price.toLocaleString("en-IN") : "0" %> <span class="fw-normal text-muted fs-6">/ night</span>
+        </h4>
+        <span class="text-rose fw-semibold"><i class="fa-solid fa-star me-1"></i>New</span>
+      </div>
+      
+      <div class="d-grid gap-2 my-3">
+        <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-dark rounded-pill py-2">
+          <i class="fa-solid fa-pen-to-square me-2"></i>Edit Listing
+        </a>
+        <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="w-100 d-grid">
+          <button class="btn btn-rose rounded-pill py-2">
+            <i class="fa-solid fa-trash-can me-2"></i>Delete Listing
+          </button>
+        </form>
+      </div>
+      
+      <div class="border-top pt-3 mt-3 text-center">
+        <p class="m-0 text-secondary" style="font-size: 0.85rem;">You won't be charged yet</p>
+      </div>
+    </div>
+
+    <!-- Map Preview -->
+    <div class="map-container card border shadow-sm rounded-4 overflow-hidden mb-4 p-0">
+      <div class="card-header bg-white border-0 py-3 px-4">
+        <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-map-location-dot me-2 text-rose"></i>Where you'll be</h5>
+      </div>
+      <div id="map" style="height: 300px; width: 100%;" class="bg-light"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile Sticky Bottom Bar (Visible on Mobile/Tablet) -->
+<div class="d-lg-none position-fixed bottom-0 start-0 w-100 bg-white border-top p-3 d-flex justify-content-between align-items-center" style="z-index: 1040; box-shadow: 0 -4px 12px rgba(0,0,0,0.08);">
+  <div>
+    <div class="fw-bold text-dark fs-5">Rs. <%= listing.price ? listing.price.toLocaleString("en-IN") : "0" %></div>
+    <div class="text-secondary" style="font-size: 0.85rem; text-decoration: underline;">Total before taxes</div>
+  </div>
+  <button class="btn btn-rose rounded-3 px-4 py-2 fw-bold" onclick="document.querySelector('.sticky-card').scrollIntoView({behavior: 'smooth', block: 'center'})">Reserve</button>
+</div>
+
+<!-- Interactive Geocoder Map Script -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const location = "<%= listing.location %>";
+    const country = "<%= listing.country %>";
+    const title = "<%= listing.title %>";
+    
+    // Create Map (Default Center India)
+    const map = L.map('map', { scrollWheelZoom: false }).setView([20.5937, 78.9629], 5);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    
+    // Fetch Coordinates using OpenStreetMap Free Nominatim API
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location + ', ' + country)}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.length > 0) {
+          const lat = parseFloat(data[0].lat);
+          const lon = parseFloat(data[0].lon);
+          map.setView([lat, lon], 13);
+          L.marker([lat, lon]).addTo(map)
+            .bindPopup(`<b>${title}</b><br>${location}, ${country}`)
+            .openPopup();
+        } else {
+          // Fallback to Country Only
+          fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(country)}`)
+            .then(res => res.json())
+            .then(cData => {
+              if (cData && cData.length > 0) {
+                const lat = parseFloat(cData[0].lat);
+                const lon = parseFloat(cData[0].lon);
+                map.setView([lat, lon], 6);
+                L.marker([lat, lon]).addTo(map)
+                  .bindPopup(`<b>${title}</b><br>Located in ${country}`)
+                  .openPopup();
+              }
+            });
+        }
+      })
+      .catch(err => {
+        console.error("Geocoding map load failure:", err);
+      });
+  });
+</script>

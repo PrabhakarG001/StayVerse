@@ -1,0 +1,502 @@
+/* ============================================================
+   StayVerse — Hero Booking Search Bar
+   A standalone, premium booking search bar component
+   ============================================================ */
+
+/* ---------- Container ---------- */
+.sv-booking-bar-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 50;
+  margin-bottom: 2rem;
+}
+
+.sv-booking-bar {
+  display: flex;
+  align-items: stretch;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 9999px;
+  height: 68px;
+  width: 100%;
+  max-width: 880px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 4px 16px rgba(0, 0, 0, 0.06);
+  position: relative;
+  transition: box-shadow 0.3s ease;
+}
+
+.sv-booking-bar:hover {
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.1),
+    0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------- Segments ---------- */
+.sb-seg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 28px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  position: relative;
+  user-select: none;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.sb-seg:hover {
+  background: #f0f0f0;
+}
+
+.sb-seg.active {
+  background: #ffffff;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
+  z-index: 3;
+}
+
+.sb-seg-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #222;
+  line-height: 1.2;
+}
+
+.sb-seg-value {
+  font-size: 0.88rem;
+  color: #717171;
+  margin-top: 2px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sb-seg-value.has-value {
+  color: #222;
+  font-weight: 600;
+}
+
+/* ---------- Dividers ---------- */
+.sb-divider {
+  width: 1px;
+  background: #e0e0e0;
+  align-self: center;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+/* ---------- Search Button ---------- */
+.sb-search-btn-wrap {
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
+  flex-shrink: 0;
+}
+
+.sb-search-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #FF385C 0%, #E61E4D 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 2px 8px rgba(255, 56, 92, 0.35);
+  flex-shrink: 0;
+}
+
+.sb-search-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 4px 16px rgba(255, 56, 92, 0.5);
+}
+
+.sb-search-btn:active {
+  transform: scale(0.97);
+}
+
+.sb-search-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: #fff;
+  stroke-width: 2.5;
+  fill: none;
+}
+
+/* ---------- Dropdowns (shared) ---------- */
+.sb-dropdown {
+  position: absolute;
+  top: calc(100% + 14px);
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #eee;
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(-10px) scale(0.97);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  pointer-events: none;
+}
+
+.sb-dropdown.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* ---------- Calendar Dropdown ---------- */
+.sb-cal {
+  width: 320px;
+  left: 0;
+}
+
+.sb-cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.sb-cal-header span {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #222;
+}
+
+.sb-cal-nav {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.sb-cal-nav:hover {
+  background: #f7f7f7;
+  border-color: #222;
+  transform: scale(1.05);
+}
+
+.sb-cal-nav svg {
+  width: 14px;
+  height: 14px;
+  stroke: #222;
+  stroke-width: 2.5;
+  fill: none;
+}
+
+.sb-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+}
+
+.sb-cal-day-name {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #999;
+  padding: 6px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sb-cal-day {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  color: #222;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+  margin: 0 auto;
+  font-weight: 500;
+}
+
+.sb-cal-day:hover:not(.disabled):not(.empty) {
+  background: #f0f0f0;
+  transform: scale(1.08);
+}
+
+.sb-cal-day.today {
+  border: 2px solid #FF385C;
+  font-weight: 700;
+}
+
+.sb-cal-day.selected {
+  background: linear-gradient(135deg, #FF385C 0%, #E61E4D 100%);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(255, 56, 92, 0.3);
+}
+
+.sb-cal-day.in-range {
+  background: #ffe8ec;
+  color: #FF385C;
+  border-radius: 8px;
+}
+
+.sb-cal-day.disabled {
+  color: #d0d0d0;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.sb-cal-day.empty {
+  cursor: default;
+}
+
+/* ---------- Guests Dropdown ---------- */
+.sb-guests-dropdown {
+  width: 340px;
+  right: 0;
+  left: auto;
+}
+
+.sb-guest-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.sb-guest-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.sb-guest-row:first-child {
+  padding-top: 0;
+}
+
+.sb-guest-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #222;
+}
+
+.sb-guest-desc {
+  font-size: 0.78rem;
+  color: #717171;
+  margin-top: 2px;
+}
+
+.sb-guest-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sb-guest-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid #b8b8b8;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #717171;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+  user-select: none;
+  line-height: 1;
+}
+
+.sb-guest-btn:hover:not(.disabled) {
+  border-color: #222;
+  color: #222;
+  background: #f7f7f7;
+  transform: scale(1.08);
+}
+
+.sb-guest-btn:active:not(.disabled) {
+  transform: scale(0.95);
+}
+
+.sb-guest-btn.disabled {
+  border-color: #e8e8e8;
+  color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+.sb-guest-count {
+  font-weight: 700;
+  font-size: 1.05rem;
+  min-width: 24px;
+  text-align: center;
+  color: #222;
+}
+
+/* ---------- Active-ring Pulse on segment ---------- */
+@keyframes sb-pulse {
+  0% { box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18); }
+  50% { box-shadow: 0 2px 16px rgba(255, 56, 92, 0.22); }
+  100% { box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18); }
+}
+
+.sb-seg.active {
+  animation: sb-pulse 2s ease infinite;
+}
+
+/* ---------- Validation Shake ---------- */
+@keyframes sb-shake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-5px); }
+  30% { transform: translateX(5px); }
+  45% { transform: translateX(-4px); }
+  60% { transform: translateX(4px); }
+  75% { transform: translateX(-2px); }
+  90% { transform: translateX(2px); }
+}
+
+.sb-shake {
+  animation: sb-shake 0.45s ease;
+}
+
+/* ---------- Checkout dropdown position ---------- */
+.sb-checkout-cal {
+  left: -40px;
+}
+
+/* ============================================================
+   RESPONSIVE — Tablet
+   ============================================================ */
+@media (max-width: 900px) {
+  .sv-booking-bar {
+    max-width: 100%;
+  }
+
+  .sb-seg {
+    padding: 0 18px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE — Mobile
+   ============================================================ */
+@media (max-width: 768px) {
+  .sv-booking-bar-wrapper {
+    padding: 0 12px;
+  }
+
+  .sv-booking-bar {
+    flex-direction: column;
+    border-radius: 24px;
+    height: auto;
+    padding: 8px;
+    gap: 0;
+  }
+
+  .sb-seg {
+    border-radius: 16px;
+    padding: 14px 20px;
+    flex: none;
+  }
+
+  .sb-seg.active {
+    background: #f7f7f7;
+    box-shadow: inset 0 0 0 2px #FF385C;
+    animation: none;
+  }
+
+  .sb-divider {
+    width: 100%;
+    height: 1px;
+    align-self: auto;
+    margin: 0 16px;
+  }
+
+  .sb-search-btn-wrap {
+    padding: 8px 0 4px;
+    justify-content: center;
+  }
+
+  .sb-search-btn {
+    width: 100%;
+    border-radius: 16px;
+    height: 52px;
+    gap: 10px;
+  }
+
+  .sb-search-btn::after {
+    content: 'Search';
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+  }
+
+  /* Dropdowns become full-width on mobile */
+  .sb-dropdown {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    border-radius: 20px;
+    top: calc(100% + 8px);
+  }
+
+  .sb-cal {
+    width: auto !important;
+  }
+
+  .sb-guests-dropdown {
+    width: auto !important;
+  }
+
+  .sb-cal-day {
+    width: 36px;
+    height: 36px;
+    font-size: 0.82rem;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE — Small Mobile
+   ============================================================ */
+@media (max-width: 400px) {
+  .sb-seg {
+    padding: 12px 16px;
+  }
+
+  .sb-seg-label {
+    font-size: 0.65rem;
+  }
+
+  .sb-seg-value {
+    font-size: 0.82rem;
+  }
+
+  .sb-cal-day {
+    width: 32px;
+    height: 32px;
+    font-size: 0.78rem;
+  }
+
+  .sb-dropdown {
+    padding: 16px;
+  }
+}

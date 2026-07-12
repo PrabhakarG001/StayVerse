@@ -1,0 +1,547 @@
+<!-- ===================== STAYVERSE FOOTER (Airbnb-style) ===================== -->
+<style>
+  /* ── Footer Reset & Base ── */
+  .sv-footer {
+    background-color: #f7f7f7;
+    border-top: 1px solid #ddd;
+    font-family: inherit;
+    color: #222;
+  }
+
+  /* ── Inspiration / Destinations Section ── */
+  .sv-footer-inspiration {
+    padding: 48px 0 0;
+    border-bottom: 1px solid #ddd;
+  }
+  .sv-footer-inspiration h4 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 24px;
+  }
+
+  /* Tab navigation for destinations */
+  .sv-dest-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .sv-dest-tabs::-webkit-scrollbar { display: none; }
+
+  .sv-dest-tab {
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #717171;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    flex-shrink: 0;
+  }
+  .sv-dest-tab:hover {
+    color: #222;
+  }
+  .sv-dest-tab.active {
+    color: #222;
+    font-weight: 600;
+    border-bottom-color: #222;
+  }
+
+  /* Destination grid */
+  .sv-dest-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    padding: 24px 0 32px;
+  }
+  .sv-dest-card {
+    padding: 12px 16px 12px 0;
+  }
+  .sv-dest-card a {
+    text-decoration: none;
+    display: block;
+  }
+  .sv-dest-card .dest-city {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #222;
+    line-height: 1.3;
+  }
+  .sv-dest-card .dest-type {
+    font-size: 0.82rem;
+    color: #717171;
+    font-weight: 400;
+    margin-top: 2px;
+  }
+  .sv-dest-card a:hover .dest-city {
+    text-decoration: underline;
+  }
+
+  /* Show more toggle */
+  .sv-show-more-btn {
+    background: none;
+    border: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #222;
+    cursor: pointer;
+    padding: 0 0 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s;
+  }
+  .sv-show-more-btn:hover {
+    text-decoration: underline;
+  }
+  .sv-show-more-btn i {
+    font-size: 0.7rem;
+    transition: transform 0.3s ease;
+  }
+  .sv-show-more-btn.expanded i {
+    transform: rotate(180deg);
+  }
+
+  /* ── Four-Column Links Section ── */
+  .sv-footer-links {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    padding: 48px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  .sv-footer-col {
+    padding-right: 24px;
+  }
+  .sv-footer-col:not(:last-child) {
+    border-right: 1px solid #ddd;
+    padding-right: 48px;
+  }
+  .sv-footer-col:not(:first-child) {
+    padding-left: 48px;
+  }
+  .sv-footer-col h5 {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #222;
+    text-transform: capitalize;
+    margin-bottom: 16px;
+    letter-spacing: 0;
+  }
+  .sv-footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .sv-footer-col ul li a {
+    font-size: 0.86rem;
+    color: #222;
+    text-decoration: none;
+    font-weight: 400;
+    transition: text-decoration 0.15s ease;
+    line-height: 1.4;
+  }
+  .sv-footer-col ul li a:hover {
+    color: #FF385C;
+    text-decoration: none;
+  }
+
+  /* ── Bottom Bar ── */
+  .sv-footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .sv-footer-bottom-left {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: #717171;
+  }
+  .sv-footer-bottom-left a {
+    color: #222;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 400;
+    transition: text-decoration 0.15s;
+  }
+  .sv-footer-bottom-left a:hover {
+    text-decoration: underline;
+  }
+  .sv-footer-bottom-left .dot {
+    color: #717171;
+    font-size: 0.5rem;
+    line-height: 1;
+  }
+
+  .sv-footer-bottom-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .sv-footer-lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: #222;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: none;
+    transition: text-decoration 0.15s;
+  }
+  .sv-footer-lang-btn:hover {
+    text-decoration: underline;
+  }
+  .sv-footer-lang-btn i {
+    font-size: 1rem;
+  }
+
+  .sv-footer-socials {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .sv-footer-socials a {
+    color: #222;
+    font-size: 1.1rem;
+    transition: color 0.2s ease, transform 0.2s ease;
+    text-decoration: none;
+  }
+  .sv-footer-socials a:hover {
+    color: #FF385C;
+    transform: scale(1.15);
+  }
+
+  /* ── Mobile Accordion for Links ── */
+  @media (max-width: 767.98px) {
+    .sv-footer-links {
+      grid-template-columns: 1fr;
+      padding: 0;
+      gap: 0;
+    }
+    .sv-footer-col {
+      padding: 0 !important;
+      border-right: none !important;
+      border-bottom: 1px solid #ddd;
+    }
+    .sv-footer-col:first-child {
+      padding: 24px 0 !important;
+    }
+    .sv-footer-col:last-child {
+      border-bottom: none;
+    }
+    .sv-footer-col h5 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      margin-bottom: 0;
+      cursor: pointer;
+      font-size: 0.88rem;
+    }
+    .sv-footer-col h5::after {
+      content: '\f107';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      font-size: 0.75rem;
+      color: #717171;
+      transition: transform 0.3s ease;
+    }
+    .sv-footer-col.open h5::after {
+      transform: rotate(180deg);
+    }
+    .sv-footer-col ul {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+      padding-bottom: 0;
+    }
+    .sv-footer-col.open ul {
+      max-height: 300px;
+      padding-bottom: 20px;
+    }
+
+    /* Destination grid responsive */
+    .sv-dest-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Bottom bar stacks */
+    .sv-footer-bottom {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .sv-footer-bottom-left {
+      justify-content: center;
+    }
+    .sv-footer-bottom-right {
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    .sv-dest-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .sv-footer-links {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+    .sv-footer-col:not(:last-child) {
+      padding-right: 0;
+      border-right: none;
+    }
+    .sv-footer-col:not(:first-child) {
+      padding-left: 0;
+    }
+  }
+</style>
+
+<footer class="sv-footer mt-5">
+  <div class="container" style="max-width: 1280px;">
+
+    <!-- ════════ Section 1: Inspiration for future getaways ════════ -->
+    <div class="sv-footer-inspiration">
+      <h4>Inspiration for future getaways</h4>
+
+      <!-- Destination Tabs -->
+      <div class="sv-dest-tabs" role="tablist">
+        <button class="sv-dest-tab active" data-tab="popular" role="tab">Popular</button>
+        <button class="sv-dest-tab" data-tab="beach" role="tab">Beach</button>
+        <button class="sv-dest-tab" data-tab="mountain" role="tab">Mountain</button>
+        <button class="sv-dest-tab" data-tab="heritage" role="tab">Heritage</button>
+        <button class="sv-dest-tab" data-tab="unique" role="tab">Unique Stays</button>
+        <button class="sv-dest-tab" data-tab="romantic" role="tab">Romantic</button>
+      </div>
+
+      <!-- Destination Grids (one per tab) -->
+      <div class="sv-dest-panel" data-panel="popular" style="display: block;">
+        <div class="sv-dest-grid" id="dest-popular">
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Goa</div><div class="dest-type">Beach & Nightlife</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Manali</div><div class="dest-type">Mountain retreat</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Jaipur</div><div class="dest-type">Heritage & Culture</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Bali</div><div class="dest-type">Tropical paradise</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Paris</div><div class="dest-type">City of lights</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Udaipur</div><div class="dest-type">Lake city</div></a></div>
+          <div class="sv-dest-card sv-dest-extra"><a href="/listings?filter=foreign"><div class="dest-city">Santorini</div><div class="dest-type">Island getaway</div></a></div>
+          <div class="sv-dest-card sv-dest-extra"><a href="/listings?filter=india"><div class="dest-city">Rishikesh</div><div class="dest-type">Adventure & Yoga</div></a></div>
+          <div class="sv-dest-card sv-dest-extra"><a href="/listings?filter=foreign"><div class="dest-city">Tokyo</div><div class="dest-type">Culture & Modern</div></a></div>
+          <div class="sv-dest-card sv-dest-extra"><a href="/listings?filter=india"><div class="dest-city">Kerala</div><div class="dest-type">Backwaters & Nature</div></a></div>
+          <div class="sv-dest-card sv-dest-extra"><a href="/listings?filter=foreign"><div class="dest-city">Maldives</div><div class="dest-type">Luxury overwater</div></a></div>
+          <div class="sv-dest-card sv-dest-extra"><a href="/listings?filter=india"><div class="dest-city">Shimla</div><div class="dest-type">Hill station charm</div></a></div>
+        </div>
+        <button class="sv-show-more-btn" onclick="toggleDestinations(this)">
+          Show more <i class="fa-solid fa-chevron-down"></i>
+        </button>
+      </div>
+
+      <div class="sv-dest-panel" data-panel="beach" style="display: none;">
+        <div class="sv-dest-grid">
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Goa</div><div class="dest-type">Beach & Nightlife</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Maldives</div><div class="dest-type">Crystal clear waters</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Phuket</div><div class="dest-type">Thai beaches</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Andaman</div><div class="dest-type">Island paradise</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Santorini</div><div class="dest-type">Greek island</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Pondicherry</div><div class="dest-type">French Riviera of India</div></a></div>
+        </div>
+      </div>
+
+      <div class="sv-dest-panel" data-panel="mountain" style="display: none;">
+        <div class="sv-dest-grid">
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Manali</div><div class="dest-type">Snow-capped peaks</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Shimla</div><div class="dest-type">Colonial hill town</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Darjeeling</div><div class="dest-type">Tea plantations</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Swiss Alps</div><div class="dest-type">European peaks</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Leh-Ladakh</div><div class="dest-type">High altitude desert</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Mussoorie</div><div class="dest-type">Queen of Hills</div></a></div>
+        </div>
+      </div>
+
+      <div class="sv-dest-panel" data-panel="heritage" style="display: none;">
+        <div class="sv-dest-grid">
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Jaipur</div><div class="dest-type">Royal palaces</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Varanasi</div><div class="dest-type">Spiritual capital</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Rome</div><div class="dest-type">Ancient history</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Agra</div><div class="dest-type">Taj Mahal</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Athens</div><div class="dest-type">Greek civilization</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Hampi</div><div class="dest-type">Ruins & Temples</div></a></div>
+        </div>
+      </div>
+
+      <div class="sv-dest-panel" data-panel="unique" style="display: none;">
+        <div class="sv-dest-grid">
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Jaisalmer</div><div class="dest-type">Desert camping</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Coorg</div><div class="dest-type">Treehouse stays</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Iceland</div><div class="dest-type">Northern lights</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Wayanad</div><div class="dest-type">Jungle lodges</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Cappadocia</div><div class="dest-type">Cave hotels</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Meghalaya</div><div class="dest-type">Living root bridges</div></a></div>
+        </div>
+      </div>
+
+      <div class="sv-dest-panel" data-panel="romantic" style="display: none;">
+        <div class="sv-dest-grid">
+          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Paris</div><div class="dest-type">City of love</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Udaipur</div><div class="dest-type">Lake palaces</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Venice</div><div class="dest-type">Gondola rides</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Alleppey</div><div class="dest-type">Houseboat retreat</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Santorini</div><div class="dest-type">Sunset views</div></a></div>
+          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Ooty</div><div class="dest-type">Misty romance</div></a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════ Section 2: Four-Column Links ════════ -->
+    <div class="sv-footer-links">
+      <!-- Column 1: Brand / Logo -->
+      <div class="sv-footer-col">
+        <a class="sv-logo d-flex align-items-center mb-3 text-decoration-none" href="/" style="transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+          <img src="/images/logo.svg" alt="StayVerse Logo" style="height: 32px; mix-blend-mode: multiply; background-color: transparent;">
+          <span class="ms-1" style="color: #FF385C; font-weight: 700; font-size: 1.4rem;">StayVerse</span>
+        </a>
+        <p style="font-size: 0.86rem; color: #717171; line-height: 1.6; padding-right: 20px;">
+          Discover your next perfect stay worldwide. StayVerse brings you the best places to make unforgettable memories.
+        </p>
+      </div>
+
+      <!-- Column 2: Explore StayVerse -->
+      <div class="sv-footer-col">
+        <h5 onclick="toggleFooterCol(this)">Explore StayVerse</h5>
+        <ul>
+          <li><a href="/listings">All Destinations</a></li>
+          <li><a href="/listings?filter=Trending">Trending Stays</a></li>
+          <li><a href="/listings?filter=Beachfront">Beachfront Villas</a></li>
+          <li><a href="/listings?filter=Mountains">Mountain Retreats</a></li>
+          <li><a href="/listings?filter=Historic">Historic Castles</a></li>
+          <li><a href="/listings?filter=Pools">Amazing Pools</a></li>
+          <li><a href="/hotels/search?query=Worldwide">Worldwide Search</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Hosting -->
+      <div class="sv-footer-col">
+        <h5 onclick="toggleFooterCol(this)">Hosting with Us</h5>
+        <ul>
+          <li><a href="/listings/new">List your property</a></li>
+          <li><a href="#">StayVerse Host Guarantee</a></li>
+          <li><a href="#">Hosting resources</a></li>
+          <li><a href="#">Community forum</a></li>
+          <li><a href="#">Responsible hosting</a></li>
+          <li><a href="#">24/7 Host Support</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: About StayVerse -->
+      <div class="sv-footer-col">
+        <h5 onclick="toggleFooterCol(this)">About StayVerse</h5>
+        <ul>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Investors</a></li>
+          <li><a href="#">Press & News</a></li>
+          <li><a href="#">Trust & Safety</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ════════ Section 3: Bottom Bar ════════ -->
+    <div class="sv-footer-bottom">
+      <!-- Left: Copyright + Legal links -->
+      <div class="sv-footer-bottom-left">
+        <span>&copy; <%= new Date().getFullYear() %> StayVerse, Inc.</span>
+        <span class="dot">&middot;</span>
+        <a href="#">Privacy</a>
+        <span class="dot">&middot;</span>
+        <a href="#">Terms</a>
+        <span class="dot">&middot;</span>
+        <a href="#">Sitemap</a>
+      </div>
+
+      <!-- Right: Language, Currency, Socials -->
+      <div class="sv-footer-bottom-right">
+        <a href="#" class="sv-footer-lang-btn">
+          <i class="fa-solid fa-globe"></i> English (IN)
+        </a>
+        <a href="#" class="sv-footer-lang-btn">
+          <i class="fa-solid fa-indian-rupee-sign"></i> INR
+        </a>
+        <div class="sv-footer-socials">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  // ── Tab switching for destination inspiration ──
+  document.querySelectorAll('.sv-dest-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      // Deactivate all tabs
+      document.querySelectorAll('.sv-dest-tab').forEach(t => t.classList.remove('active'));
+      // Activate clicked tab
+      this.classList.add('active');
+      // Hide all panels
+      document.querySelectorAll('.sv-dest-panel').forEach(p => p.style.display = 'none');
+      // Show target panel
+      const target = this.getAttribute('data-tab');
+      const panel = document.querySelector(`.sv-dest-panel[data-panel="${target}"]`);
+      if (panel) panel.style.display = 'block';
+    });
+  });
+
+  // ── Show more / Show less destinations ──
+  function toggleDestinations(btn) {
+    const grid = btn.previousElementSibling;
+    const extras = grid.querySelectorAll('.sv-dest-extra');
+    const isExpanded = btn.classList.contains('expanded');
+
+    extras.forEach(card => {
+      card.style.display = isExpanded ? 'none' : 'block';
+    });
+
+    btn.classList.toggle('expanded');
+    btn.innerHTML = isExpanded
+      ? 'Show more <i class="fa-solid fa-chevron-down"></i>'
+      : 'Show less <i class="fa-solid fa-chevron-down"></i>';
+  }
+
+  // Hide extra destinations initially
+  document.querySelectorAll('.sv-dest-extra').forEach(el => {
+    el.style.display = 'none';
+  });
+
+  // ── Mobile accordion for footer columns ──
+  function toggleFooterCol(h5) {
+    if (window.innerWidth >= 768) return; // Only on mobile
+    const col = h5.parentElement;
+    col.classList.toggle('open');
+  }
+</script>
