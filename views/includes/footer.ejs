@@ -235,7 +235,7 @@
   }
 
   /* ── Mobile Accordion for Links ── */
-  @media (max-width: 750px) {
+  @media (max-width: 741.98px) {
     .sv-footer-links {
       grid-template-columns: 1fr;
       padding: 0;
@@ -302,7 +302,7 @@
       flex-wrap: wrap;
     }
   }
-  @media (min-width: 768px) and (max-width: 991.98px) {
+  @media (min-width: 742px) and (max-width: 991.98px) {
     .sv-dest-grid {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -370,12 +370,11 @@
         <h5 onclick="toggleFooterCol(this)">Explore StayVerse</h5>
         <ul>
           <li><a href="/listings">All Destinations</a></li>
-          <li><a href="/listings?filter=Trending">Trending Stays</a></li>
-          <li><a href="/listings?filter=Beachfront">Beachfront Villas</a></li>
-          <li><a href="/listings?filter=Mountains">Mountain Retreats</a></li>
-          <li><a href="/listings?filter=Historic">Historic Castles</a></li>
-          <li><a href="/listings?filter=Pools">Amazing Pools</a></li>
-          <li><a href="/hotels/search?query=Worldwide">Worldwide Search</a></li>
+          <li><a href="/hotels/search?category=TopRated">Top Rated by Guests</a></li>
+          <li><a href="/hotels/search?category=PetFriendly">Pet-Friendly Stays</a></li>
+          <li><a href="/hotels/search?category=Luxury">Luxury Getaways</a></li>
+          <li><a href="/hotels/search?category=Unique">Unique Homes & Treehouses</a></li>
+          <li><a href="/hotels/search?category=Deals">Last-Minute Deals</a></li>
         </ul>
       </div>
 
@@ -409,29 +408,46 @@
     <!-- ════════ Section 3: Bottom Bar ════════ -->
     <div class="sv-footer-bottom">
       <!-- Left: Copyright + Legal links -->
-      <!-- Left: Copyright + Legal links -->
       <div class="sv-footer-bottom-left">
         <span>&copy; <%= new Date().getFullYear() %> StayVerse, Inc.</span>
         <span class="dot">&middot;</span>
-        <a href="#">Privacy</a>
+        <a href="/pages/privacy">Privacy</a>
         <span class="dot">&middot;</span>
-        <a href="#">Terms</a>
+        <a href="/pages/terms">Terms</a>
         <span class="dot">&middot;</span>
-        <a href="#">Sitemap</a>
+        <a href="/pages/help">Help Centre</a>
       </div>
 
       <!-- Right: Language, Currency, Socials -->
       <div class="sv-footer-bottom-right">
-        <a href="#" class="sv-footer-lang-btn">
-          <i class="fa-solid fa-globe"></i> English (IN)
-        </a>
-        <a href="#" class="sv-footer-lang-btn">
-          <i class="fa-solid fa-indian-rupee-sign"></i> INR
-        </a>
+        <style>
+          .sv-hover-dropup:hover .dropdown-menu { display: block; margin-bottom: 0; }
+        </style>
+        <div class="dropdown d-inline-block sv-hover-dropup dropup">
+          <button class="btn sv-footer-lang-btn border-0" type="button" style="padding: 5px; box-shadow: none;">
+            <i class="fa-solid fa-globe"></i> <span class="currentLangText">English</span>
+          </button>
+          <ul class="dropdown-menu mb-1 shadow-sm" style="min-width: auto; border-radius: 12px; font-size: 0.85rem;">
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeLanguage('hi'); return false;">Hindi</a></li>
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeLanguage('en'); return false;">English</a></li>
+          </ul>
+        </div>
+        
+        <div class="dropdown d-inline-block sv-hover-dropup dropup">
+          <button class="btn sv-footer-lang-btn border-0" type="button" style="padding: 5px; box-shadow: none;">
+            <span class="currentCurrText">₹ (Rupees)</span>
+          </button>
+          <ul class="dropdown-menu mb-1 shadow-sm" style="min-width: auto; border-radius: 12px; font-size: 0.85rem;">
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeCurrency('USD'); return false;">$ Dollar</a></li>
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeCurrency('INR'); return false;">₹ (Rupees)</a></li>
+          </ul>
+        </div>
+
         <div class="sv-footer-socials">
-          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="#" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
-          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="/pages/social" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="/pages/social" target="_blank" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="/pages/social" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://linkedin.com/in/" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
       </div>
     </div>
@@ -538,7 +554,7 @@
 
   // ── Mobile accordion for footer columns ──
   function toggleFooterCol(h5) {
-    if (window.innerWidth >= 768) return; // Only on mobile
+    if (window.innerWidth >= 742) return; // Only on mobile
     const col = h5.parentElement;
     col.classList.toggle('open');
   }

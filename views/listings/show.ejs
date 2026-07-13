@@ -172,7 +172,7 @@
     <div class="card border shadow-sm rounded-4 p-4 mb-4 bg-white sticky-card">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="fw-bold m-0 text-dark">
-          Rs. <%= listing.price ? listing.price.toLocaleString("en-IN") : "0" %> <span class="fw-normal text-muted fs-6">/ night</span>
+          <span class="price-val" data-inr="<%= listing.price || 0 %>">Rs. <%= listing.price ? listing.price.toLocaleString("en-IN") : "0" %></span> <span class="fw-normal text-muted fs-6">/ night</span>
         </h4>
         <span class="text-rose fw-semibold"><i class="fa-solid fa-star me-1"></i>New</span>
       </div>
@@ -212,7 +212,7 @@
 <!-- Mobile Sticky Bottom Bar (Visible on Mobile/Tablet) -->
 <div class="d-lg-none position-fixed bottom-0 start-0 w-100 bg-white border-top p-3 d-flex justify-content-between align-items-center" style="z-index: 1040; box-shadow: 0 -4px 12px rgba(0,0,0,0.08);">
   <div>
-    <div class="fw-bold text-dark fs-5">Rs. <%= listing.price ? listing.price.toLocaleString("en-IN") : "0" %></div>
+    <div class="fw-bold text-dark fs-5"><span class="price-val" data-inr="<%= listing.price || 0 %>">Rs. <%= listing.price ? listing.price.toLocaleString("en-IN") : "0" %></span></div>
     <div class="text-secondary" style="font-size: 0.85rem; text-decoration: underline;">Total before taxes</div>
   </div>
   <button class="btn btn-rose rounded-3 px-4 py-2 fw-bold" onclick="document.querySelector('.sticky-card').scrollIntoView({behavior: 'smooth', block: 'center'})">Reserve</button>
@@ -283,7 +283,7 @@
               propertyId: "<%= listing._id %>",
               name: "<%= listing.title.replace(/'/g, "\\'").replace(/"/g, '&quot;') %>",
               image: "<%= images[0] %>",
-              price: "Rs. <%= listing.price ? listing.price.toLocaleString('en-IN') : '0' %>"
+              price: "<span class='price-val' data-inr='<%= listing.price || 0 %>'>Rs. <%= listing.price ? listing.price.toLocaleString('en-IN') : '0' %></span>"
             })
           });
           if (response.ok) {

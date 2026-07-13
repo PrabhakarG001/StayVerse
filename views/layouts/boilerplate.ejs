@@ -65,6 +65,71 @@
   
   <%- include("../includes/footer.ejs") %>
 
+  <!-- Google Translate Hidden Widget -->
+  <div id="google_translate_element" style="display:none;"></div>
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'en,hi', autoDisplay: false}, 'google_translate_element');
+    }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <!-- Global Language & Currency Switcher Logic -->
+  <script>
+    function changeLanguage(langCode) {
+      const select = document.querySelector('select.goog-te-combo');
+      if (select) {
+        select.value = langCode;
+        select.dispatchEvent(new Event('change'));
+        
+        // Update UI Text manually to bypass translate loop
+        const text = langCode === 'hi' ? 'Hindi' : 'English';
+        document.querySelectorAll('.currentLangText').forEach(el => el.textContent = text);
+        
+        // Save preference (Google Translate does this automatically in a cookie, but we can enforce it)
+        localStorage.setItem('sv_lang', langCode);
+      }
+    }
+
+    function changeCurrency(currCode) {
+      localStorage.setItem('sv_currency', currCode);
+      applyCurrency(currCode);
+    }
+
+    function applyCurrency(currCode) {
+      const isUSD = currCode === 'USD';
+      const rate = 83; // 1 USD = 83 INR
+      
+      // Update UI buttons
+      const currSymbol = isUSD ? '$' : '₹';
+      const currText = isUSD ? '$ Dollar' : '₹ (Rupees)';
+      document.querySelectorAll('.currentCurrSymbol').forEach(el => el.textContent = currSymbol);
+      document.querySelectorAll('.currentCurrText').forEach(el => el.textContent = currText);
+      
+      // Update all prices on page
+      document.querySelectorAll('.price-val').forEach(el => {
+        const inrVal = parseInt(el.getAttribute('data-inr')) || 0;
+        if(isUSD) {
+           el.innerHTML = '$' + Math.round(inrVal / rate).toLocaleString('en-US');
+        } else {
+           el.innerHTML = '₹' + inrVal.toLocaleString('en-IN');
+        }
+      });
+    }
+
+    // On Load, check for saved currency
+    document.addEventListener("DOMContentLoaded", () => {
+      const savedCurr = localStorage.getItem('sv_currency');
+      if(savedCurr) {
+        applyCurrency(savedCurr);
+      }
+      
+      const savedLang = localStorage.getItem('sv_lang') || 'en';
+      const text = savedLang === 'hi' ? 'Hindi' : 'English';
+      document.querySelectorAll('.currentLangText').forEach(el => el.textContent = text);
+    });
+  </script>
+
   <!-- Bootstrap Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   
@@ -115,8 +180,12 @@
       font-size: 1.4rem;
       margin-bottom: 4px;
     }
-    @media (max-width: 767.98px) {
+    @media (max-width: 741.98px) {
       body { padding-bottom: 70px !important; }
+    }
+    @media (min-width: 742px) {
+      body { padding-bottom: 0 !important; }
+      .mobile-bottom-nav.d-md-none { display: none !important; }
     }
   </style>
   <div class="mobile-bottom-nav d-md-none">
@@ -179,7 +248,7 @@
     }
 
     /* Desktop: Vertical on the right */
-    @media (min-width: 768px) {
+    @media (min-width: 742px) {
       .sv-scroll-progress-container {
         top: 0;
         right: 0;
@@ -194,7 +263,7 @@
     }
 
     /* Mobile: Horizontal on the top */
-    @media (max-width: 767.98px) {
+    @media (max-width: 741.98px) {
       .sv-scroll-progress-container {
         top: 0;
         left: 0;

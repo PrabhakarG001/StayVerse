@@ -157,7 +157,7 @@ const reviewsToDisplay = (typeof apiReviews !== 'undefined' && apiReviews.length
                 <p class="text-secondary mb-0 small"><i class="fa-solid fa-bed me-2 text-muted"></i><%= room.desc %></p>
               </div>
               <div class="text-end">
-                <span class="fw-bold text-dark fs-5"><%= room.extra === 0 ? 'Base' : '+₹' + room.extra.toLocaleString('en-IN') %></span>
+                <span class="fw-bold text-dark fs-5"><% if(room.extra === 0) { %>Base<% } else { %>+<span class="price-val" data-inr="<%= room.extra %>">₹<%= room.extra.toLocaleString('en-IN') %></span><% } %></span>
                 <% if(room.extra > 0) { %><p class="text-muted mb-0" style="font-size: 0.75rem;">/ night</p><% } %>
               </div>
             </div>
@@ -211,7 +211,7 @@ const reviewsToDisplay = (typeof apiReviews !== 'undefined' && apiReviews.length
     <div class="card border shadow-lg rounded-4 p-4 mb-4 bg-white sticky-card" style="top: 100px; z-index: 10;">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold m-0 text-dark">
-          <%= currency === 'INR' ? '₹' : (currency + ' ') %><%= price.toLocaleString('en-IN') %> <span class="fw-normal text-muted fs-6">/ night</span>
+          <span class="price-val" data-inr="<%= price %>"><%= currency === 'INR' ? '₹' : (currency + ' ') %><%= price.toLocaleString('en-IN') %></span> <span class="fw-normal text-muted fs-6">/ night</span>
         </h3>
         <% if(hotel.reviewScore) { %>
           <span class="text-dark fw-semibold" style="font-size: 0.9rem;">
@@ -262,11 +262,6 @@ const reviewsToDisplay = (typeof apiReviews !== 'undefined' && apiReviews.length
         <p class="m-0 text-secondary" style="font-size: 0.85rem;">You won't be charged yet</p>
       </div>
       
-      <!-- Compare Prices Button using StayAPI -->
-      <hr class="my-4">
-      <button class="btn btn-outline-dark rounded-pill w-100 fw-semibold" onclick="openMetaModal('<%= hotel.name.replace(/'/g, "\\'").replace(/"/g, '&quot;') %>', '<%= hotel.city.replace(/'/g, "\\'").replace(/"/g, '&quot;') %>', '<%= hotel.url || '#' %>')">
-        <i class="fa-solid fa-magnifying-glass-dollar me-2"></i>Compare Prices on Other Sites
-      </button>
     </div>
   </div>
 </div>
@@ -317,38 +312,6 @@ const reviewsToDisplay = (typeof apiReviews !== 'undefined' && apiReviews.length
   </div>
 </div>
 
-<!-- StayAPI Meta Booking Modal -->
-<div class="modal fade" id="metaBookingModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content border-0 rounded-4 shadow-lg">
-      <div class="modal-header border-0 pb-0">
-        <h5 class="modal-title fw-bold" id="metaModalTitle">Booking Options</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body text-center pt-2 pb-4">
-        <p class="text-muted small mb-4" id="metaModalLocation">Loading booking options...</p>
-        
-        <div id="metaModalLoader" class="py-4">
-          <div class="spinner-border text-danger" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <p class="mt-3 mb-0 text-secondary small">Searching multiple platforms...</p>
-        </div>
-
-        <div id="metaModalLinks" class="d-none d-flex flex-column gap-3">
-          <!-- Dynamically inserted links -->
-        </div>
-        
-        <div id="metaModalError" class="d-none py-3">
-          <i class="fa-solid fa-circle-exclamation text-danger fs-3 mb-2"></i>
-          <p class="text-secondary small mb-3">Could not find alternative booking links.</p>
-          <a id="metaModalFallbackLink" href="#" target="_blank" class="btn btn-outline-danger w-100 rounded-pill">Continue to Agoda</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <style>
   .form-group-custom input[type="date"] {
     font-size: 0.9rem;
@@ -390,7 +353,7 @@ const reviewsToDisplay = (typeof apiReviews !== 'undefined' && apiReviews.length
           propertyId: "<%= hotel.propertyId %>",
           name: "<%= hotel.name.replace(/'/g, "\\'").replace(/"/g, '&quot;') %>",
           image: "<%= images[0] %>",
-          price: "<%= currency === 'INR' ? '₹' : (currency + ' ') %><%= price.toLocaleString('en-IN') %>"
+          price: "<span class='price-val' data-inr='<%= price %>'><%= currency === 'INR' ? '₹' : (currency + ' ') %><%= price.toLocaleString('en-IN') %></span>"
         })
       });
       if (response.ok) {
@@ -405,55 +368,6 @@ const reviewsToDisplay = (typeof apiReviews !== 'undefined' && apiReviews.length
       alert("An error occurred while booking.");
     }
   });
-
-  // StayAPI Modal Logic
-  let metaModalInstance = null;
-  window.openMetaModal = async (hotelName, location, fallbackAgodaUrl) => {
-    if (!metaModalInstance) {
-      metaModalInstance = new bootstrap.Modal(document.getElementById('metaBookingModal'));
-    }
-    document.getElementById('metaModalTitle').textContent = hotelName;
-    document.getElementById('metaModalLocation').textContent = location;
-    
-    document.getElementById('metaModalLoader').classList.remove('d-none');
-    document.getElementById('metaModalLinks').classList.add('d-none');
-    document.getElementById('metaModalError').classList.add('d-none');
-    
-    metaModalInstance.show();
-
-    try {
-      const response = await fetch(`/api/hotels/meta?hotel_name=${encodeURIComponent(hotelName)}&location=${encodeURIComponent(location)}`);
-      const data = await response.json();
-      document.getElementById('metaModalLoader').classList.add('d-none');
-      
-      if (data.success && data.links && Object.keys(data.links).length > 0) {
-        const linksContainer = document.getElementById('metaModalLinks');
-        linksContainer.innerHTML = `
-          <a href="${fallbackAgodaUrl}" target="_blank" class="btn btn-outline-danger rounded-pill w-100 text-start px-4 py-2 d-flex justify-content-between align-items-center">
-            <span class="fw-bold">Agoda</span>
-            <i class="fa-solid fa-arrow-up-right-from-square small"></i>
-          </a>
-        `;
-        Object.entries(data.links).forEach(([platform, url]) => {
-          const platformName = platform.charAt(0).toUpperCase() + platform.slice(1).replace('_', ' ');
-          linksContainer.innerHTML += `
-            <a href="${url}" target="_blank" class="btn btn-dark rounded-pill w-100 text-start px-4 py-2 d-flex justify-content-between align-items-center">
-              <span class="fw-bold">${platformName}</span>
-              <i class="fa-solid fa-arrow-up-right-from-square small"></i>
-            </a>
-          `;
-        });
-        linksContainer.classList.remove('d-none');
-      } else {
-        throw new Error("No links found");
-      }
-    } catch (err) {
-      console.error("StayAPI Error:", err);
-      document.getElementById('metaModalLoader').classList.add('d-none');
-      document.getElementById('metaModalFallbackLink').href = fallbackAgodaUrl;
-      document.getElementById('metaModalError').classList.remove('d-none');
-    }
-  };
 
   // Interactive Map Initialization (OpenStreetMap / Leaflet)
   document.addEventListener("DOMContentLoaded", () => {

@@ -21,7 +21,7 @@
     margin-top: 3px;
   }
   
-  @media (max-width: 750px) {
+  @media (max-width: 741.98px) {
     .sv-logo img { height: 26px !important; margin-right: 4px !important; }
     .sv-logo span { font-size: 1.15rem !important; }
   }
@@ -133,7 +133,7 @@
 
 
   /* Mobile */
-  @media (max-width: 750px) {
+  @media (max-width: 741.98px) {
     .sv-header-row1 .sv-right-links, .sv-category-tabs, .sv-scroll-pill, .sv-booking-bar-container { display: none !important; }
     .sv-logo span { display: inline; font-size: 1.1rem; }
     
@@ -142,10 +142,21 @@
   }
 
   /* Transition Fix: Prevent distortion and overlapping after 750px up to large screens */
-  @media (min-width: 751px) {
+  @media (min-width: 742px) {
     .sv-mobile-right { display: none !important; }
   }
-  @media (min-width: 751px) and (max-width: 991.98px) {
+  @media (min-width: 742px) and (max-width: 991.98px) {
+    .sv-header-row1 .sv-right-links {
+      display: flex !important;
+    }
+    .sv-category-tabs.d-none,
+    .sv-scroll-pill.d-none,
+    .sv-booking-bar-container.d-none {
+      display: flex !important;
+    }
+    .sv-header .d-md-none {
+      display: none !important;
+    }
     .sv-category-tabs {
       position: static !important;
       transform: none !important;
@@ -166,7 +177,7 @@
   }
 
   /* Tablet */
-  @media (min-width: 751px) and (max-width: 1024px) {
+  @media (min-width: 742px) and (max-width: 1024px) {
     .sv-search-bar { max-width: 320px !important; }
     .sv-header .container { padding-left: 16px !important; padding-right: 16px !important; }
   }
@@ -253,6 +264,30 @@
             <i class="fa-solid fa-house-medical"></i>
           </a>
         <% } %>
+        
+        <!-- Navbar Language & Currency -->
+        <style>
+          .sv-hover-dropdown:hover .dropdown-menu { display: block; margin-top: 0; }
+        </style>
+        <div class="dropdown d-none d-md-block sv-hover-dropdown me-1">
+          <button class="btn border-0 rounded-circle bg-transparent d-flex align-items-center justify-content-center" type="button" style="width: 40px; height: 40px; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
+            <i class="fa-solid fa-globe" style="font-size: 1.1rem; color: #222;"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 12px; min-width: auto; font-size: 0.9rem;">
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeLanguage('hi'); return false;">Hindi</a></li>
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeLanguage('en'); return false;">English</a></li>
+          </ul>
+        </div>
+        
+        <div class="dropdown d-none d-md-block sv-hover-dropdown me-2">
+          <button class="btn border-0 rounded-circle bg-transparent d-flex align-items-center justify-content-center" type="button" style="width: 40px; height: 40px; transition: background 0.2s; font-weight: 600; color: #222;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
+            <span class="currentCurrSymbol">₹</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 12px; min-width: auto; font-size: 0.9rem;">
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeCurrency('USD'); return false;">$ Dollar</a></li>
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeCurrency('INR'); return false;">₹ Rupees</a></li>
+          </ul>
+        </div>
         
         <div class="dropdown">
           <button class="btn border-0 rounded-circle bg-transparent d-flex align-items-center justify-content-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">

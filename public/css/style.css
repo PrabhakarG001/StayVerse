@@ -34,8 +34,8 @@ body {
   }
 }
 
-/* Tablet Responsiveness (751px - 1024px) */
-@media (min-width: 751px) and (max-width: 1024px) {
+/* Tablet Responsiveness (742px - 1024px) */
+@media (min-width: 742px) and (max-width: 1024px) {
   html {
     font-size: 98%; /* Slightly adjust global typography for tablets */
   }
@@ -44,8 +44,8 @@ body {
   }
 }
 
-/* Fix for UI shapes/components looking stretched/distorted after 750px */
-@media (min-width: 751px) and (max-width: 767.98px) {
+/* Fix for UI shapes/components looking stretched/distorted after 742px */
+@media (min-width: 742px) and (max-width: 767.98px) {
   .row-cols-sm-2 > *, .row-cols-2 > * {
     flex: 0 0 auto;
     width: 33.33333333% !important;
@@ -431,8 +431,8 @@ main {
   height: auto;
 }
 
-/* Exact Breakpoint at 750px */
-@media (max-width: 750px) {
+/* Exact Breakpoint below 742px */
+@media (max-width: 741.98px) {
   .container {
     display: flex;
     flex-direction: column; /* Added column to prevent block layout collapse causing scroll issues */
@@ -460,4 +460,64 @@ main {
 .section, .sv-dest-grid, .hero-section {
   height: auto;
   min-height: fit-content;
+}
+
+@media (min-width: 742px) {
+  main.container-fluid {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+
+  .row {
+    align-items: stretch;
+  }
+
+  .row > .col,
+  .row > [class*="col-"] {
+    min-width: 0;
+  }
+
+  .hotel-card,
+  .listing-card-link {
+    height: 100%;
+  }
+}
+
+@media (min-width: 742px) and (max-width: 767.98px) {
+  .d-md-none {
+    display: none !important;
+  }
+
+  .d-md-flex {
+    display: flex !important;
+  }
+
+  .d-md-block {
+    display: block !important;
+  }
+
+  .row-cols-md-3 > *,
+  .row-cols-lg-4 > *,
+  .row-cols-xl-5 > *,
+  .row-cols-xxl-7 > * {
+    flex: 0 0 auto;
+    width: 33.33333333% !important;
+  }
+
+  .g-md-4,
+  .gx-md-4 {
+    --bs-gutter-x: 1.5rem;
+  }
+
+  .g-md-4,
+  .gy-md-4 {
+    --bs-gutter-y: 1.5rem;
+  }
+}
+
+@media (min-width: 992px) {
+  main.container-fluid {
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+  }
 }

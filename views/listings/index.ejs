@@ -171,7 +171,7 @@
   @media (min-width: 576px) {
     .hotel-slide { flex: 0 0 calc(50% - 8px); width: calc(50% - 8px); max-width: calc(50% - 8px); }
   }
-  @media (min-width: 751px) {
+  @media (min-width: 742px) {
     .hotel-slide { flex: 0 0 calc(33.333% - 10.66px); width: calc(33.333% - 10.66px); max-width: calc(33.333% - 10.66px); }
   }
   @media (min-width: 768px) {
@@ -268,10 +268,9 @@
 
 <script>
   // Helper to generate consistent INR price based on propertyId
-  const getMockPrice = (propertyId) => {
+  const getMockPriceVal = (propertyId) => {
     const seed = parseInt(propertyId) || 12345;
-    const price = Math.floor(Math.abs((seed * 9301 + 49297) % 233280) / 233280 * (15000 - 3000 + 1)) + 3000;
-    return `₹${price.toLocaleString('en-IN')}`;
+    return Math.floor(Math.abs((seed * 9301 + 49297) % 233280) / 233280 * (15000 - 3000 + 1)) + 3000;
   };
 
   const createSeeAllCard = (city, hotels) => {
@@ -315,7 +314,9 @@
 
   const createHotelCard = (hotel) => {
     const imageUrl = (hotel.images && hotel.images.length > 0) ? hotel.images[0] : 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=500&q=60';
-    const price = getMockPrice(hotel.propertyId);
+    const priceVal = getMockPriceVal(hotel.propertyId);
+    const priceHtml = `<span class="price-val fw-bold" data-inr="${priceVal}">₹${priceVal.toLocaleString('en-IN')}</span>`;
+    const pricePlain = `₹${priceVal.toLocaleString('en-IN')}`;
     const rating = hotel.reviewScore ? (hotel.reviewScore / 2).toFixed(2) : (Math.random() * (5.0 - 4.5) + 4.5).toFixed(2);
     
     const propTypeRaw = hotel.accommodationType || hotel.propertyType || 'Hotel';
@@ -345,7 +346,7 @@
                 <i class="fa-regular fa-heart fs-5 text-white heart-wishlist-icon" 
                    data-id="${hotel.propertyId}" 
                    style="text-shadow: 0 1px 3px rgba(0,0,0,0.5); cursor: pointer;" 
-                   onclick="toggleWishlist(event, '${hotel.propertyId}', '${hotel.name.replace(/'/g, "&apos;")}', '${hotel.city.replace(/'/g, "&apos;")}', '${price}', '${rating}', '${imageUrl}', ${hotel.isPremium})"></i>
+                   onclick="toggleWishlist(event, '${hotel.propertyId}', '${hotel.name.replace(/'/g, "&apos;")}', '${hotel.city.replace(/'/g, "&apos;")}', '${pricePlain}', '${rating}', '${imageUrl}', ${hotel.isPremium})"></i>
               </div>
             </div>
             <div class="pt-1 pe-1">
@@ -358,7 +359,7 @@
               </div>
               <p class="text-secondary mb-1 text-truncate" style="font-size: 0.9rem; line-height: 1.4; min-height: 1.4rem;">${hotel.area ? hotel.area + ', ' : ''}${hotel.city}${hotel.country && hotel.country.toLowerCase() !== 'india' ? ' (' + hotel.country + ')' : ''}</p>
               <div class="d-flex align-items-center mt-1 pb-1">
-                <span class="fw-bold text-dark" style="font-size: 0.98rem;">${price}</span>
+                <span class="text-dark" style="font-size: 0.98rem;">${priceHtml}</span>
                 <span class="text-dark" style="font-size: 0.9rem;">&nbsp;for 2 nights</span>
               </div>
               <div class="tax-info d-none text-secondary" style="font-size: 0.8rem; margin-top: -2px;">Includes taxes & fees</div>
@@ -387,6 +388,11 @@
       } else {
         container.innerHTML = '<p class="text-secondary">No homes found.</p>';
       }
+      
+      if (typeof applyCurrency === 'function') {
+        const savedCurr = localStorage.getItem('sv_currency');
+        if (savedCurr) applyCurrency(savedCurr);
+      }
     } catch (err) {
       console.error(`Error loading ${city}:`, err);
       document.getElementById(containerId).innerHTML = '<p class="text-danger">Failed to load homes.</p>';
@@ -395,7 +401,7 @@
 
   // Slider buttons logic
   window.showSliderBtns = function(group) {
-    if (window.innerWidth >= 768) {
+    if (window.innerWidth >= 742) {
       const btns = group.querySelectorAll('.slider-btn');
       btns.forEach(btn => btn.classList.replace('d-none', 'd-flex'));
     }

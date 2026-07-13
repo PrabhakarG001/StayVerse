@@ -187,7 +187,7 @@
 </div>
 
 <script>
-  async function performSearch(query) {
+  async function performSearch(query, category = '') {
     const loader = document.getElementById('searchLoader');
     const resultsContainer = document.getElementById('resultsContainer');
     const emptyState = document.getElementById('emptyState');
@@ -198,7 +198,11 @@
     loader.style.display = 'block';
 
     try {
-      const response = await fetch(`/api/hotels/search?q=${encodeURIComponent(query)}`);
+      let url = `/api/hotels/search?q=${encodeURIComponent(query)}`;
+      if (category) {
+        url = `/api/hotels?category=${encodeURIComponent(category)}`;
+      }
+      const response = await fetch(url);
       const data = await response.json();
       
       loader.style.display = 'none';
@@ -208,10 +212,9 @@
         return;
       }
 
-      const getMockPrice = (propertyId) => {
+      const getMockPriceVal = (propertyId) => {
         const seed = parseInt(propertyId) || 12345;
-        const price = Math.floor(Math.abs((seed * 9301 + 49297) % 233280) / 233280 * (15000 - 3000 + 1)) + 3000;
-        return `₹${price.toLocaleString('en-IN')}`;
+        return Math.floor(Math.abs((seed * 9301 + 49297) % 233280) / 233280 * (15000 - 3000 + 1)) + 3000;
       };
 
       data.searchResults.forEach(entity => {
@@ -219,7 +222,8 @@
         col.className = 'col mb-4';
         
         const imageUrl = entity.images && entity.images.length > 0 ? entity.images[0] : 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=60';
-        const price = getMockPrice(entity.propertyId);
+        const priceVal = getMockPriceVal(entity.propertyId);
+        const priceHtml = `<span class="price-val fw-bold" data-inr="${priceVal}">₹${priceVal.toLocaleString('en-IN')}</span>`;
         const rating = entity.reviewScore ? (entity.reviewScore / 2).toFixed(2) : (Math.random() * (5.0 - 4.5) + 4.5).toFixed(2);
         
         const propTypeRaw = entity.accommodationType || entity.propertyType || 'Hotel';
@@ -262,7 +266,7 @@
                 </div>
                 <p class="text-secondary mb-1 text-truncate" style="font-size: 0.9rem; line-height: 1.4;">${entity.area ? entity.area + ', ' : ''}${entity.city}</p>
                 <div class="d-flex align-items-center mt-1 pb-1">
-                  <span class="fw-bold text-dark" style="font-size: 0.98rem;">${price}</span>
+                    <span class="text-dark">${priceHtml} <span class="fw-normal text-muted" style="font-size: 0.8rem;">night</span></span>
                   <span class="text-dark" style="font-size: 0.9rem;">&nbsp;for 2 nights</span>
                 </div>
               </div>
@@ -284,7 +288,9 @@
             icon.classList.remove('text-white');
             icon.classList.add('text-danger');
           }
-        });
+      if (typeof applyCurrency === 'function') {
+        const savedCurr = localStorage.getItem('sv_currency');
+        if (savedCurr) applyCurrency(savedCurr);
       }
 
     } catch (error) {
@@ -301,16 +307,23 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     const passedQuery = "<%= typeof query !== 'undefined' ? query : '' %>";
+    const passedCategory = "<%= typeof category !== 'undefined' ? category : '' %>";
+    
     if (passedQuery) {
       document.getElementById('hotelQuery').value = passedQuery;
-      performSearch(passedQuery);
+      performSearch(passedQuery, passedCategory);
+    } else if (passedCategory) {
+      // If only category is passed (e.g. from footer link), clear query and search by category
+      document.getElementById('hotelQuery').value = '';
+      performSearch('', passedCategory);
     }
   });
 
   document.getElementById('hotelSearchForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const query = document.getElementById('hotelQuery').value;
-    performSearch(query);
+    // On manual search, we clear category to do a normal search
+    performSearch(query, '');
   });
 
   // StayAPI Modal Logic
@@ -361,6 +374,16 @@
         linksContainer.classList.remove('d-none');
       } else {
         throw new Error("No links found");
+      }
+      // Apply currency translation if needed for newly generated elements
+      if (typeof applyCurrency === 'function') {
+        const savedCurr = localStorage.getItem('sv_currency');
+        if (savedCurr) applyCurrency(savedCurr);
+      }
+      // Apply currency translation to newly rendered cards
+      if (typeof applyCurrency === 'function') {
+        const savedCurr = localStorage.getItem('sv_currency');
+        if (savedCurr) applyCurrency(savedCurr);
       }
     } catch (err) {
       console.error("StayAPI Error:", err);

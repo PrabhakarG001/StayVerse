@@ -169,6 +169,59 @@ const stories = {
         content: '<p>You can reach our support team 24/7. Whether you need help with a booking or have feedback to share, we want to hear from you.</p><ul><li>Email: support@stayverse.com</li><li>Phone: 1-800-STAY-NOW</li></ul>'
       }
     ]
+  },
+  'privacy': {
+    title: 'Privacy Policy',
+    intro: 'Your privacy is critically important to us. Learn how we collect, use, and protect your data.',
+    sections: [
+      {
+        title: 'Data Collection',
+        content: '<p>We collect information to provide better services to all our users. This includes basic details like your language preferences, and more complex things like which ads you\'ll find most useful or which destinations you might like best.</p>'
+      },
+      {
+        title: 'Information Sharing',
+        content: '<p>We do not share your personal information with companies, organizations, or individuals outside of StayVerse except when we have your consent or for legitimate legal reasons.</p>'
+      }
+    ]
+  },
+  'terms': {
+    title: 'Terms & Conditions',
+    intro: 'Please read these terms carefully before using our platform.',
+    sections: [
+      {
+        title: 'User Responsibilities',
+        content: '<p>By accessing our website, you agree to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws.</p>'
+      },
+      {
+        title: 'Booking Policies',
+        content: '<p>All bookings made through StayVerse are subject to availability and the specific cancellation policies set by the hosts or our platform.</p>'
+      }
+    ]
+  },
+  'help': {
+    title: 'Help Centre',
+    intro: 'Welcome to the StayVerse Help Centre. How can we assist you today?',
+    sections: [
+      {
+        title: 'Frequently Asked Questions',
+        content: '<p><strong>How do I cancel a booking?</strong><br>You can cancel a booking directly from your "My Booking" page. Cancellation policies vary by listing.<br><br><strong>When will I be charged?</strong><br>You are charged immediately upon booking confirmation to secure your reservation.</p>'
+      },
+      {
+        title: 'Still need help?',
+        content: '<p>If you can\'t find what you\'re looking for, feel free to <a href="/pages/contact-us">Contact Us</a> directly.</p>'
+      }
+    ]
+  },
+  'social': {
+    title: 'Social Media',
+    intro: 'StayVerse on Social Media',
+    heroImage: '/images/cat_all.png',
+    sections: [
+      {
+        title: 'Message',
+        content: '<p style="font-size: 1.25rem; font-weight: 500; color: #fe424d; text-align: center; padding: 2rem;">Sorry, I am not active on social media except LinkedIn 👦</p>'
+      }
+    ]
   }
 };
 

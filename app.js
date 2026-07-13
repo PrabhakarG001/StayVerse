@@ -356,7 +356,11 @@ app.get("/wishlists", (req, res) => {
 });
 
 app.get("/hotels/search", (req, res) => {
-  res.render("hotels/search.ejs", { query: req.query.query || "", hideSearch: true });
+  res.render("hotels/search.ejs", { 
+    query: req.query.query || "", 
+    category: req.query.category || "", 
+    hideSearch: true 
+  });
 });
 
 // Unique images pool to use for generating galleries
@@ -549,32 +553,57 @@ app.get("/api/hotels", wrapAsync(async (req, res) => {
     }
   }
   let filter = {};
+  let listingsFilter = {};
+
   if (city) {
     const regex = new RegExp(city, 'i');
-    filter = {
-      $or: [
-        { city: regex },
-        { state: regex },
-        { country: regex },
-        { area: regex },
-        { name: regex }
-      ]
-    };
+    filter.$or = [
+      { city: regex },
+      { state: regex },
+      { country: regex },
+      { area: regex },
+      { name: regex }
+    ];
+    listingsFilter.$or = [
+      { location: regex },
+      { country: regex },
+      { title: regex }
+    ];
+  }
+  
+  let category = req.query.category;
+  if (category) {
+    switch (category) {
+      case 'TopRated':
+        filter.reviewScore = { $gte: 8.5 };
+        // Listings are dummy mapped with 9.5 review score so we don't need a strict filter for them, but we can add one if we want. We'll leave listings alone here.
+        break;
+      case 'PetFriendly':
+        filter.$or = [
+          { amenities: { $regex: /pet/i } },
+          { description: { $regex: /pet/i } },
+          { amenities: { $regex: /dog/i } }
+        ];
+        listingsFilter.description = { $regex: /pet/i };
+        break;
+      case 'Luxury':
+        filter.$or = [
+          { starRating: { $gte: 5 } },
+          { price: { $gte: 15000 } }
+        ];
+        // Listings are already premium
+        break;
+      case 'Unique':
+        filter['accommodationType.name'] = { $in: ['Villa', 'Resort', 'Treehouse', 'Tent', 'Cabin'] };
+        listingsFilter.category = { $in: ['Castles', 'Camping', 'Jungle', 'Treehouse'] };
+        break;
+      case 'Deals':
+        filter.price = { $lt: 5000 };
+        break;
+    }
   }
   
   let hotels = await Hotel.find(filter).limit(30);
-  
-  let listingsFilter = {};
-  if (city) {
-    const regex = new RegExp(city, 'i');
-    listingsFilter = {
-      $or: [
-        { location: regex },
-        { country: regex },
-        { title: regex }
-      ]
-    };
-  }
   let listings = await Listing.find(listingsFilter).limit(30);
   let mappedListings = listings.map(l => ({
     propertyId: l._id.toString(),
@@ -687,31 +716,6 @@ app.get("/my-host", isLoggedIn, isHost, wrapAsync(async (req, res) => {
   res.render("users/my-host.ejs", { listings });
 }));
 
-// StayAPI Meta Search Route
-app.get("/api/hotels/meta", wrapAsync(async (req, res) => {
-  const hotel_name = req.query.hotel_name;
-  const location = req.query.location;
-
-  if (!hotel_name || !location) {
-    return res.status(400).json({ error: "hotel_name and location are required" });
-  }
-
-  try {
-    const response = await fetch(`https://api.stayapi.com/v1/meta/search?` + new URLSearchParams({ hotel_name, location }), {
-      method: 'GET',
-      headers: {
-        'x-api-key': process.env.STAY_API_KEY,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    const data = await response.json();
-    res.json(data);
-  } catch (err) {
-    console.error("StayAPI Error:", err);
-    res.status(500).json({ error: "Failed to fetch meta links from StayAPI" });
-  }
-}));
 
 // API Hotel Detail Page (Show Page)
 app.get("/hotels/show/:id", wrapAsync(async (req, res) => {
