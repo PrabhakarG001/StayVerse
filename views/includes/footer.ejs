@@ -244,7 +244,7 @@
     transform: scale(1.15);
   }
 
-  /* ── Mobile Accordion for Links ── */
+  /* ── Mobile: Accordion for Links ── */
   @media (max-width: 741.98px) {
     .sv-footer {
       padding-bottom: calc(95px + env(safe-area-inset-bottom)) !important;
@@ -252,12 +252,20 @@
       transform: none !important;
       display: block !important;
     }
+
+    .sv-footer .container {
+      padding-left: 24px !important;
+      padding-right: 24px !important;
+    }
+
     .sv-footer-links {
       grid-template-columns: 1fr;
       padding: 0;
       gap: 0;
     }
-    .sv-footer-col, .sv-footer-col:not(:first-child), .sv-footer-col:not(:last-child) {
+    .sv-footer-col,
+    .sv-footer-col:not(:first-child),
+    .sv-footer-col:not(:last-child) {
       padding-left: 0 !important;
       padding-right: 0 !important;
       border-right: none !important;
@@ -279,6 +287,7 @@
       padding: 20px 0;
       margin-bottom: 0;
       font-size: 0.88rem;
+      cursor: pointer;
     }
     .sv-footer-col h5::after {
       content: '\f107';
@@ -291,13 +300,18 @@
     .sv-footer-col.open h5::after {
       transform: rotate(180deg);
     }
+
+    /* Collapsed by default on mobile */
     .sv-footer-col ul {
-      max-height: none;
-      overflow: visible;
-      padding-bottom: 20px;
+      max-height: 0;
+      overflow: hidden;
+      padding-bottom: 0;
+      transition: max-height 0.35s ease, padding-bottom 0.35s ease;
     }
+    /* Expanded when open */
     .sv-footer-col.open ul {
-      max-height: none;
+      max-height: 500px;
+      overflow: visible;
       padding-bottom: 20px;
     }
 
@@ -329,10 +343,13 @@
       align-items: center;
       text-align: center;
       gap: 20px;
+      padding: 24px 0;
     }
     .sv-footer-bottom-left {
       justify-content: center;
       margin-top: 8px;
+      flex-direction: column;
+      gap: 8px;
     }
     .sv-footer-bottom-right {
       justify-content: center;
@@ -341,7 +358,14 @@
       width: 100%;
     }
   }
-  @media (min-width: 742px) and (max-width: 1199.98px) {
+
+  /* ── Tablet: 2-column layout ── */
+  @media (min-width: 742px) and (max-width: 991.98px) {
+    .sv-footer .container {
+      padding-left: 32px !important;
+      padding-right: 32px !important;
+    }
+
     .sv-dest-grid {
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
@@ -349,18 +373,20 @@
     .sv-dest-card {
       padding-right: 12px;
     }
-  }
-  @media (min-width: 742px) and (max-width: 991.98px) {
+
     .sv-footer-links {
       grid-template-columns: repeat(2, 1fr);
-      gap: 40px;
+      gap: 40px 48px;
       padding: 40px 0;
     }
-    .sv-footer-col, .sv-footer-col:not(:first-child), .sv-footer-col:not(:last-child) {
+    .sv-footer-col,
+    .sv-footer-col:not(:first-child),
+    .sv-footer-col:not(:last-child) {
       padding-left: 0 !important;
       padding-right: 0 !important;
       border-right: none !important;
     }
+
     .sv-footer-bottom {
       flex-direction: column-reverse;
       align-items: center;
@@ -374,16 +400,28 @@
       justify-content: center;
     }
   }
+
+  /* ── Small Desktop: 3-column layout ── */
   @media (min-width: 992px) and (max-width: 1199.98px) {
-    .sv-footer-links {
+    .sv-dest-grid {
       grid-template-columns: repeat(3, 1fr);
-      gap: 40px;
+      gap: 20px;
+    }
+    .sv-dest-card {
+      padding-right: 12px;
+    }
+
+    .sv-footer-links {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
       padding: 44px 0;
     }
-    .sv-footer-col, .sv-footer-col:not(:first-child), .sv-footer-col:not(:last-child) {
-      padding-left: 0 !important;
-      padding-right: 0 !important;
-      border-right: none !important;
+    .sv-footer-col:not(:last-child) {
+      border-right: 1px solid #ddd;
+      padding-right: 32px;
+    }
+    .sv-footer-col:not(:first-child) {
+      padding-left: 32px;
     }
   }
 </style>
