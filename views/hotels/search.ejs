@@ -260,7 +260,7 @@
                   <i class="fa-regular fa-heart fs-5 text-white heart-wishlist-icon" 
                      data-id="${entity.propertyId}" 
                      style="text-shadow: 0 1px 3px rgba(0,0,0,0.5); cursor: pointer;" 
-                     onclick="toggleWishlist(event, '${entity.propertyId}', '${entity.name.replace(/'/g, "&apos;")}', '${entity.city.replace(/'/g, "&apos;")}', '${price}', '${rating}', '${imageUrl}', false)"></i>
+                     onclick="toggleWishlist(event, '${entity.propertyId}', '${(entity.name||"").replace(/'/g, "&apos;")}', '${(entity.city||"").replace(/'/g, "&apos;")}', '${priceVal}', '${rating}', '${imageUrl}', false)"></i>
                 </div>
               </div>
               <div class="pt-1 pe-1">
