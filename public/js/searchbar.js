@@ -592,7 +592,17 @@
       data.query = whereInput.value.trim();
     }
 
-    if (!state.checkinDate && !data.query) {
+    if (data.query) {
+      var params = new URLSearchParams();
+      params.set('query', data.query);
+      if (data.checkin) params.set('checkin', data.checkin);
+      if (data.checkout) params.set('checkout', data.checkout);
+      if (data.totalGuests > 0) params.set('guests', data.totalGuests);
+      window.location.href = '/hotels/search?' + params.toString();
+      return;
+    }
+
+    if (!state.checkinDate) {
       var seg = document.getElementById('sb-seg-checkin') || document.getElementById('sb-seg-when');
       if (seg) {
         seg.classList.add('sb-shake');
@@ -638,6 +648,13 @@
       btn.style.transform = 'scale(0.92)';
       setTimeout(function () { btn.style.transform = ''; }, 150);
     }
+
+    var params = new URLSearchParams();
+    params.set('query', 'Worldwide');
+    if (data.checkin) params.set('checkin', data.checkin);
+    if (data.checkout) params.set('checkout', data.checkout);
+    if (data.totalGuests > 0) params.set('guests', data.totalGuests);
+    window.location.href = '/hotels/search?' + params.toString();
   }
 
   // ---- Init ----
