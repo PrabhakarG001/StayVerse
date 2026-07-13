@@ -53,6 +53,13 @@
   .search-input-group button:hover {
     background-color: #e03540;
   }
+  @media (max-width: 575.98px) {
+    .search-hero { padding: 1.5rem 1rem; }
+    .search-hero h1 { font-size: 1.5rem; }
+    .search-input-group { flex-direction: column; border-radius: 0; background: transparent; box-shadow: none; padding: 0; }
+    .search-input-group input { border-radius: 12px; margin-bottom: 10px; width: 100%; padding: 0.75rem 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .search-input-group button { border-radius: 12px; width: 100%; }
+  }
   /* Internal Card Hover */
   .hotel-card-hover {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -108,12 +115,18 @@
   .spinner-border {
     color: #fe424d;
   }
+  @media (min-width: 1400px) {
+    .row-cols-xxl-7 > * {
+      flex: 0 0 auto;
+      width: 14.285714%;
+    }
+  }
 </style>
 
-<div class="container hotel-search-container">
+<div class="hotel-search-container">
   <div class="search-hero">
     <h1>Find Real Places Worldwide</h1>
-    <p class="lead mb-4">Discover cities, neighborhoods, and hotels directly from RapidAPI</p>
+    <p class="lead mb-4" style="font-size: 0.95rem;">Discover cities, neighborhoods, and hotels directly from StayVerse</p>
     
     <form id="hotelSearchForm" class="search-input-group">
       <input type="text" id="hotelQuery" placeholder="e.g. Mumbai, New Delhi, India..." required>
@@ -130,7 +143,7 @@
     <p class="mt-2 text-secondary">Fetching real data...</p>
   </div>
 
-  <div id="resultsContainer" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 g-4">
+  <div id="resultsContainer" class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-7 g-2 g-md-4">
     <!-- Results will be injected here -->
   </div>
   

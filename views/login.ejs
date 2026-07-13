@@ -48,10 +48,10 @@
         
         <!-- Social Buttons Horizontal -->
         <div class="d-flex justify-content-center gap-3">
-          <button type="button" class="btn bg-white border d-flex align-items-center justify-content-center" style="border-color: #b0b0b0 !important; border-radius: 8px; width: 60px; height: 60px; transition: background 0.2s; box-shadow: none !important;" onmouseover="this.style.backgroundColor='#f7f7f7'" onmouseout="this.style.backgroundColor='#fff'">
+          <button type="button" id="standaloneGoogleAuthBtn" class="btn bg-white border d-flex align-items-center justify-content-center" style="border-color: #b0b0b0 !important; border-radius: 8px; width: 60px; height: 60px; transition: background 0.2s; box-shadow: none !important;" onmouseover="this.style.backgroundColor='#f7f7f7'" onmouseout="this.style.backgroundColor='#fff'">
             <i class="fa-brands fa-google fs-4" style="color: #222;"></i>
           </button>
-          <button type="button" class="btn bg-white border d-flex align-items-center justify-content-center" style="border-color: #b0b0b0 !important; border-radius: 8px; width: 60px; height: 60px; transition: background 0.2s; box-shadow: none !important;" onmouseover="this.style.backgroundColor='#f7f7f7'" onmouseout="this.style.backgroundColor='#fff'">
+          <button type="button" id="standaloneAppleAuthBtn" class="btn bg-white border d-flex align-items-center justify-content-center" style="border-color: #b0b0b0 !important; border-radius: 8px; width: 60px; height: 60px; transition: background 0.2s; box-shadow: none !important;" onmouseover="this.style.backgroundColor='#f7f7f7'" onmouseout="this.style.backgroundColor='#fff'">
             <i class="fa-brands fa-apple fs-4" style="color: #222;"></i>
           </button>
         </div>
@@ -82,6 +82,29 @@
           }
         }
       });
+    }
+
+    function handleStandaloneSocialLogin(provider) {
+      sessionStorage.setItem('sv_logged_in', 'true');
+      sessionStorage.setItem('sv_user', provider + '_user');
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirect = urlParams.get('redirect_url');
+      if (redirect) {
+        window.location.href = redirect;
+      } else {
+        window.location.href = '/';
+      }
+    }
+
+    const standaloneGoogleBtn = document.getElementById('standaloneGoogleAuthBtn');
+    if (standaloneGoogleBtn) {
+      standaloneGoogleBtn.addEventListener('click', () => handleStandaloneSocialLogin('google'));
+    }
+
+    const standaloneAppleBtn = document.getElementById('standaloneAppleAuthBtn');
+    if (standaloneAppleBtn) {
+      standaloneAppleBtn.addEventListener('click', () => handleStandaloneSocialLogin('apple'));
     }
   });
 </script>

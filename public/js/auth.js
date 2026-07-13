@@ -19,8 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
         // Save the intended destination
         pendingActionUrl = el.getAttribute('href');
         
+        // Check if it's a host action
+        const action = el.getAttribute('data-auth-action');
+        if (action === 'host') {
+          document.body.classList.add('auth-host-mode');
+        } else {
+          document.body.classList.remove('auth-host-mode');
+        }
+        
         // Show the login modal instead of redirecting to the dedicated page
-        document.body.classList.add('auth-host-mode');
         authModal.show();
       }
     });
@@ -67,5 +74,27 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.reload();
       });
     }
+  }
+
+  // Social Login logic for modal
+  function handleSocialLogin(provider) {
+    sessionStorage.setItem('sv_logged_in', 'true');
+    sessionStorage.setItem('sv_user', provider + '_user');
+    
+    if (pendingActionUrl) {
+      window.location.href = pendingActionUrl;
+    } else {
+      window.location.reload();
+    }
+  }
+
+  const googleAuthBtn = document.getElementById('googleAuthBtn');
+  if (googleAuthBtn) {
+    googleAuthBtn.addEventListener('click', () => handleSocialLogin('google'));
+  }
+
+  const appleAuthBtn = document.getElementById('appleAuthBtn');
+  if (appleAuthBtn) {
+    appleAuthBtn.addEventListener('click', () => handleSocialLogin('apple'));
   }
 });

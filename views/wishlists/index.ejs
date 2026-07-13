@@ -60,10 +60,18 @@
   }
 </style>
 
+<style>
+  @media (min-width: 1400px) {
+    .row-cols-xxl-7 > * {
+      flex: 0 0 auto;
+      width: 14.285714%;
+    }
+  }
+</style>
 <div class="container mt-5 mb-5 px-4" style="max-width: 1400px;">
   <h2 class="fw-bold mb-4" style="font-size: 2rem;">Your Wishlists</h2>
   
-  <div id="wishlist-container" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
+  <div id="wishlist-container" class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-7 g-2 g-md-4">
     <!-- Cards will be injected here via JS -->
   </div>
   

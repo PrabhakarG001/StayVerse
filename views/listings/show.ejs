@@ -2,9 +2,9 @@
 
 <div class="row mt-4">
   <style>
-    .show-gallery-container { height: 450px; }
+    .show-gallery-container { height: 50vh; min-height: 350px; max-height: 450px; }
     @media (max-width: 768px) {
-      .show-gallery-container { height: 300px; }
+      .show-gallery-container { height: 40vh; min-height: 250px; max-height: 300px; }
     }
     
     /* Mobile bottom bar fixes padding on body so it doesn't overlap content */
@@ -198,7 +198,7 @@
       <div class="card-header bg-white border-0 py-3 px-4">
         <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-map-location-dot me-2 text-rose"></i>Where you'll be</h5>
       </div>
-      <div id="map" style="height: 300px; width: 100%;" class="bg-light"></div>
+      <div id="map" style="height: 40vh; min-height: 250px; max-height: 300px; width: 100%;" class="bg-light"></div>
     </div>
   </div>
 </div>

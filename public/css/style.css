@@ -8,6 +8,11 @@
   --navbar-height: 5rem;
 }
 
+html, body {
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
 body {
   font-family: "Outfit", "Plus Jakarta Sans", sans-serif !important;
   background-color: var(--off-white);
@@ -17,6 +22,12 @@ body {
   flex-direction: column;
   /* Custom Professional Brand Cursor - Default */
   cursor: url('data:image/svg+xml;utf8,<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L15 13 L9 14 L12 21 L9.5 22 L6 15 L2 19 Z" fill="%23FF385C" stroke="white" stroke-width="1.5" stroke-linejoin="round"/></svg>') 2 2, auto !important;
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 95%; /* Slightly scale down typography on very small devices */
+  }
 }
 
 /* Custom Professional Brand Cursor - Pointers (Links/Buttons) */

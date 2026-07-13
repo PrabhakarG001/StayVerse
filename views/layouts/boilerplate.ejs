@@ -9,53 +9,64 @@
   <link rel="icon" type="image/svg+xml" href="/images/logo.svg">
   
   <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   
   <!-- FontAwesome for Premium Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   
-  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+  <!-- Google Fonts: Plus Jakarta Sans & Outfit & Audiowide -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
   
   <!-- Leaflet Map CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   
-  <!-- Custom Style Sheet -->
+  <!-- Custom Stylesheets -->
   <link rel="stylesheet" href="/css/style.css">
-  <!-- BubbleMenu Style Sheet -->
-  <link rel="stylesheet" href="/css/BubbleMenu.css">
+  
   <!-- Booking Search Bar -->
   <link rel="stylesheet" href="/css/searchbar.css">
   
   <!-- Leaflet Map JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Motion Initial States & Instant CSS Animations -->
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/motion@11.11.17/+esm">
+  <style>
+    /* JS Scroll animations initial hidden states */
+    html.js-enabled .motion-footer { opacity: 0; transform: translateY(40px); }
+    
+    /* Instant Pure CSS Animations for Header, Nav & Cards */
+    @keyframes slideDownFast { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes fadeUpStagger { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes fadeUpCard { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    
+    .motion-header { animation: slideDownFast 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+    .motion-nav-item { opacity: 0; animation: fadeUpStagger 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+    .motion-card { animation: fadeUpCard 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) both; }
+    
+    /* Stagger nav items manually for instant load */
+    .motion-nav-item:nth-child(1) { animation-delay: 0.1s; }
+    .motion-nav-item:nth-child(2) { animation-delay: 0.15s; }
+    .motion-nav-item:nth-child(3) { animation-delay: 0.2s; }
+    .motion-nav-item:nth-child(4) { animation-delay: 0.25s; }
+    .motion-nav-item:nth-child(5) { animation-delay: 0.3s; }
+  </style>
+  <script>document.documentElement.classList.add('js-enabled');</script>
 </head>
 <body>
   <%- include("../includes/navbar.ejs") %>
   
-  <main class="container my-4">
+  <main class="container-fluid px-4 px-lg-5 mb-4 mt-4 mt-md-5 pt-md-4">
     <%- body %>
   </main>
   
   <%- include("../includes/footer.ejs") %>
 
   <!-- Bootstrap Bundle JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-  
-  <!-- React 18 & ReactDOM 18 UMD -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  
-  <!-- GSAP Core Library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-  <!-- Babel Standalone JSX Compiler -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <!-- BubbleMenu JSX Script -->
-  <script type="text/babel" src="/js/BubbleMenu.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   
   <!-- Booking Search Bar -->
   <script src="/js/searchbar.js"></script>
@@ -63,13 +74,166 @@
   <!-- Custom Client-Side Script -->
   <script src="/js/script.js?v=destination-filter-2"></script>
   
+  <!-- Global Framer Motion Animations -->
+  <script type="module" src="/js/animations.js"></script>
+  
   <!-- Wishlist Logic -->
   <script src="/js/wishlist.js"></script>
   
-  <!-- Global Auth Modal -->
-  <%- include("../includes/auth-modal.ejs") %>
-  
-  <!-- Auth Interceptor Logic -->
-  <script src="/js/auth.js"></script>
+  <!-- Mobile Bottom Navigation (Visible only on < 768px) -->
+  <style>
+    .mobile-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #ffffff;
+      border-top: 1px solid #ebebeb;
+      z-index: 1045;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+    }
+    .mobile-bottom-nav a, .mobile-bottom-nav button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #717171;
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.65rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .mobile-bottom-nav a.active, .mobile-bottom-nav a:hover, .mobile-bottom-nav button:hover {
+      color: #FF385C;
+    }
+    .mobile-bottom-nav a i, .mobile-bottom-nav button i {
+      font-size: 1.4rem;
+      margin-bottom: 4px;
+    }
+    @media (max-width: 767.98px) {
+      body { padding-bottom: 70px !important; }
+    }
+  </style>
+  <div class="mobile-bottom-nav d-md-none">
+    <a href="/" class="active">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span>Explore</span>
+    </a>
+    <a href="/wishlists">
+      <i class="fa-regular fa-heart"></i>
+      <span>Wishlists</span>
+    </a>
+    <% if(!currentUser) { %>
+      <a href="/auth/login-user">
+        <i class="fa-regular fa-circle-user"></i>
+        <span>Log in</span>
+      </a>
+    <% } else { %>
+      <a href="/auth/logout" class="text-danger">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Log out</span>
+      </a>
+    <% } %>
+  </div>
+
+  <!-- Global Scroll Progress Indicator -->
+  <div class="sv-scroll-progress-container">
+    <div class="sv-scroll-progress-bar"></div>
+  </div>
+
+  <style>
+    /* Hide Default Browser Scrollbar Globally */
+    html {
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+    html::-webkit-scrollbar {
+      display: none; /* Chrome, Safari and Opera */
+    }
+    
+    /* Scroll Progress Indicator Styles */
+    .sv-scroll-progress-container {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none; /* Let clicks pass through */
+      background: transparent;
+    }
+    
+    .sv-scroll-progress-bar {
+      background-color: #FF385C; /* Exact logo color */
+      box-shadow: 0 0 6px rgba(255, 56, 92, 0.5); /* Subtle glow */
+      /* Smooth transition avoiding lag */
+      transition: transform 0.1s ease-out;
+      transform-origin: top left;
+      border-radius: 4px;
+    }
+
+    /* Desktop: Vertical on the right */
+    @media (min-width: 768px) {
+      .sv-scroll-progress-container {
+        top: 0;
+        right: 0;
+        width: 4px;
+        height: 100vh;
+      }
+      .sv-scroll-progress-bar {
+        width: 100%;
+        height: 100%;
+        transform: scaleY(var(--scroll-progress, 0));
+      }
+    }
+
+    /* Mobile: Horizontal on the top */
+    @media (max-width: 767.98px) {
+      .sv-scroll-progress-container {
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 4px;
+      }
+      .sv-scroll-progress-bar {
+        width: 100%;
+        height: 100%;
+        transform: scaleX(var(--scroll-progress, 0));
+      }
+    }
+  </style>
+
+  <script>
+    // Optimized Scroll Progress Logic using requestAnimationFrame
+    (function() {
+      let ticking = false;
+
+      const updateScrollProgress = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) : 0;
+        const clampedProgress = Math.max(0, Math.min(1, progress));
+        
+        document.documentElement.style.setProperty('--scroll-progress', clampedProgress);
+        ticking = false;
+      };
+
+      const onScroll = () => {
+        if (!ticking) {
+          window.requestAnimationFrame(updateScrollProgress);
+          ticking = true;
+        }
+      };
+      
+      // Update on scroll with passive listener for performance
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', updateScrollProgress);
+      window.addEventListener('load', updateScrollProgress);
+      
+      // Initial call
+      updateScrollProgress();
+    })();
+  </script>
 </body>
 </html>
