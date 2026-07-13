@@ -61,7 +61,7 @@
   .sv-dest-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 0;
+    gap: 16px;
     padding: 24px 0 32px;
   }
   .sv-dest-card {
@@ -294,7 +294,23 @@
 
     /* Destination grid responsive */
     .sv-dest-grid {
-      grid-template-columns: repeat(2, 1fr);
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 16px;
+      padding: 24px 0;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      scroll-snap-type: x mandatory;
+    }
+    .sv-dest-grid::-webkit-scrollbar {
+      display: none;
+    }
+    .sv-dest-card {
+      flex: 0 0 auto;
+      min-width: 150px;
+      padding: 12px 16px 12px 0;
+      scroll-snap-align: start;
     }
 
     /* Bottom bar stacks */
@@ -317,6 +333,7 @@
   @media (min-width: 742px) and (max-width: 991.98px) {
     .sv-dest-grid {
       grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
     }
     .sv-footer-links {
       grid-template-columns: repeat(2, 1fr);
