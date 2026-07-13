@@ -22,6 +22,7 @@ const User = require("./models/user.js");
 const bcrypt = require("bcrypt");
 
 const authRoutes = require("./routes/auth.js");
+const pagesRoutes = require("./routes/pages.js");
 const { isLoggedIn, isHost } = require("./middleware.js");
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/StayVerse";
@@ -76,10 +77,26 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
+passport.use('local-user', new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
   try {
-    const user = await User.findOne({ email });
+    const cleanEmail = (email || '').trim().toLowerCase();
+    const user = await User.findOne({ email: new RegExp('^' + cleanEmail + '$', 'i') });
     if (!user) return done(null, false, { message: 'Incorrect email or password.' });
+    if (user.role !== 'user') return done(null, false, { message: 'This email is registered as a Host. Please login via the Host portal.' });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return done(null, false, { message: 'Incorrect email or password.' });
+    return done(null, user);
+  } catch (e) {
+    return done(e);
+  }
+}));
+
+passport.use('local-host', new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
+  try {
+    const cleanEmail = (email || '').trim().toLowerCase();
+    const user = await User.findOne({ email: new RegExp('^' + cleanEmail + '$', 'i') });
+    if (!user) return done(null, false, { message: 'Incorrect email or password.' });
+    if (user.role !== 'host') return done(null, false, { message: 'This email is registered as a User. Please login via the User portal.' });
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return done(null, false, { message: 'Incorrect email or password.' });
     return done(null, user);
@@ -109,6 +126,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/pages", pagesRoutes);
 
 function normalizeListing(listingData) {
   if (!listingData) return listingData;
@@ -253,11 +271,9 @@ app.get("/listings/:id", validateObjectId, wrapAsync(async (req, res) => {
 }));
 
 // Create Route
-app.post("/listings",
-   validateListing,
-   wrapAsync(async (req, res) => {
-  
-    const newListing = new Listing(normalizeListing(req.body.listing));
+app.post("/listings", isLoggedIn, isHost, validateListing, wrapAsync(async (req, res) => {
+  const newListing = new Listing(normalizeListing(req.body.listing));
+  newListing.owner = req.user._id;
   await newListing.save();
   res.redirect("/listings");
 }));
@@ -494,13 +510,26 @@ app.get("/api/hotels/search", wrapAsync(async (req, res) => {
 
   const regex = new RegExp(q, 'i');
   // Search across name, city, and country
-  const hotels = await Hotel.find({
+  let hotels = await Hotel.find({
     $or: [
       { name: regex },
       { city: regex },
       { country: regex }
     ]
   }).limit(30);
+  
+  if (hotels.length === 0) {
+    // Dynamically fetch from API and save to database if no results found
+    await syncCityHotels(q);
+    hotels = await Hotel.find({
+      $or: [
+        { name: regex },
+        { city: regex },
+        { country: regex }
+      ]
+    }).limit(30);
+  }
+
   res.json({ searchResults: hotels });
 }));
 
@@ -560,6 +589,14 @@ app.get("/api/hotels", wrapAsync(async (req, res) => {
   }));
   
   let combinedResults = [...mappedListings, ...hotels].slice(0, 30);
+  
+  // If no results in database, dynamically fetch from API and save to database
+  if (combinedResults.length === 0 && city) {
+    await syncCityHotels(city);
+    hotels = await Hotel.find(filter).limit(30);
+    combinedResults = [...mappedListings, ...hotels].slice(0, 30);
+  }
+
   res.json({ searchResults: combinedResults });
 }));
 
@@ -610,7 +647,44 @@ app.get("/api/hotels/:city", wrapAsync(async (req, res) => {
   }));
 
   let combinedResults = [...mappedListings, ...hotels].slice(0, 30);
+
+  // If no results in database, dynamically fetch from API and save to database
+  if (combinedResults.length === 0) {
+    await syncCityHotels(city);
+    hotels = await Hotel.find({
+      $or: [
+        { city: regex },
+        { state: regex },
+        { country: regex },
+        { area: regex },
+        { name: regex }
+      ]
+    }).limit(30);
+    combinedResults = [...mappedListings, ...hotels].slice(0, 30);
+  }
+
   res.json({ searchResults: combinedResults });
+}));
+
+// Bookings Route
+app.post("/api/bookings", isLoggedIn, wrapAsync(async (req, res) => {
+  const { propertyId, name, image, price } = req.body;
+  const user = await User.findById(req.user._id);
+  user.bookings.push({ propertyId, name, image, price, date: new Date() });
+  await user.save();
+  res.json({ success: true });
+}));
+
+// My Bookings Route
+app.get("/my-bookings", isLoggedIn, wrapAsync(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  res.render("users/my-bookings.ejs", { bookings: user.bookings });
+}));
+
+// My Host (Listings) Route
+app.get("/my-host", isLoggedIn, isHost, wrapAsync(async (req, res) => {
+  const listings = await Listing.find({ owner: req.user._id });
+  res.render("users/my-host.ejs", { listings });
 }));
 
 // StayAPI Meta Search Route
@@ -668,6 +742,12 @@ app.get("/hotels/show/:id", wrapAsync(async (req, res) => {
   }
   
   res.render("hotels/show.ejs", { hotel, apiReviews });
+}));
+
+// Return all unique cities for the dynamic footer destination grids
+app.get("/api/destinations", wrapAsync(async (req, res) => {
+  const cities = await Hotel.distinct("city");
+  res.json({ cities: cities || [] });
 }));
 
 app.use((req, res, next) => {

@@ -1,0 +1,77 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- Breadcrumb / Back Button -->
+<div class="container px-4 px-lg-5 mt-4 mb-3">
+  <a href="javascript:history.back()" class="text-decoration-none text-dark d-inline-flex align-items-center fw-semibold hover-opacity" style="font-size: 0.95rem; transition: opacity 0.2s;">
+    <i class="fa-solid fa-chevron-left me-2" style="font-size: 0.8rem;"></i> Back
+  </a>
+</div>
+
+<div class="container px-4 px-lg-5 mb-5 pb-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10 col-xl-8">
+      
+      <!-- Story Header -->
+      <div class="text-center mb-5">
+        <h1 class="fw-bold mb-3" style="font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.5px; color: #222;">
+          <%= story.title %>
+        </h1>
+        <p class="text-secondary mx-auto" style="font-size: 1.15rem; line-height: 1.6; max-width: 600px;">
+          <%= story.intro %>
+        </p>
+      </div>
+
+      <!-- Optional Hero Image -->
+      <% if (story.heroImage) { %>
+        <div class="mb-5 rounded-4 overflow-hidden shadow-sm" style="width: 100%; max-height: 400px;">
+          <img src="<%= story.heroImage %>" alt="<%= story.title %>" class="w-100 h-100" style="object-fit: cover; object-position: center;">
+        </div>
+      <% } %>
+
+      <!-- Dynamic Sections -->
+      <div class="story-content" style="color: #222;">
+        <% if (story.sections && story.sections.length > 0) { %>
+          <% story.sections.forEach(function(section, index) { %>
+            <div class="mb-5">
+              <h3 class="fw-bold mb-3" style="font-size: 1.5rem; letter-spacing: -0.3px;"><%= section.title %></h3>
+              <div class="text-secondary" style="font-size: 1.05rem; line-height: 1.7;">
+                <%- section.content %>
+              </div>
+            </div>
+            <% if (index !== story.sections.length - 1) { %>
+              <hr class="my-5" style="border-color: #ebebeb; opacity: 1;">
+            <% } %>
+          <% }) %>
+        <% } %>
+      </div>
+
+      <!-- Optional Call to Action -->
+      <% if (story.cta) { %>
+        <div class="mt-5 text-center p-5 rounded-4" style="background-color: #f7f7f7; border: 1px solid #ebebeb;">
+          <h4 class="fw-bold mb-3"><%= story.cta.title || 'Ready to get started?' %></h4>
+          <a href="<%= story.cta.link %>" class="btn fw-bold px-4 py-3 shadow-sm" style="background-color: #FF385C; color: white; border-radius: 8px; font-size: 1.05rem; transition: transform 0.2s, background 0.2s;" onmouseover="this.style.backgroundColor='#E61E4D'; this.style.transform='scale(1.02)';" onmouseout="this.style.backgroundColor='#FF385C'; this.style.transform='scale(1)';">
+            <%= story.cta.text %>
+          </a>
+        </div>
+      <% } %>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  .hover-opacity:hover {
+    opacity: 0.7;
+    text-decoration: underline !important;
+  }
+  .story-content p {
+    margin-bottom: 1.2rem;
+  }
+  .story-content ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+  .story-content li {
+    margin-bottom: 0.5rem;
+  }
+</style>

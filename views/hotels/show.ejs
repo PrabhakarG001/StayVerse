@@ -373,11 +373,37 @@ const reviewsToDisplay = (typeof apiReviews !== 'undefined' && apiReviews.length
 
 <script>
   // Handle booking form
-  document.getElementById('internalBookingForm').addEventListener('submit', function(e) {
+  document.getElementById('internalBookingForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const successModal = new bootstrap.Modal(document.getElementById('bookingSuccessModal'));
-    successModal.show();
-    this.reset();
+    const currentUser = <%- currentUser ? JSON.stringify(currentUser) : 'null' %>;
+    if (!currentUser) {
+      alert("Please login first.");
+      window.location.href = "/auth/login-user";
+      return;
+    }
+    
+    try {
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          propertyId: "<%= hotel.propertyId %>",
+          name: "<%= hotel.name.replace(/'/g, "\\'").replace(/"/g, '&quot;') %>",
+          image: "<%= images[0] %>",
+          price: "<%= currency === 'INR' ? '₹' : (currency + ' ') %><%= price.toLocaleString('en-IN') %>"
+        })
+      });
+      if (response.ok) {
+        const successModal = new bootstrap.Modal(document.getElementById('bookingSuccessModal'));
+        successModal.show();
+        this.reset();
+      } else {
+        alert("Failed to confirm booking. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred while booking.");
+    }
   });
 
   // StayAPI Modal Logic

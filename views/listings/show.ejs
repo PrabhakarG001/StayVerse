@@ -178,14 +178,20 @@
       </div>
       
       <div class="d-grid gap-2 my-3">
-        <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-dark rounded-pill py-2">
-          <i class="fa-solid fa-pen-to-square me-2"></i>Edit Listing
-        </a>
-        <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="w-100 d-grid">
-          <button class="btn btn-rose rounded-pill py-2">
-            <i class="fa-solid fa-trash-can me-2"></i>Delete Listing
+        <% if (currentUser && listing.owner && currentUser._id.toString() === listing.owner.toString()) { %>
+          <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-dark rounded-pill py-2">
+            <i class="fa-solid fa-pen-to-square me-2"></i>Edit Listing
+          </a>
+          <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="w-100 d-grid">
+            <button class="btn btn-rose rounded-pill py-2">
+              <i class="fa-solid fa-trash-can me-2"></i>Delete Listing
+            </button>
+          </form>
+        <% } else { %>
+          <button id="reserveBtn" class="btn btn-rose rounded-3 w-100 py-3 fw-bold fs-5 text-white" style="background: linear-gradient(to right, #e61e4d 0%, #e31c5f 50%, #d70466 100%);">
+            Reserve
           </button>
-        </form>
+        <% } %>
       </div>
       
       <div class="border-top pt-3 mt-3 text-center">
@@ -256,5 +262,40 @@
       .catch(err => {
         console.error("Geocoding map load failure:", err);
       });
+      
+    // Handle Reserve Logic
+    const reserveBtn = document.getElementById('reserveBtn');
+    if (reserveBtn) {
+      reserveBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+        const currentUser = <%- currentUser ? JSON.stringify(currentUser) : 'null' %>;
+        if (!currentUser) {
+          alert("Please login first.");
+          window.location.href = "/auth/login-user";
+          return;
+        }
+        
+        try {
+          const response = await fetch('/api/bookings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              propertyId: "<%= listing._id %>",
+              name: "<%= listing.title.replace(/'/g, "\\'").replace(/"/g, '&quot;') %>",
+              image: "<%= images[0] %>",
+              price: "Rs. <%= listing.price ? listing.price.toLocaleString('en-IN') : '0' %>"
+            })
+          });
+          if (response.ok) {
+            alert("Booking Confirmed!");
+          } else {
+            alert("Failed to confirm booking. Please try again.");
+          }
+        } catch (err) {
+          console.error(err);
+          alert("An error occurred while booking.");
+        }
+      });
+    }
   });
 </script>

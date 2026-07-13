@@ -15,35 +15,37 @@ router.get('/login-host', (req, res) => {
 });
 
 // Local Strategy Login (User)
-router.post('/login-user', passport.authenticate('local', {
-    failureRedirect: '/auth/login-user',
-    failureFlash: true
-}), (req, res) => {
-    // If successful, check role
-    if (req.user.role === 'host') {
-        req.flash('success', 'Logged in successfully as Host!');
-        res.redirect('/listings/new');
-    } else {
-        req.flash('success', 'Logged in successfully as User!');
-        const redirectUrl = req.session.returnTo || '/';
-        delete req.session.returnTo;
-        res.redirect(redirectUrl);
-    }
+router.post('/login-user', (req, res, next) => {
+    passport.authenticate('local-user', (err, user, info) => {
+        if (err) return next(err);
+        if (!user) {
+            req.flash('error', info.message);
+            return res.redirect('/auth/login-user');
+        }
+        req.logIn(user, (err) => {
+            if (err) return next(err);
+            req.flash('success', 'Logged in successfully as User!');
+            const redirectUrl = req.session.returnTo || '/';
+            delete req.session.returnTo;
+            res.redirect(redirectUrl);
+        });
+    })(req, res, next);
 });
 
 // Local Strategy Login (Host)
-router.post('/login-host', passport.authenticate('local', {
-    failureRedirect: '/auth/login-host',
-    failureFlash: true
-}), (req, res) => {
-    // If successful, check role
-    if (req.user.role === 'host') {
-        req.flash('success', 'Logged in successfully as Host!');
-        res.redirect('/listings/new');
-    } else {
-        req.flash('success', 'Logged in successfully as User!');
-        res.redirect('/');
-    }
+router.post('/login-host', (req, res, next) => {
+    passport.authenticate('local-host', (err, user, info) => {
+        if (err) return next(err);
+        if (!user) {
+            req.flash('error', info.message);
+            return res.redirect('/auth/login-host');
+        }
+        req.logIn(user, (err) => {
+            if (err) return next(err);
+            req.flash('success', 'Logged in successfully as Host!');
+            res.redirect('/listings/new');
+        });
+    })(req, res, next);
 });
 
 // Local Strategy Register
@@ -57,17 +59,25 @@ router.post('/register', async (req, res) => {
             return res.redirect(`/auth/login-${role}`);
         }
 
-        const existingUser = await User.findOne({ $or: [{ email: email || null }, { phone: phone || null }] });
-        if (existingUser) {
-            req.flash('error', 'User with this email or phone already exists.');
-            return res.redirect(`/auth/login-${role}`);
+        const cleanEmail = email ? email.trim().toLowerCase() : null;
+        
+        let queryConditions = [];
+        if (cleanEmail) queryConditions.push({ email: cleanEmail });
+        if (phone) queryConditions.push({ phone: phone });
+        
+        if (queryConditions.length > 0) {
+            const existingUser = await User.findOne({ $or: queryConditions });
+            if (existingUser) {
+                req.flash('error', 'User with this email or phone already exists.');
+                return res.redirect(`/auth/login-${role}`);
+            }
         }
 
         const hashedPassword = await bcrypt.hash(password, 12);
         
         const user = new User({
             name,
-            email,
+            email: cleanEmail,
             phone,
             password: hashedPassword,
             role,

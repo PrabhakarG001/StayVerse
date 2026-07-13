@@ -1,8 +1,8 @@
 <% layout("/layouts/boilerplate") %>
 
 <!-- Full screen blurred background covering everything -->
-<div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: url('/images/travel_bg.png') center/cover no-repeat; filter: blur(8px); transform: scale(1.05); z-index: 9998;"></div>
-<div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.2); z-index: 9999;"></div>
+<div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; filter: blur(4px); transform: scale(1.05); z-index: 9998; pointer-events: none;"></div>
+<div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(255, 255, 255, 0.4); z-index: 9999; pointer-events: none; backdrop-filter: blur(4px);"></div>
 
 <!-- Full screen content container -->
 <div class="d-flex justify-content-center align-items-center" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 10000; padding: 20px; overflow-y: auto;">
@@ -53,8 +53,9 @@
             <div class="mb-3 text-start">
               <input type="email" class="form-control premium-input" name="email" placeholder="Email address" required>
             </div>
-            <div class="mb-3 text-start">
-              <input type="password" class="form-control premium-input" name="password" placeholder="Password" required>
+            <div class="mb-3 text-start position-relative">
+              <input type="password" class="form-control premium-input pe-5" id="loginUserPwd" name="password" placeholder="Password" required>
+              <i class="fa-regular fa-eye position-absolute top-50 end-0 translate-middle-y me-3 text-secondary" style="cursor: pointer; z-index: 10;" onclick="togglePassword('loginUserPwd', this)"></i>
             </div>
             <button type="submit" class="btn w-100 fw-bold text-white mb-3" style="background-color: #E61E4D; border-radius: 8px; font-size: 1rem; padding: 14px; transition: background 0.2s; box-shadow: none !important;" onmouseover="this.style.backgroundColor='#d4184c'" onmouseout="this.style.backgroundColor='#E61E4D'">Log in with Email</button>
           </form>
@@ -70,8 +71,9 @@
             <div class="mb-3 text-start">
               <input type="email" class="form-control premium-input" name="email" placeholder="Email address" required>
             </div>
-            <div class="mb-3 text-start">
-              <input type="password" class="form-control premium-input" name="password" placeholder="Create Password" required>
+            <div class="mb-3 text-start position-relative">
+              <input type="password" class="form-control premium-input pe-5" id="registerUserPwd" name="password" placeholder="Create Password" required>
+              <i class="fa-regular fa-eye position-absolute top-50 end-0 translate-middle-y me-3 text-secondary" style="cursor: pointer; z-index: 10;" onclick="togglePassword('registerUserPwd', this)"></i>
             </div>
             <button type="submit" class="btn w-100 fw-bold text-white mb-3" style="background-color: #E61E4D; border-radius: 8px; font-size: 1rem; padding: 14px; transition: background 0.2s; box-shadow: none !important;" onmouseover="this.style.backgroundColor='#d4184c'" onmouseout="this.style.backgroundColor='#E61E4D'">Sign up</button>
           </form>
@@ -101,6 +103,21 @@
     </div>
   </div>
 </div>
+
+<script>
+  function togglePassword(inputId, icon) {
+    const input = document.getElementById(inputId);
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.classList.remove('fa-eye');
+      icon.classList.add('fa-eye-slash');
+    } else {
+      input.type = 'password';
+      icon.classList.remove('fa-eye-slash');
+      icon.classList.add('fa-eye');
+    }
+  }
+</script>
 
 <style>
   .premium-input {

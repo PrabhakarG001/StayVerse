@@ -32,7 +32,19 @@ const userSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    bookings: [
+        {
+            propertyId: String,
+            name: String,
+            image: String,
+            price: String,
+            date: {
+                type: Date,
+                default: Date.now
+            }
+        }
+    ]
 });
 
 module.exports = mongoose.model("User", userSchema);

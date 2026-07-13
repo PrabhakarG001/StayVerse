@@ -9,8 +9,12 @@
 }
 
 html, body {
-  overflow-x: clip;
+  overflow-x: clip; /* clip is safer than hidden to prevent scroll lock on mobile */
   max-width: 100vw;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
@@ -27,6 +31,24 @@ body {
 @media (max-width: 480px) {
   html {
     font-size: 95%; /* Slightly scale down typography on very small devices */
+  }
+}
+
+/* Tablet Responsiveness (751px - 1024px) */
+@media (min-width: 751px) and (max-width: 1024px) {
+  html {
+    font-size: 98%; /* Slightly adjust global typography for tablets */
+  }
+  .form-control, .form-select, .btn {
+    min-height: 48px; /* Ensure proper touch target size */
+  }
+}
+
+/* Fix for UI shapes/components looking stretched/distorted after 750px */
+@media (min-width: 751px) and (max-width: 767.98px) {
+  .row-cols-sm-2 > *, .row-cols-2 > * {
+    flex: 0 0 auto;
+    width: 33.33333333% !important;
   }
 }
 
@@ -399,3 +421,43 @@ main {
 }
 
 /* Legacy hover utility */
+
+/* --- Fix UI distortion at and above 750px --- */
+
+/* Prevent Shape Distortion */
+.card, .shape, img, .hotel-slide {
+  aspect-ratio: auto;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Exact Breakpoint at 750px */
+@media (max-width: 750px) {
+  .container {
+    display: flex;
+    flex-direction: column; /* Added column to prevent block layout collapse causing scroll issues */
+    flex-wrap: wrap;
+  }
+
+  .card, .shape {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Navbar Icon Protection */
+.navbar, .sv-header-row1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-icon, .sv-mobile-right a, .sv-right-links a {
+  flex-shrink: 0;
+}
+
+/* Fix Height-Based Break (742px issue) */
+.section, .sv-dest-grid, .hero-section {
+  height: auto;
+  min-height: fit-content;
+}

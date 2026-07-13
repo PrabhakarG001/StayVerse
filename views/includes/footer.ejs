@@ -235,7 +235,7 @@
   }
 
   /* ── Mobile Accordion for Links ── */
-  @media (max-width: 767.98px) {
+  @media (max-width: 750px) {
     .sv-footer-links {
       grid-template-columns: 1fr;
       padding: 0;
@@ -329,7 +329,8 @@
 
       <!-- Destination Tabs -->
       <div class="sv-dest-tabs" role="tablist">
-        <button class="sv-dest-tab active" data-tab="popular" role="tab">Popular</button>
+        <button class="sv-dest-tab active" data-tab="all" role="tab">All</button>
+        <button class="sv-dest-tab" data-tab="popular" role="tab">Popular</button>
         <button class="sv-dest-tab" data-tab="beach" role="tab">Beach</button>
         <button class="sv-dest-tab" data-tab="mountain" role="tab">Mountain</button>
         <button class="sv-dest-tab" data-tab="heritage" role="tab">Heritage</button>
@@ -337,80 +338,14 @@
         <button class="sv-dest-tab" data-tab="romantic" role="tab">Romantic</button>
       </div>
 
-      <!-- Destination Grids (one per tab) -->
-      <div class="sv-dest-panel" data-panel="popular" style="display: block;">
-        <div class="sv-dest-grid" id="dest-popular">
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Goa</div><div class="dest-type">Beach & Nightlife</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Manali</div><div class="dest-type">Mountain retreat</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Jaipur</div><div class="dest-type">Heritage & Culture</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Bali</div><div class="dest-type">Tropical paradise</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Paris</div><div class="dest-type">City of lights</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Udaipur</div><div class="dest-type">Lake city</div></a></div>
-          <div class="sv-dest-card sv-dest-extra"><a href="/listings?filter=foreign"><div class="dest-city">Santorini</div><div class="dest-type">Island getaway</div></a></div>
-          <div class="sv-dest-card sv-dest-extra"><a href="/listings?filter=india"><div class="dest-city">Rishikesh</div><div class="dest-type">Adventure & Yoga</div></a></div>
-          <div class="sv-dest-card sv-dest-extra"><a href="/listings?filter=foreign"><div class="dest-city">Tokyo</div><div class="dest-type">Culture & Modern</div></a></div>
-          <div class="sv-dest-card sv-dest-extra"><a href="/listings?filter=india"><div class="dest-city">Kerala</div><div class="dest-type">Backwaters & Nature</div></a></div>
-          <div class="sv-dest-card sv-dest-extra"><a href="/listings?filter=foreign"><div class="dest-city">Maldives</div><div class="dest-type">Luxury overwater</div></a></div>
-          <div class="sv-dest-card sv-dest-extra"><a href="/listings?filter=india"><div class="dest-city">Shimla</div><div class="dest-type">Hill station charm</div></a></div>
+      <!-- Destination Grid Container (Dynamic) -->
+      <div id="dynamic-dest-container">
+        <div class="sv-dest-grid" id="sv-dynamic-grid">
+           <!-- Cards will be populated here by JavaScript -->
         </div>
-        <button class="sv-show-more-btn" onclick="toggleDestinations(this)">
+        <button class="sv-show-more-btn" id="sv-dynamic-show-more" onclick="toggleDynamicDestinations()" style="display: none;">
           Show more <i class="fa-solid fa-chevron-down"></i>
         </button>
-      </div>
-
-      <div class="sv-dest-panel" data-panel="beach" style="display: none;">
-        <div class="sv-dest-grid">
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Goa</div><div class="dest-type">Beach & Nightlife</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Maldives</div><div class="dest-type">Crystal clear waters</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Phuket</div><div class="dest-type">Thai beaches</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Andaman</div><div class="dest-type">Island paradise</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Santorini</div><div class="dest-type">Greek island</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Pondicherry</div><div class="dest-type">French Riviera of India</div></a></div>
-        </div>
-      </div>
-
-      <div class="sv-dest-panel" data-panel="mountain" style="display: none;">
-        <div class="sv-dest-grid">
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Manali</div><div class="dest-type">Snow-capped peaks</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Shimla</div><div class="dest-type">Colonial hill town</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Darjeeling</div><div class="dest-type">Tea plantations</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Swiss Alps</div><div class="dest-type">European peaks</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Leh-Ladakh</div><div class="dest-type">High altitude desert</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Mussoorie</div><div class="dest-type">Queen of Hills</div></a></div>
-        </div>
-      </div>
-
-      <div class="sv-dest-panel" data-panel="heritage" style="display: none;">
-        <div class="sv-dest-grid">
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Jaipur</div><div class="dest-type">Royal palaces</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Varanasi</div><div class="dest-type">Spiritual capital</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Rome</div><div class="dest-type">Ancient history</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Agra</div><div class="dest-type">Taj Mahal</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Athens</div><div class="dest-type">Greek civilization</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Hampi</div><div class="dest-type">Ruins & Temples</div></a></div>
-        </div>
-      </div>
-
-      <div class="sv-dest-panel" data-panel="unique" style="display: none;">
-        <div class="sv-dest-grid">
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Jaisalmer</div><div class="dest-type">Desert camping</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Coorg</div><div class="dest-type">Treehouse stays</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Iceland</div><div class="dest-type">Northern lights</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Wayanad</div><div class="dest-type">Jungle lodges</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Cappadocia</div><div class="dest-type">Cave hotels</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Meghalaya</div><div class="dest-type">Living root bridges</div></a></div>
-        </div>
-      </div>
-
-      <div class="sv-dest-panel" data-panel="romantic" style="display: none;">
-        <div class="sv-dest-grid">
-          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Paris</div><div class="dest-type">City of love</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Udaipur</div><div class="dest-type">Lake palaces</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Venice</div><div class="dest-type">Gondola rides</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Alleppey</div><div class="dest-type">Houseboat retreat</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=foreign"><div class="dest-city">Santorini</div><div class="dest-type">Sunset views</div></a></div>
-          <div class="sv-dest-card"><a href="/listings?filter=india"><div class="dest-city">Ooty</div><div class="dest-type">Misty romance</div></a></div>
-        </div>
       </div>
     </div>
 
@@ -448,12 +383,12 @@
       <div class="sv-footer-col">
         <h5 onclick="toggleFooterCol(this)">Hosting with Us</h5>
         <ul>
-          <li><a href="/listings/new">List your property</a></li>
-          <li><a href="#">StayVerse Host Guarantee</a></li>
-          <li><a href="#">Hosting resources</a></li>
-          <li><a href="#">Community forum</a></li>
-          <li><a href="#">Responsible hosting</a></li>
-          <li><a href="#">24/7 Host Support</a></li>
+          <li><a href="/pages/list-your-property">List your property</a></li>
+          <li><a href="/pages/host-guarantee">StayVerse Host Guarantee</a></li>
+          <li><a href="/pages/hosting-resources">Hosting resources</a></li>
+          <li><a href="/pages/community-forum">Community forum</a></li>
+          <li><a href="/pages/responsible-hosting">Responsible hosting</a></li>
+          <li><a href="/pages/host-support">24/7 Host Support</a></li>
         </ul>
       </div>
 
@@ -461,12 +396,12 @@
       <div class="sv-footer-col">
         <h5 onclick="toggleFooterCol(this)">About StayVerse</h5>
         <ul>
-          <li><a href="#">Our Story</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Investors</a></li>
-          <li><a href="#">Press & News</a></li>
-          <li><a href="#">Trust & Safety</a></li>
-          <li><a href="#">Contact Us</a></li>
+          <li><a href="/pages/our-story">Our Story</a></li>
+          <li><a href="/pages/careers">Careers</a></li>
+          <li><a href="/pages/investors">Investors</a></li>
+          <li><a href="/pages/press-news">Press & News</a></li>
+          <li><a href="/pages/trust-safety">Trust & Safety</a></li>
+          <li><a href="/pages/contact-us">Contact Us</a></li>
         </ul>
       </div>
     </div>
@@ -505,41 +440,100 @@
 </footer>
 
 <script>
-  // ── Tab switching for destination inspiration ──
-  document.querySelectorAll('.sv-dest-tab').forEach(tab => {
-    tab.addEventListener('click', function() {
-      // Deactivate all tabs
-      document.querySelectorAll('.sv-dest-tab').forEach(t => t.classList.remove('active'));
-      // Activate clicked tab
-      this.classList.add('active');
-      // Hide all panels
-      document.querySelectorAll('.sv-dest-panel').forEach(p => p.style.display = 'none');
-      // Show target panel
-      const target = this.getAttribute('data-tab');
-      const panel = document.querySelector(`.sv-dest-panel[data-panel="${target}"]`);
-      if (panel) panel.style.display = 'block';
-    });
-  });
+  // ── Dynamic Destination Grid JS ──
+  const categoryMap = {
+    beach: ["goa", "bali", "maldives", "phuket", "andaman", "santorini", "pondicherry", "busan", "dubrovnik"],
+    mountain: ["manali", "shimla", "darjeeling", "swiss alps", "leh-ladakh", "mussoorie", "spiti", "dharamshala", "queenstown"],
+    heritage: ["jaipur", "varanasi", "rome", "agra", "athens", "hampi", "kyoto", "lisbon"],
+    unique: ["jaisalmer", "coorg", "iceland", "wayanad", "cappadocia", "shillong"],
+    romantic: ["paris", "udaipur", "venice", "alleppey", "santorini", "ooty", "marrakech", "kyoto"],
+    popular: ["goa", "manali", "jaipur", "bali", "paris", "udaipur", "tokyo", "kerala", "maldives", "shimla", "kyoto", "santorini", "queenstown", "lisbon", "marrakech"]
+  };
 
-  // ── Show more / Show less destinations ──
-  function toggleDestinations(btn) {
-    const grid = btn.previousElementSibling;
-    const extras = grid.querySelectorAll('.sv-dest-extra');
-    const isExpanded = btn.classList.contains('expanded');
+  let fetchedCities = [];
+  let currentActiveTab = 'all';
+  let isGridExpanded = false;
 
-    extras.forEach(card => {
-      card.style.display = isExpanded ? 'none' : 'block';
-    });
-
-    btn.classList.toggle('expanded');
-    btn.innerHTML = isExpanded
-      ? 'Show more <i class="fa-solid fa-chevron-down"></i>'
-      : 'Show less <i class="fa-solid fa-chevron-down"></i>';
+  async function loadDynamicCities() {
+    try {
+      const res = await fetch('/api/destinations');
+      const data = await res.json();
+      fetchedCities = data.cities || [];
+      renderDestinations(currentActiveTab);
+    } catch (err) {
+      console.error("Failed to load cities for footer", err);
+    }
   }
 
-  // Hide extra destinations initially
-  document.querySelectorAll('.sv-dest-extra').forEach(el => {
-    el.style.display = 'none';
+  function getCitiesForTab(tab) {
+    if (tab === 'all') return fetchedCities;
+    const tabList = categoryMap[tab] || [];
+    return fetchedCities.filter(c => tabList.includes(c.toLowerCase()));
+  }
+
+  function getSubText(city, tab) {
+    if (tab === 'beach') return "Coastal getaway";
+    if (tab === 'mountain') return "Mountain retreat";
+    if (tab === 'heritage') return "Culture & History";
+    if (tab === 'unique') return "Unique stay";
+    if (tab === 'romantic') return "Romantic escape";
+    return "Explore destination"; // Default for all/popular
+  }
+
+  function renderDestinations(tab) {
+    const grid = document.getElementById('sv-dynamic-grid');
+    const showMoreBtn = document.getElementById('sv-dynamic-show-more');
+    grid.innerHTML = '';
+    
+    const citiesToRender = getCitiesForTab(tab);
+    
+    if (citiesToRender.length === 0) {
+      grid.innerHTML = '<div style="grid-column: span 6; padding: 20px 0; color: #717171;">No destinations available in this category yet.</div>';
+      showMoreBtn.style.display = 'none';
+      return;
+    }
+
+    citiesToRender.forEach((city, index) => {
+      const isExtra = index >= 12;
+      const displayStyle = (isExtra && !isGridExpanded) ? 'display: none;' : '';
+      
+      grid.innerHTML += `
+        <div class="sv-dest-card" style="${displayStyle}">
+          <a href="/hotels/search?query=${encodeURIComponent(city)}">
+            <div class="dest-city">${city}</div>
+            <div class="dest-type">${getSubText(city, tab)}</div>
+          </a>
+        </div>
+      `;
+    });
+
+    if (citiesToRender.length > 12) {
+      showMoreBtn.style.display = 'inline-flex';
+      showMoreBtn.innerHTML = isGridExpanded 
+        ? 'Show less <i class="fa-solid fa-chevron-up"></i>'
+        : 'Show more <i class="fa-solid fa-chevron-down"></i>';
+    } else {
+      showMoreBtn.style.display = 'none';
+    }
+  }
+
+  function toggleDynamicDestinations() {
+    isGridExpanded = !isGridExpanded;
+    renderDestinations(currentActiveTab);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    loadDynamicCities();
+    
+    document.querySelectorAll('.sv-dest-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.sv-dest-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        currentActiveTab = this.getAttribute('data-tab');
+        isGridExpanded = false;
+        renderDestinations(currentActiveTab);
+      });
+    });
   });
 
   // ── Mobile accordion for footer columns ──

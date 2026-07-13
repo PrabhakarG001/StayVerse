@@ -133,10 +133,15 @@
         <i class="fa-regular fa-circle-user"></i>
         <span>Log in</span>
       </a>
-    <% } else { %>
-      <a href="/auth/logout" class="text-danger">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        <span>Log out</span>
+    <% } else if (currentUser.role === 'user') { %>
+      <a href="/my-bookings">
+        <i class="fa-solid fa-suitcase-rolling"></i>
+        <span>My Booking</span>
+      </a>
+    <% } else if (currentUser.role === 'host') { %>
+      <a href="/my-host">
+        <i class="fa-solid fa-house-medical"></i>
+        <span>My Host</span>
       </a>
     <% } %>
   </div>
