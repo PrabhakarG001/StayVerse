@@ -499,7 +499,7 @@ app.get("/api/hotels/search", wrapAsync(async (req, res) => {
   // If no query or user literally types 'worldwide', return a global mix
   if (!q || q.toLowerCase() === 'worldwide' || q.toLowerCase() === 'anywhere') {
     const hotels = await Hotel.find({}).limit(30);
-    let listings = await Listing.find({}).limit(30);
+    let listings = await Listing.find({ title: { $not: /trending|mountain|beachfront/i } }).limit(30);
     let mappedListings = listings.map(l => ({
       propertyId: l._id.toString(),
       name: l.title,
@@ -535,10 +535,15 @@ app.get("/api/hotels/search", wrapAsync(async (req, res) => {
   }).limit(30);
 
   let listings = await Listing.find({
-    $or: [
-      { title: regex },
-      { location: regex },
-      { country: regex }
+    $and: [
+      { title: { $not: /trending|mountain|beachfront/i } },
+      {
+        $or: [
+          { title: regex },
+          { location: regex },
+          { country: regex }
+        ]
+      }
     ]
   }).limit(30);
   
@@ -588,7 +593,7 @@ app.get("/api/hotels", wrapAsync(async (req, res) => {
     }
   }
   let filter = {};
-  let listingsFilter = {};
+  let listingsFilter = { title: { $not: /trending|mountain|beachfront/i } };
 
   if (city) {
     const regex = new RegExp(city, 'i');

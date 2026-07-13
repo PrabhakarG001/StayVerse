@@ -212,10 +212,7 @@
         return;
       }
       
-      const filteredResults = data.searchResults.filter(entity => {
-        const n = (entity.name || '').toLowerCase();
-        return !(n.includes('trending') || n.includes('mountain') || n.includes('beachfront'));
-      });
+      const filteredResults = data.searchResults;
       
       if (filteredResults.length === 0) {
         emptyState.classList.remove('d-none');
