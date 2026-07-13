@@ -211,13 +211,23 @@
         emptyState.classList.remove('d-none');
         return;
       }
+      
+      const filteredResults = data.searchResults.filter(entity => {
+        const n = (entity.name || '').toLowerCase();
+        return !(n.includes('trending') || n.includes('mountain') || n.includes('beachfront'));
+      });
+      
+      if (filteredResults.length === 0) {
+        emptyState.classList.remove('d-none');
+        return;
+      }
 
       const getMockPriceVal = (propertyId) => {
         const seed = parseInt(propertyId) || 12345;
         return Math.floor(Math.abs((seed * 9301 + 49297) % 233280) / 233280 * (15000 - 3000 + 1)) + 3000;
       };
 
-      data.searchResults.forEach(entity => {
+      filteredResults.forEach(entity => {
         const col = document.createElement('div');
         col.className = 'col mb-4';
         

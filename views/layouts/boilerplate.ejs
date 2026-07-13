@@ -37,6 +37,12 @@
   <style>
     /* JS Scroll animations initial hidden states */
     html.js-enabled .motion-footer { opacity: 0; transform: translateY(40px); }
+    @media (max-width: 741.98px) {
+      html.js-enabled .motion-footer {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
     
     /* Instant Pure CSS Animations for Header, Nav & Cards */
     @keyframes slideDownFast { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }

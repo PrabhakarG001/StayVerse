@@ -380,11 +380,19 @@
       container.innerHTML = ''; // Clear skeletons
       
       if (data.searchResults && data.searchResults.length > 0) {
-        // Show up to 8 hotels in the slider
-        data.searchResults.slice(0, 8).forEach(hotel => {
-          container.innerHTML += createHotelCard(hotel);
+        const filteredResults = data.searchResults.filter(hotel => {
+          const n = (hotel.name || '').toLowerCase();
+          return !(n.includes('trending') || n.includes('mountain') || n.includes('beachfront'));
         });
-        container.innerHTML += createSeeAllCard(city, data.searchResults);
+        
+        if (filteredResults.length > 0) {
+          filteredResults.slice(0, 8).forEach(hotel => {
+            container.innerHTML += createHotelCard(hotel);
+          });
+          container.innerHTML += createSeeAllCard(city, filteredResults);
+        } else {
+          container.innerHTML = '<p class="text-secondary">No homes found.</p>';
+        }
       } else {
         container.innerHTML = '<p class="text-secondary">No homes found.</p>';
       }
