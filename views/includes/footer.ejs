@@ -226,6 +226,11 @@
   .sv-footer-socials a {
     color: #222;
     font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
     transition: color 0.2s ease, transform 0.2s ease;
     text-decoration: none;
   }
@@ -244,8 +249,9 @@
       padding: 0;
       gap: 0;
     }
-    .sv-footer-col {
-      padding: 0 !important;
+    .sv-footer-col, .sv-footer-col:not(:first-child), .sv-footer-col:not(:last-child) {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
       border-right: none !important;
       border-bottom: 1px solid #ddd;
     }
@@ -314,14 +320,25 @@
     }
     .sv-footer-links {
       grid-template-columns: repeat(2, 1fr);
-      gap: 32px;
+      gap: 40px;
+      padding: 40px 0;
     }
-    .sv-footer-col:not(:last-child) {
-      padding-right: 0;
-      border-right: none;
+    .sv-footer-col, .sv-footer-col:not(:first-child), .sv-footer-col:not(:last-child) {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      border-right: none !important;
     }
-    .sv-footer-col:not(:first-child) {
-      padding-left: 0;
+    .sv-footer-bottom {
+      flex-direction: column-reverse;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+    }
+    .sv-footer-bottom-left {
+      justify-content: center;
+    }
+    .sv-footer-bottom-right {
+      justify-content: center;
     }
   }
 </style>
@@ -438,7 +455,7 @@
           <button class="btn sv-footer-lang-btn border-0" type="button" style="padding: 5px; box-shadow: none;">
             <i class="fa-solid fa-globe"></i> <span class="currentLangText">English</span>
           </button>
-          <ul class="dropdown-menu mb-1 shadow-sm" style="min-width: auto; border-radius: 12px; font-size: 0.85rem;">
+          <ul class="dropdown-menu dropdown-menu-end mb-1 shadow-sm" style="min-width: auto; border-radius: 12px; font-size: 0.85rem;">
             <li><a class="dropdown-item fw-medium" href="#" onclick="changeLanguage('hi'); return false;">Hindi</a></li>
             <li><a class="dropdown-item fw-medium" href="#" onclick="changeLanguage('en'); return false;">English</a></li>
           </ul>
@@ -448,7 +465,7 @@
           <button class="btn sv-footer-lang-btn border-0" type="button" style="padding: 5px; box-shadow: none;">
             <span class="currentCurrText">₹ (Rupees)</span>
           </button>
-          <ul class="dropdown-menu mb-1 shadow-sm" style="min-width: auto; border-radius: 12px; font-size: 0.85rem;">
+          <ul class="dropdown-menu dropdown-menu-end mb-1 shadow-sm" style="min-width: auto; border-radius: 12px; font-size: 0.85rem;">
             <li><a class="dropdown-item fw-medium" href="#" onclick="changeCurrency('USD'); return false;">$ Dollar</a></li>
             <li><a class="dropdown-item fw-medium" href="#" onclick="changeCurrency('INR'); return false;">₹ (Rupees)</a></li>
           </ul>
