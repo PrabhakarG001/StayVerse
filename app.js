@@ -509,7 +509,8 @@ app.get("/api/hotels/search", wrapAsync(async (req, res) => {
       images: l.images && l.images.length > 0 ? l.images.map(img => img.url) : (l.image && l.image.url ? [l.image.url] : []),
       starRating: 5,
       reviewScore: 9.5,
-      isPremium: true
+      isPremium: true,
+      isListing: true
     }));
     return res.json({ searchResults: [...mappedListings, ...hotels].slice(0, 30) });
   }
@@ -556,7 +557,8 @@ app.get("/api/hotels/search", wrapAsync(async (req, res) => {
     images: l.images && l.images.length > 0 ? l.images.map(img => img.url) : (l.image && l.image.url ? [l.image.url] : []),
     starRating: 5,
     reviewScore: 9.5,
-    isPremium: true
+    isPremium: true,
+    isListing: true
   }));
   
   let combinedResults = [...mappedListings, ...hotels];
@@ -654,7 +656,8 @@ app.get("/api/hotels", wrapAsync(async (req, res) => {
     images: l.images && l.images.length > 0 ? l.images.map(img => img.url) : (l.image && l.image.url ? [l.image.url] : []),
     starRating: 5,
     reviewScore: 9.5,
-    isPremium: true
+    isPremium: true,
+    isListing: true
   }));
   
   let combinedResults = [...mappedListings, ...hotels].slice(0, 30);
@@ -712,7 +715,8 @@ app.get("/api/hotels/:city", wrapAsync(async (req, res) => {
     images: l.images && l.images.length > 0 ? l.images.map(img => img.url) : (l.image && l.image.url ? [l.image.url] : []),
     starRating: 5,
     reviewScore: 9.5,
-    isPremium: true
+    isPremium: true,
+    isListing: true
   }));
 
   let combinedResults = [...mappedListings, ...hotels].slice(0, 30);
@@ -763,6 +767,15 @@ app.get("/hotels/show/:id", wrapAsync(async (req, res) => {
   
   const hotel = await Hotel.findOne({ propertyId: id });
   if (!hotel) {
+    // Check if this is a Listing _id (from combined search results)
+    try {
+      const listing = await Listing.findById(id);
+      if (listing) {
+        return res.redirect(`/listings/${id}`);
+      }
+    } catch(e) {
+      // Not a valid ObjectId, ignore
+    }
     return res.redirect("/listings");
   }
 

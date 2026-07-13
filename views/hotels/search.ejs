@@ -248,8 +248,10 @@
           `;
         }
         
+        const cardUrl = entity.isListing ? `/listings/${entity.propertyId}` : `/hotels/show/${entity.propertyId}`;
+        
         col.innerHTML = `
-          <a href="/hotels/show/${entity.propertyId}" class="text-decoration-none text-dark d-block h-100 hotel-card">
+          <a href="${cardUrl}" class="text-decoration-none text-dark d-block h-100 hotel-card">
             <div class="card border-0 h-100 bg-transparent hotel-card-hover rounded-4 position-relative pb-3">
               <div class="position-relative overflow-hidden rounded-4 mb-2" style="aspect-ratio: 1 / 1; width: 100%;">
                 <img src="${imageUrl}" class="w-100 h-100 object-fit-cover" alt="Hotel Image" loading="lazy">
