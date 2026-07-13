@@ -267,16 +267,9 @@
         
         <!-- Navbar Language & Currency -->
         <style>
-          .sv-hover-dropup-force { position: relative; }
-          .sv-hover-dropup-force:hover .dropdown-menu { 
-            display: block; 
-            top: auto !important; 
-            bottom: 100% !important; 
-            margin-top: auto !important; 
-            margin-bottom: 0.5rem !important; 
-          }
+          .sv-hover-dropdown:hover .dropdown-menu { display: block; margin-top: 0; }
         </style>
-        <div class="dropdown d-none d-md-block sv-hover-dropup-force me-1">
+        <div class="dropdown d-none d-md-block sv-hover-dropdown me-1">
           <button class="btn border-0 rounded-circle bg-transparent d-flex align-items-center justify-content-center" type="button" style="width: 40px; height: 40px; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
             <i class="fa-solid fa-globe" style="font-size: 1.1rem; color: #222;"></i>
           </button>
@@ -286,7 +279,7 @@
           </ul>
         </div>
         
-        <div class="dropdown d-none d-md-block sv-hover-dropup-force me-2">
+        <div class="dropdown d-none d-md-block sv-hover-dropdown me-2">
           <button class="btn border-0 rounded-circle bg-transparent d-flex align-items-center justify-content-center" type="button" style="width: 40px; height: 40px; transition: background 0.2s; font-weight: 600; color: #222;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
             <span class="currentCurrSymbol">₹</span>
           </button>
