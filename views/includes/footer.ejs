@@ -236,6 +236,9 @@
 
   /* ── Mobile Accordion for Links ── */
   @media (max-width: 741.98px) {
+    .sv-footer {
+      padding-bottom: 85px !important;
+    }
     .sv-footer-links {
       grid-template-columns: 1fr;
       padding: 0;
@@ -290,16 +293,19 @@
 
     /* Bottom bar stacks */
     .sv-footer-bottom {
-      flex-direction: column;
+      flex-direction: column-reverse;
       align-items: center;
       text-align: center;
+      gap: 20px;
     }
     .sv-footer-bottom-left {
       justify-content: center;
+      margin-top: 8px;
     }
     .sv-footer-bottom-right {
       justify-content: center;
       flex-wrap: wrap;
+      gap: 16px;
     }
   }
   @media (min-width: 742px) and (max-width: 991.98px) {
