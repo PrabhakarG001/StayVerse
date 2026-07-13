@@ -159,7 +159,7 @@
     input.style.width = '100%';
     input.style.fontSize = '0.88rem';
     input.style.color = '#222';
-    input.style.fontWeight = '600';
+    input.style.fontWeight = '400';
 
     // Prevent enter from submitting the whole page normally if we want to handle it
     input.addEventListener('keydown', function(e) {

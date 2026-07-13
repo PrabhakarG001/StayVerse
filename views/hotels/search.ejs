@@ -295,6 +295,9 @@
             icon.classList.remove('text-white');
             icon.classList.add('text-danger');
           }
+        });
+      }
+
       if (typeof applyCurrency === 'function') {
         const savedCurr = localStorage.getItem('sv_currency');
         if (savedCurr) applyCurrency(savedCurr);
