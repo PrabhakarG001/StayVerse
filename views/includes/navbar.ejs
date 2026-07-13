@@ -289,11 +289,37 @@
           </ul>
         </div>
         
-        <div class="dropdown">
-          <button class="btn border-0 rounded-circle bg-transparent d-flex align-items-center justify-content-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 16px; padding: 12px 0; min-width: 300px; box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;">
+        <% if (!currentUser) { %>
+          <a href="/auth/login-user" class="btn border border-secondary rounded-pill fw-semibold text-dark d-none d-lg-flex align-items-center justify-content-center ms-2" style="height: 40px; padding: 0 20px; font-size: 0.95rem; border-color: #dddddd !important; transition: box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+            Login / Sign Up
+          </a>
+          <div class="dropdown d-lg-none">
+            <button class="btn border-0 rounded-circle bg-transparent d-flex align-items-center justify-content-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 16px; padding: 12px 0; min-width: 300px; box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;">
+              <li><a class="dropdown-item py-2 fw-semibold" href="#" data-bs-toggle="modal" data-bs-target="#helpCentreModal" style="font-size: 0.95rem;">Help Centre</a></li>
+              <li><hr class="dropdown-divider my-2"></li>
+              <li>
+                <a class="dropdown-item py-3 px-3 d-flex align-items-center justify-content-between" href="/auth/login-host" style="white-space: normal; margin: 4px 0;">
+                  <div style="padding-right: 16px;">
+                    <div class="fw-bold text-dark" style="font-size: 0.95rem;">Become a host</div>
+                    <div class="text-muted mt-1" style="font-size: 0.85rem; line-height: 1.3;">It's easy to start hosting and earn extra income.</div>
+                  </div>
+                  <img src="/images/host_cartoon.png" alt="Host Illustration" style="height: 54px; width: auto; flex-shrink: 0; object-fit: contain; mix-blend-mode: multiply;">
+                </a>
+              </li>
+              <li><hr class="dropdown-divider my-2"></li>
+              <li><a class="dropdown-item py-2 fw-semibold" href="/auth/login-user" style="font-size: 0.95rem;">Log in or sign up</a></li>
+            </ul>
+          </div>
+        <% } else { %>
+          <div class="dropdown ms-2">
+            <button class="btn border-0 rounded-circle bg-transparent d-flex align-items-center justify-content-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 16px; padding: 12px 0; min-width: 300px; box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;">
+
             <% if(currentUser) { %>
               <li class="px-3 py-2">
                 <div class="fw-bold"><%= currentUser.name %></div>
@@ -310,23 +336,9 @@
               <li><hr class="dropdown-divider my-2"></li>
               <li><a class="dropdown-item py-2 fw-semibold" href="#" data-bs-toggle="modal" data-bs-target="#helpCentreModal">Help Centre</a></li>
               <li><a class="dropdown-item py-2 fw-semibold text-danger" href="/auth/logout">Log out</a></li>
-            <% } else { %>
-              <li><a class="dropdown-item py-2 fw-semibold" href="#" data-bs-toggle="modal" data-bs-target="#helpCentreModal" style="font-size: 0.95rem;">Help Centre</a></li>
-              <li><hr class="dropdown-divider my-2"></li>
-              <li>
-                <a class="dropdown-item py-3 px-3 d-flex align-items-center justify-content-between" href="/auth/login-host" style="white-space: normal; margin: 4px 0;">
-                  <div style="padding-right: 16px;">
-                    <div class="fw-bold text-dark" style="font-size: 0.95rem;">Become a host</div>
-                    <div class="text-muted mt-1" style="font-size: 0.85rem; line-height: 1.3;">It's easy to start hosting and earn extra income.</div>
-                  </div>
-                  <img src="/images/host_cartoon.png" alt="Host Illustration" style="height: 54px; width: auto; flex-shrink: 0; object-fit: contain; mix-blend-mode: multiply;">
-                </a>
-              </li>
-              <li><hr class="dropdown-divider my-2"></li>
-              <li><a class="dropdown-item py-2 fw-semibold" href="/auth/login-user" style="font-size: 0.95rem;">Log in or sign up</a></li>
-            <% } %>
-          </ul>
-        </div>
+            </ul>
+          </div>
+        <% } %>
       </div>
       
       <!-- Mobile Right: Icons (<= 750px) -->
