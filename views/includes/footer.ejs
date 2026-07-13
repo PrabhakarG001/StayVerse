@@ -414,16 +414,21 @@
         <a href="/pages/privacy">Privacy</a>
         <span class="dot">&middot;</span>
         <a href="/pages/terms">Terms</a>
-        <span class="dot">&middot;</span>
-        <a href="/pages/help">Help Centre</a>
       </div>
 
       <!-- Right: Language, Currency, Socials -->
       <div class="sv-footer-bottom-right">
         <style>
-          .sv-hover-dropup:hover .dropdown-menu { display: block; margin-bottom: 0; }
+          .sv-hover-dropup-force { position: relative; }
+          .sv-hover-dropup-force:hover .dropdown-menu { 
+            display: block; 
+            top: auto !important; 
+            bottom: 100% !important; 
+            margin-top: auto !important; 
+            margin-bottom: 0.5rem !important; 
+          }
         </style>
-        <div class="dropdown d-inline-block sv-hover-dropup dropup">
+        <div class="dropdown d-inline-block sv-hover-dropup-force">
           <button class="btn sv-footer-lang-btn border-0" type="button" style="padding: 5px; box-shadow: none;">
             <i class="fa-solid fa-globe"></i> <span class="currentLangText">English</span>
           </button>
@@ -433,7 +438,7 @@
           </ul>
         </div>
         
-        <div class="dropdown d-inline-block sv-hover-dropup dropup">
+        <div class="dropdown d-inline-block sv-hover-dropup-force">
           <button class="btn sv-footer-lang-btn border-0" type="button" style="padding: 5px; box-shadow: none;">
             <span class="currentCurrText">₹ (Rupees)</span>
           </button>

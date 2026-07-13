@@ -267,23 +267,30 @@
         
         <!-- Navbar Language & Currency -->
         <style>
-          .sv-hover-dropdown:hover .dropdown-menu { display: block; margin-top: 0; }
+          .sv-hover-dropup-force { position: relative; }
+          .sv-hover-dropup-force:hover .dropdown-menu { 
+            display: block; 
+            top: auto !important; 
+            bottom: 100% !important; 
+            margin-top: auto !important; 
+            margin-bottom: 0.5rem !important; 
+          }
         </style>
-        <div class="dropdown d-none d-md-block sv-hover-dropdown me-1">
+        <div class="dropdown d-none d-md-block sv-hover-dropup-force me-1">
           <button class="btn border-0 rounded-circle bg-transparent d-flex align-items-center justify-content-center" type="button" style="width: 40px; height: 40px; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
             <i class="fa-solid fa-globe" style="font-size: 1.1rem; color: #222;"></i>
           </button>
-          <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 12px; min-width: auto; font-size: 0.9rem;">
+          <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="border-radius: 12px; min-width: auto; font-size: 0.9rem;">
             <li><a class="dropdown-item fw-medium" href="#" onclick="changeLanguage('hi'); return false;">Hindi</a></li>
             <li><a class="dropdown-item fw-medium" href="#" onclick="changeLanguage('en'); return false;">English</a></li>
           </ul>
         </div>
         
-        <div class="dropdown d-none d-md-block sv-hover-dropdown me-2">
+        <div class="dropdown d-none d-md-block sv-hover-dropup-force me-2">
           <button class="btn border-0 rounded-circle bg-transparent d-flex align-items-center justify-content-center" type="button" style="width: 40px; height: 40px; transition: background 0.2s; font-weight: 600; color: #222;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
             <span class="currentCurrSymbol">₹</span>
           </button>
-          <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 12px; min-width: auto; font-size: 0.9rem;">
+          <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="border-radius: 12px; min-width: auto; font-size: 0.9rem;">
             <li><a class="dropdown-item fw-medium" href="#" onclick="changeCurrency('USD'); return false;">$ Dollar</a></li>
             <li><a class="dropdown-item fw-medium" href="#" onclick="changeCurrency('INR'); return false;">₹ Rupees</a></li>
           </ul>
@@ -308,9 +315,10 @@
                 <li><a class="dropdown-item py-2 fw-semibold" href="/my-bookings">My Booking</a></li>
               <% } %>
               <li><hr class="dropdown-divider my-2"></li>
+              <li><a class="dropdown-item py-2 fw-semibold" href="#" data-bs-toggle="modal" data-bs-target="#helpCentreModal">Help Centre</a></li>
               <li><a class="dropdown-item py-2 fw-semibold text-danger" href="/auth/logout">Log out</a></li>
             <% } else { %>
-              <li><a class="dropdown-item py-2 fw-semibold" href="#" style="font-size: 0.95rem;">Help Centre</a></li>
+              <li><a class="dropdown-item py-2 fw-semibold" href="#" data-bs-toggle="modal" data-bs-target="#helpCentreModal" style="font-size: 0.95rem;">Help Centre</a></li>
               <li><hr class="dropdown-divider my-2"></li>
               <li>
                 <a class="dropdown-item py-3 px-3 d-flex align-items-center justify-content-between" href="/auth/login-host" style="white-space: normal; margin: 4px 0;">
@@ -413,6 +421,38 @@
     <% } %>
   </div>
 </header>
+
+<!-- Help Centre Modal -->
+<div class="modal fade" id="helpCentreModal" tabindex="-1" aria-labelledby="helpCentreModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header border-bottom-0 pb-0">
+        <h5 class="modal-title fw-bold text-dark fs-4" id="helpCentreModalLabel">Help Centre</h5>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body px-4 pt-3 pb-4">
+        <p class="text-secondary mb-4" style="font-size: 0.95rem;">Welcome to the StayVerse Help Centre. How can we assist you today?</p>
+        
+        <div class="mb-4">
+          <h6 class="fw-bold text-dark mb-2">Frequently Asked Questions</h6>
+          <div class="p-3 bg-light rounded-3 mb-2">
+            <span class="fw-semibold text-dark d-block mb-1">How do I cancel a booking?</span>
+            <span class="text-secondary" style="font-size: 0.85rem;">You can cancel a booking directly from your "My Booking" page. Cancellation policies vary by listing.</span>
+          </div>
+          <div class="p-3 bg-light rounded-3">
+            <span class="fw-semibold text-dark d-block mb-1">When will I be charged?</span>
+            <span class="text-secondary" style="font-size: 0.85rem;">You are charged immediately upon booking confirmation to secure your reservation.</span>
+          </div>
+        </div>
+        
+        <div>
+          <h6 class="fw-bold text-dark mb-2">Still need help?</h6>
+          <p class="text-secondary mb-0" style="font-size: 0.9rem;">If you can't find what you're looking for, feel free to <a href="/pages/contact-us" class="fw-bold text-decoration-none" style="color: #FF385C;">Contact Us</a> directly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <style>
 /* Scroll pill search input styles */

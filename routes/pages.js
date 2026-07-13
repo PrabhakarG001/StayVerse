@@ -198,20 +198,6 @@ const stories = {
       }
     ]
   },
-  'help': {
-    title: 'Help Centre',
-    intro: 'Welcome to the StayVerse Help Centre. How can we assist you today?',
-    sections: [
-      {
-        title: 'Frequently Asked Questions',
-        content: '<p><strong>How do I cancel a booking?</strong><br>You can cancel a booking directly from your "My Booking" page. Cancellation policies vary by listing.<br><br><strong>When will I be charged?</strong><br>You are charged immediately upon booking confirmation to secure your reservation.</p>'
-      },
-      {
-        title: 'Still need help?',
-        content: '<p>If you can\'t find what you\'re looking for, feel free to <a href="/pages/contact-us">Contact Us</a> directly.</p>'
-      }
-    ]
-  },
   'social': {
     title: 'Social Media',
     intro: 'StayVerse on Social Media',
