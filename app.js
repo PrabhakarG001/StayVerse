@@ -499,7 +499,19 @@ app.get("/api/hotels/search", wrapAsync(async (req, res) => {
   // If no query or user literally types 'worldwide', return a global mix
   if (!q || q.toLowerCase() === 'worldwide' || q.toLowerCase() === 'anywhere') {
     const hotels = await Hotel.find({}).limit(30);
-    return res.json({ searchResults: hotels });
+    let listings = await Listing.find({}).limit(30);
+    let mappedListings = listings.map(l => ({
+      propertyId: l._id.toString(),
+      name: l.title,
+      city: l.location,
+      country: l.country,
+      price: l.price,
+      images: l.images && l.images.length > 0 ? l.images.map(img => img.url) : (l.image && l.image.url ? [l.image.url] : []),
+      starRating: 5,
+      reviewScore: 9.5,
+      isPremium: true
+    }));
+    return res.json({ searchResults: [...mappedListings, ...hotels].slice(0, 30) });
   }
 
   // Handle common misspellings or official name changes (e.g., Gurgaon -> Gurugram)
@@ -521,8 +533,30 @@ app.get("/api/hotels/search", wrapAsync(async (req, res) => {
       { country: regex }
     ]
   }).limit(30);
+
+  let listings = await Listing.find({
+    $or: [
+      { title: regex },
+      { location: regex },
+      { country: regex }
+    ]
+  }).limit(30);
   
-  if (hotels.length === 0) {
+  let mappedListings = listings.map(l => ({
+    propertyId: l._id.toString(),
+    name: l.title,
+    city: l.location,
+    country: l.country,
+    price: l.price,
+    images: l.images && l.images.length > 0 ? l.images.map(img => img.url) : (l.image && l.image.url ? [l.image.url] : []),
+    starRating: 5,
+    reviewScore: 9.5,
+    isPremium: true
+  }));
+  
+  let combinedResults = [...mappedListings, ...hotels];
+  
+  if (combinedResults.length === 0) {
     // Dynamically fetch from API and save to database if no results found
     await syncCityHotels(q);
     hotels = await Hotel.find({
@@ -532,9 +566,10 @@ app.get("/api/hotels/search", wrapAsync(async (req, res) => {
         { country: regex }
       ]
     }).limit(30);
+    combinedResults = [...mappedListings, ...hotels];
   }
 
-  res.json({ searchResults: hotels });
+  res.json({ searchResults: combinedResults.slice(0, 30) });
 }));
 
 // Internal API to fetch hotels from local Database (No API fallback)
