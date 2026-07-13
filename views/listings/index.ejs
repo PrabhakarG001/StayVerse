@@ -83,7 +83,6 @@
     { title: "Desert magic in Jaisalmer", city: "Jaisalmer", id: "jaisalmerSlider", region: "india" },
     { title: "Coffee land Coorg", city: "Coorg", id: "coorgSlider", region: "india" },
     { title: "Nature's beauty Wayanad", city: "Wayanad", id: "wayanadSlider", region: "india" },
-    { title: "Explore Meghalaya", city: "Meghalaya", id: "meghalayaSlider", region: "india" },
     { title: "Historic ruins in Hampi", city: "Hampi", id: "hampiSlider", region: "india" },
     { title: "Houseboats in Alleppey", city: "Alleppey", id: "alleppeySlider", region: "india" },
     { title: "Cool breeze in Ooty", city: "Ooty", id: "ootySlider", region: "india" }
@@ -386,7 +385,7 @@
         });
         
         if (filteredResults.length > 0) {
-          filteredResults.slice(0, 8).forEach(hotel => {
+          filteredResults.slice(0, 6).forEach(hotel => {
             container.innerHTML += createHotelCard(hotel);
           });
           container.innerHTML += createSeeAllCard(city, filteredResults);
@@ -490,7 +489,6 @@
       { city: 'Jaisalmer', id: 'jaisalmerSlider' },
       { city: 'Coorg', id: 'coorgSlider' },
       { city: 'Wayanad', id: 'wayanadSlider' },
-      { city: 'Meghalaya', id: 'meghalayaSlider' },
       { city: 'Hampi', id: 'hampiSlider' },
       { city: 'Alleppey', id: 'alleppeySlider' },
       { city: 'Ooty', id: 'ootySlider' }
