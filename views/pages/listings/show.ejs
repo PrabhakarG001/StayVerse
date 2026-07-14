@@ -265,6 +265,28 @@
   </div>
 </div>
 
+<!-- Login Required Modal -->
+<div class="modal fade" id="loginRequiredModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 shadow-lg p-3">
+      <div class="modal-header border-0 pb-0">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center py-4">
+        <div class="mb-4">
+          <i class="fa-solid fa-lock" style="font-size: 4rem; color: #FF385C;"></i>
+        </div>
+        <h4 class="fw-bold text-dark mb-3">Please login first</h4>
+        <p class="text-secondary mb-4 fs-6">You need to be logged in to your account to book a hotel and manage your reservations.</p>
+        <div class="d-grid gap-2">
+          <a href="/auth/login-user" class="btn btn-rose rounded-pill py-2 fw-semibold" style="background: #FF385C; color: white;">Log In / Sign Up</a>
+          <button type="button" class="btn btn-light border rounded-pill py-2 fw-semibold" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script id="listing-show-config" type="application/json">
   {
     "location": <%- JSON.stringify(listing.location) %>,
@@ -306,8 +328,7 @@
     if (reserveBtn) {
       reserveBtn.addEventListener('click', async () => {
         if (!config.currentUser) {
-          alert("Please login first.");
-          window.location.href = "/auth/login-user";
+          new bootstrap.Modal(document.getElementById('loginRequiredModal')).show();
           return;
         }
         

@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const checkoutInput = document.getElementById('checkout_date');
 
   if (checkinInput && checkoutInput) {
-    const fpCheckin = flatpickr("#checkin_date", {
+    const fpCheckin = flatpickr(checkinInput, {
       minDate: "today",
       dateFormat: "Y-m-d",
       nextArrow: '<i class="fa-solid fa-chevron-right"></i>',
@@ -62,20 +62,23 @@ document.addEventListener("DOMContentLoaded", () => {
           const checkOutMin = new Date(selectedDates[0]);
           checkOutMin.setDate(checkOutMin.getDate() + 1);
           fpCheckout.set("minDate", checkOutMin);
-          setTimeout(() => fpCheckout.open(), 100);
+          setTimeout(() => { if (fpCheckout && fpCheckout.open) fpCheckout.open(); else if (fpCheckout[0]) fpCheckout[0].open(); }, 100);
         }
       }
     });
 
-    const fpCheckout = flatpickr("#checkout_date", {
+    const fpCheckout = flatpickr(checkoutInput, {
       minDate: "today",
       dateFormat: "Y-m-d",
       nextArrow: '<i class="fa-solid fa-chevron-right"></i>',
       prevArrow: '<i class="fa-solid fa-chevron-left"></i>'
     });
 
-    document.querySelector('.checkin-date-container').addEventListener('click', () => fpCheckin.open());
-    document.querySelector('.checkout-date-container').addEventListener('click', () => fpCheckout.open());
+    const checkinContainer = document.querySelector('.checkin-date-container');
+    if (checkinContainer) checkinContainer.addEventListener('click', () => { if (fpCheckin.open) fpCheckin.open(); else if (fpCheckin[0]) fpCheckin[0].open(); });
+    
+    const checkoutContainer = document.querySelector('.checkout-date-container');
+    if (checkoutContainer) checkoutContainer.addEventListener('click', () => { if (fpCheckout.open) fpCheckout.open(); else if (fpCheckout[0]) fpCheckout[0].open(); });
   }
 
   // Setup Custom select dropdown overlays (Hotel Details)

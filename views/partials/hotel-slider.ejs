@@ -1,5 +1,5 @@
 <% if (hotels && hotels.length > 0) { %>
-  <% hotels.forEach(hotel => { %>
+  <% hotels.slice(0, 7).forEach(hotel => { %>
     <%- include('./hotel-card', { hotel }) %>
   <% }) %>
   <%- include('./see-all-card', { city, hotels }) %>
