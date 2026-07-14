@@ -42,7 +42,7 @@ const stories = {
   'host-guarantee': {
     title: 'StayVerse Host Guarantee',
     intro: 'Host with confidence knowing we have your back. Our comprehensive protection program covers you from check-in to check-out.',
-    heroImage: '/images/cat_all.png',
+    heroImage: '/images/all.png',
     sections: [
       {
         title: 'Property Damage Protection',
@@ -107,7 +107,7 @@ const stories = {
   'our-story': {
     title: 'Our Story',
     intro: 'StayVerse was born out of a desire to make the world feel a little smaller, and a lot more welcoming.',
-    heroImage: '/images/cat_foreign.png',
+    heroImage: '/images/foreign.png',
     sections: [
       {
         title: 'The Beginning',
@@ -213,7 +213,7 @@ const stories = {
   'social': {
     title: 'Social Media',
     intro: 'StayVerse on Social Media',
-    heroImage: '/images/cat_all.png',
+    heroImage: '/images/all.png',
     sections: [
       {
         title: 'Message',

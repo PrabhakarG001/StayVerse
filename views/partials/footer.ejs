@@ -523,7 +523,7 @@
         <p style="font-size: 0.86rem; color: #717171; line-height: 1.6; padding-right: 20px;">
           Discover your next perfect stay worldwide. StayVerse brings you the best places to make unforgettable memories.
         </p>
-        <a href="mailto:developer@stayverse.com" class="btn mt-2 d-inline-flex align-items-center justify-content-center" style="font-size: 0.75rem; padding: 6px 16px; border-radius: 50px; background: white; color: #FF385C; text-decoration: none; border: 1.5px solid #FF385C; font-weight: 600; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 12px rgba(255,56,92,0.2)'; this.style.background='#FF385C'; this.style.color='white';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.background='white'; this.style.color='#FF385C';">
+        <a href="https://prabhakar-gupta-dev.vercel.app/" class="btn mt-2 d-inline-flex align-items-center justify-content-center" style="font-size: 0.75rem; padding: 6px 16px; border-radius: 50px; background: white; color: #FF385C; text-decoration: none; border: 1.5px solid #FF385C; font-weight: 600; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 12px rgba(255,56,92,0.2)'; this.style.background='#FF385C'; this.style.color='white';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.background='white'; this.style.color='#FF385C';">
           <i class="fa-solid fa-code me-2"></i> Connect to Developer
         </a>
       </div>
@@ -581,18 +581,39 @@
         <a href="#" data-bs-toggle="modal" data-bs-target="#helpCentreModal">Help Centre</a>
       </div>
 
+      <!-- Center: Developer Name -->
+      <div class="sv-footer-bottom-center text-center" style="font-size: 0.82rem; color: #717171;">
+        <span>Developed and Design <i class="fa-solid fa-heart" style="color: #FF385C;"></i> by Prabhakar Gupta</span>
+      </div>
+
       <!-- Right: Language, Currency, Socials -->
       <div class="sv-footer-bottom-right">
-        <a href="#" class="sv-footer-lang-btn">
-          <i class="fa-solid fa-globe"></i> English (IN)
-        </a>
-        <a href="#" class="sv-footer-lang-btn">
-          <i class="fa-solid fa-indian-rupee-sign"></i> INR
-        </a>
-        <div class="sv-footer-socials">
-          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="#" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
-          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <!-- Language Dropup -->
+        <div class="dropdown sv-hover-dropup-force">
+          <a href="#" class="sv-footer-lang-btn" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-globe"></i> English (IN)
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="border-radius: 12px; min-width: auto; font-size: 0.9rem;">
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeLanguage('hi'); return false;">Hindi</a></li>
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeLanguage('en'); return false;">English</a></li>
+          </ul>
+        </div>
+        
+        <!-- Currency Dropup -->
+        <div class="dropdown sv-hover-dropup-force">
+          <a href="#" class="sv-footer-lang-btn" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-indian-rupee-sign"></i> INR
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="border-radius: 12px; min-width: auto; font-size: 0.9rem;">
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeCurrency('USD'); return false;">$ Dollar</a></li>
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeCurrency('INR'); return false;">₹ Rupees</a></li>
+          </ul>
+        </div>
+        <div class="sv-footer-socials ms-3">
+          <a href="https://www.linkedin.com/in/prabhakargupta/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BN9TDcmxsTNu%2FBCLe0uav4Q%3D%3D" aria-label="LinkedIn" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="/pages/social" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="/pages/social" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="/pages/social" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
         </div>
       </div>
     </div>
