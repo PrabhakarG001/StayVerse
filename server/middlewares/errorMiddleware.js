@@ -1,6 +1,9 @@
 const ExpressError = require('../utils/ExpressError');
 
 module.exports.errorHandler = (err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
   console.error("EXPRESS ERROR:", err.stack);
   const { statusCode = 500 } = err;
   const message = err.message || "Something went wrong.";
