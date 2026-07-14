@@ -1,0 +1,356 @@
+/* ==========================================
+   STAYVERSE NAVBAR COMPONENT CSS
+   ========================================== */
+
+.sv-header {
+  position: sticky; top: 0; z-index: 1030;
+  background: #ffffff; transition: background 0.3s ease, box-shadow 0.3s ease;
+  border-bottom: 1px solid #ebebeb;
+}
+.sv-header-row1 {
+  display: flex; align-items: center; justify-content: space-between; padding: 20px 0 0;
+  position: relative;
+}
+.sv-logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+.sv-logo img { height: 34px; width: auto; margin-right: 8px; mix-blend-mode: multiply; background-color: transparent !important; }
+.sv-logo span {
+  font-family: "Audiowide", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.45rem;
+  color: #FF385C;
+  letter-spacing: 0px;
+  margin-top: 3px;
+}
+
+@media (max-width: 741.98px) {
+  .sv-logo img { height: 26px !important; margin-right: 4px !important; }
+  .sv-logo span { font-size: 1.15rem !important; }
+}
+/* Ensure ALL navbar images have no background */
+.sv-header img { mix-blend-mode: multiply !important; background-color: transparent !important; }
+
+/* Prevent Bootstrap blue background on dropdown click */
+.dropdown-item:active { background-color: #f7f7f7 !important; color: #222 !important; }
+
+.sv-category-tabs {
+  display: flex; align-items: center; justify-content: center; gap: 1rem;
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 5;
+  pointer-events: auto;
+}
+@media (min-width: 992px) {
+  .sv-category-tabs { gap: 2rem; }
+}
+@media (min-width: 1200px) {
+  .sv-category-tabs { gap: 3rem; }
+}
+.cat-tab {
+  display: flex; flex-direction: row; align-items: center; justify-content: center;
+  text-decoration: none; color: #717171; padding: 12px 16px; margin: 0 4px;
+  gap: 12px; transition: all 0.2s ease; position: relative;
+  cursor: pointer;
+}
+.cat-tab img { width: 3.375rem; height: 3.375rem; object-fit: contain; mix-blend-mode: multiply; transition: transform 0.2s ease; }
+.cat-tab span { font-size: 1rem; font-weight: 400; line-height: 1; color: inherit; }
+.cat-tab:hover { color: #222; }
+.cat-tab:hover img { transform: scale(1.05); }
+.cat-tab.active { color: #222; }
+.cat-tab.active span { font-weight: 500; }
+.cat-tab.active::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 2px; background: #222;
+}
+
+/* Category Pills — Theme-matched raised style */
+.sv-cat-pill {
+  background-color: #ffffff !important;
+  border: none !important;
+  /* Outset / raised look for inactive state */
+  box-shadow:
+    2px 2px 6px rgba(0,0,0,0.14),
+    -1px -1px 4px rgba(255,255,255,0.95) !important;
+  color: #444444 !important;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.sv-cat-pill:hover {
+  background-color: #ffffff !important;
+  box-shadow:
+    3px 3px 9px rgba(0,0,0,0.18),
+    -1px -1px 5px rgba(255,255,255,1) !important;
+  transform: translateY(-1px);
+}
+.sv-cat-pill:active {
+  background-color: #ffffff !important;
+  box-shadow:
+    inset 1px 1px 3px rgba(0,0,0,0.15),
+    inset -1px -1px 2px rgba(255,255,255,0.8) !important;
+  transform: translateY(0);
+}
+.sv-cat-pill.active-pill {
+  background-color: #ffffff !important;
+  border: none !important;
+  box-shadow:
+    inset 0 3px 8px rgba(0,0,0,0.18),
+    inset 0 1px 3px rgba(0,0,0,0.12) !important;
+  color: #111111 !important;
+  font-weight: 600;
+}
+
+/* Scroll Container - appears on scroll */
+.sv-scroll-pill {
+  opacity: 0; pointer-events: none; 
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(0.9) translateY(10px);
+  display: flex; align-items: center; gap: 8px;
+  border: 1px solid #dddddd; border-radius: 50px; background: #ffffff;
+  padding: 6px 10px; box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+  z-index: 5;
+}
+.sv-scroll-pill:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+.sv-scroll-pill img {
+  width: 20px !important;
+  height: 20px !important;
+  object-fit: contain !important;
+}
+.sv-scroll-pill span {
+  white-space: nowrap !important;
+}
+
+@media (max-width: 1199.98px) {
+  .sv-scroll-pill {
+    padding: 4px 6px !important;
+    gap: 4px !important;
+  }
+  .sv-scroll-pill a {
+    padding: 4px 8px !important;
+    gap: 4px !important;
+  }
+  .sv-scroll-pill img {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  .sv-scroll-pill span {
+    font-size: 0.8rem !important;
+  }
+  .sv-scroll-pill form {
+    padding: 2px 2px 2px 6px !important;
+  }
+  .sv-scroll-pill input {
+    width: 90px !important;
+    font-size: 0.8rem !important;
+  }
+  .sv-scroll-pill form button {
+    width: 26px !important;
+    height: 26px !important;
+  }
+}
+
+.sv-header.scrolled .sv-scroll-pill {
+  opacity: 1; transform: translate(-50%, -50%) scale(1) translateY(0); pointer-events: auto;
+}
+
+.sv-header.scrolled .sv-category-tabs {
+  opacity: 0; transform: translate(-50%, -50%) translateY(-20px); pointer-events: none;
+}
+
+.sv-booking-bar-container {
+  display: flex; justify-content: center; padding-top: 28px; padding-bottom: 24px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: top center;
+}
+.sv-header.scrolled .sv-booking-bar-container {
+  height: 0; padding-top: 0; padding-bottom: 0; opacity: 0; 
+  transform: scale(0.85) translateY(-30px); pointer-events: none; overflow: hidden;
+}
+
+/* Scroll state classes */
+.sv-header.scrolled {
+  box-shadow: 0 1px 12px rgba(0,0,0,0.08);
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(12px);
+}
+.sv-header.scrolled .sv-header-row1 {
+  padding: 12px 0 !important;
+}
+
+/* Right links - ensure they stay above center content */
+.sv-right-links {
+  position: relative;
+  z-index: 2;
+}
+.sv-right-links a.host-link:hover { background: #f7f7f7; }
+.sv-right-links .btn.host-link { display: flex; }
+
+/* Logo area - ensure clickable */
+.sv-logo-wrapper {
+  position: relative;
+  z-index: 2;
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+/* Mobile */
+@media (max-width: 741.98px) {
+  .sv-header-row1 .sv-right-links, .sv-category-tabs, .sv-scroll-pill, .sv-booking-bar-container { display: none !important; }
+  .sv-logo span { display: inline; font-size: 1.1rem; }
+  
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+/* Transition Fix: Prevent distortion and overlapping after 750px up to large screens */
+@media (min-width: 742px) {
+  .sv-mobile-right { display: none !important; }
+}
+/* Override Bootstrap md breakpoints to switch at 742px for StayVerse navbar */
+@media (min-width: 742px) {
+  .d-md-none {
+    display: none !important;
+  }
+  .d-none.d-md-flex {
+    display: flex !important;
+  }
+}
+@media (max-width: 741.98px) {
+  .d-none.d-md-flex {
+    display: none !important;
+  }
+  .d-md-none {
+    display: block !important;
+  }
+  div.d-md-none {
+    display: flex !important; /* For the categories flex row */
+  }
+  .sv-mobile-search-wrapper {
+    display: block !important;
+  }
+}
+
+@media (min-width: 742px) and (max-width: 1199.98px) {
+  /* Keep text links visible and styled properly */
+  .sv-right-links a.host-link:not(.btn) {
+    display: inline-block !important;
+    font-size: 0.88rem !important;
+    padding: 6px 12px !important;
+    white-space: nowrap !important;
+  }
+  .sv-right-links .btn.host-link {
+    display: flex !important;
+  }
+  .sv-right-links .btn.rounded-circle {
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    font-size: 0.85rem !important;
+  }
+  /* Keep "Login / Sign Up" button visible and styled properly */
+  .sv-right-links a[href="/auth/login-user"] {
+    display: inline-flex !important;
+    padding: 6px 14px !important;
+    font-size: 0.82rem !important;
+    white-space: nowrap !important;
+  }
+  .sv-logo span {
+    display: inline !important;
+    font-size: 1.15rem !important;
+  }
+  /* Compress Category Tabs to prevent overlapping */
+  .sv-category-tabs {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    gap: 0.2rem !important;
+  }
+  .sv-category-tabs .cat-tab img {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .cat-tab {
+    padding: 6px 10px !important;
+    gap: 4px !important;
+  }
+  .cat-tab span {
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+  }
+  .sv-scroll-pill {
+    padding: 4px 6px !important;
+  }
+}
+
+@media (min-width: 742px) and (max-width: 991.98px) {
+  /* Hide "Become a Host" text link on tablet only */
+  .sv-right-links a.host-link[href="/auth/login-host"]:not(.btn) {
+    display: none !important;
+  }
+}
+
+/* Tablet */
+@media (min-width: 742px) and (max-width: 1024px) {
+  .sv-search-bar { max-width: 320px !important; }
+  .sv-header .container { padding-left: 16px !important; padding-right: 16px !important; }
+}
+
+/* Center mobile category container and search pill on tablet and larger mobile devices */
+@media (min-width: 576px) {
+  .sv-mobile-cats-container {
+    justify-content: center !important;
+  }
+  .sv-mobile-search-wrapper {
+    max-width: 480px !important;
+    margin: 0 auto !important;
+  }
+}
+
+.sv-hover-dropdown:hover .dropdown-menu { display: block; margin-top: 0; }
+
+/* Scroll pill search input styles */
+.sv-scroll-pill input:focus {
+  outline: none;
+  background: transparent !important;
+}
+.sv-scroll-pill input::placeholder {
+  color: #666;
+  font-weight: 500;
+}
+
+/* ==========================================
+   MOBILE-ONLY OVERRIDES (max-width: 768px)
+   ========================================== */
+
+@media (max-width: 768px) {
+
+  /* --- Logo: slightly smaller image + text --- */
+  .sv-logo img {
+    height: 24px !important;
+    margin-right: 5px !important;
+  }
+  .sv-logo span {
+    font-size: 1rem !important;
+  }
+
+  /* --- Mobile Search Pill: compact height & padding --- */
+  .sv-mobile-search-wrapper {
+    padding-top: 2px !important;
+  }
+  .sv-mobile-search-pill {
+    height: 40px !important;
+    padding: 6px 14px !important;
+    gap: 6px !important;
+  }
+  .sv-mobile-search-pill i {
+    font-size: 0.85rem !important;
+  }
+  .sv-mobile-search-pill span {
+    font-size: 0.84rem !important;
+    letter-spacing: 0 !important;
+  }
+}

@@ -1,0 +1,135 @@
+/* Hero Styles */
+.hero-search-btn {
+  transition: transform 0.2s, background 0.2s;
+}
+.hero-search-btn:hover {
+  transform: scale(1.05);
+  background: #e31c5f;
+}
+.hover-bg-light {
+  transition: background 0.2s;
+}
+.hover-bg-light:hover {
+  background: #ebebeb;
+}
+
+/* City Cards */
+.city-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.city-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+/* Sliders */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Responsive Hotel Slides */
+.hotel-slide {
+  flex: 0 0 calc(45%);
+  width: calc(45%);
+  max-width: calc(45%);
+}
+@media (min-width: 576px) {
+  .hotel-slide { flex: 0 0 calc(33.333% - 10.66px); width: calc(33.333% - 10.66px); max-width: calc(33.333% - 10.66px); }
+}
+@media (min-width: 742px) {
+  .hotel-slide { flex: 0 0 calc(33.333% - 10.66px); width: calc(33.333% - 10.66px); max-width: calc(33.333% - 10.66px); }
+}
+@media (min-width: 768px) {
+  .hotel-slide { flex: 0 0 calc(33.333% - 10.66px); width: calc(33.333% - 10.66px); max-width: calc(33.333% - 10.66px); }
+}
+@media (min-width: 992px) {
+  .hotel-slide { flex: 0 0 calc(14.2857% - 13.71px); width: calc(14.2857% - 13.71px); max-width: calc(14.2857% - 13.71px); }
+}
+@media (min-width: 1200px) {
+  .hotel-slide { flex: 0 0 calc(14.2857% - 13.71px); width: calc(14.2857% - 13.71px); max-width: calc(14.2857% - 13.71px); }
+}
+@media (min-width: 1400px) {
+  .hotel-slide { flex: 0 0 calc(14.2857% - 13.71px); width: calc(14.2857% - 13.71px); max-width: calc(14.2857% - 13.71px); }
+}
+
+/* Internal Card Hover */
+.hotel-card-hover {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.hotel-card-hover:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 15px 35px rgba(255, 56, 92, 0.12) !important;
+}
+.hotel-card-hover:hover img {
+  transform: scale(1.05) !important;
+}
+.hover-scale:hover {
+  transform: translateY(-50%) scale(1.1) !important;
+}
+.heart-wishlist-icon {
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.heart-wishlist-icon:hover {
+  transform: scale(1.2);
+}
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0) translateX(-50%); }
+  50% { transform: translateY(4px) translateX(-50%); }
+}
+@keyframes bounce-fast {
+  0%, 100% { transform: translateY(2px) translateX(-50%); }
+  50% { transform: translateY(6px) translateX(-50%); }
+}
+.scroll-indicator {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: #222;
+  opacity: 0.75;
+  animation: bounce-subtle 1.5s infinite ease-in-out;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.hotel-card-hover:hover .scroll-indicator {
+  opacity: 1;
+  animation: bounce-fast 0.8s infinite ease-in-out;
+}
+
+/* See All Card Hover Effects */
+.see-all-card { cursor: pointer; }
+.see-all-card:hover .see-all-bg { 
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 15px 35px rgba(255, 56, 92, 0.12) !important; 
+}
+.see-all-card .see-img-1 { transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); transform: rotate(-8deg); left: 0; top: 15px; z-index: 1; }
+.see-all-card .see-img-2 { transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); transform: rotate(8deg); right: 0; top: 15px; z-index: 2; }
+.see-all-card .see-img-3 { transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); transform: translateY(-5px); top: 0; z-index: 3; }
+.see-all-card:hover .see-img-1 { transform: rotate(-14deg) translate(-8px, 4px) !important; }
+.see-all-card:hover .see-img-2 { transform: rotate(14deg) translate(8px, 4px) !important; }
+.see-all-card:hover .see-img-3 { transform: scale(1.08) !important; }
+.see-all-card:hover .see-all-text { text-decoration: underline; }
+
+/* Skeletons */
+.skeleton-img {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  background: #e0e0e0;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+.skeleton-text {
+  height: 16px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+@keyframes pulse {
+  0% { background-color: #e0e0e0; }
+  50% { background-color: #f0f0f0; }
+  100% { background-color: #e0e0e0; }
+}

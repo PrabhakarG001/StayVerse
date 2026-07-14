@@ -1,0 +1,109 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- Link auth styles -->
+<link rel="stylesheet" href="/css/auth.css">
+
+<!-- Full screen blurred background covering everything -->
+<div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 9999; pointer-events: none;"></div>
+
+<!-- Full screen content container -->
+<div class="d-flex justify-content-center align-items-center" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 10000; padding: 20px; overflow-y: auto;">
+  
+  <div class="card border-0 shadow-lg p-4" style="border-radius: 16px; width: 100%; max-width: 480px; margin: auto; position: relative;">
+    
+    <!-- Close Button -->
+    <a href="/" class="btn btn-sm btn-light rounded-circle position-absolute" style="top: 16px; left: 16px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; z-index: 10; border: 1px solid #ebebeb;">
+      <i class="fa-solid fa-xmark text-dark"></i>
+    </a>
+    <div class="card-body p-0 mt-2 text-center">
+      
+      <!-- Flash Messages -->
+      <% if(success && success.length) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= success %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% } %>
+      <% if(error && error.length) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <%= error %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% } %>
+
+      <div class="mb-3 d-flex justify-content-center align-items-center">
+        <img src="/images/logo.svg" alt="StayVerse Logo" style="height: 36px;">
+        <span class="ms-2" style="color: #FF385C; font-weight: 700; font-size: 1.6rem;">StayVerse</span>
+      </div>
+      
+      <h3 class="fw-bold mb-4" style="color: #222; font-size: 1.5rem; letter-spacing: -0.5px;">User Log in or sign up</h3>
+      
+      <!-- Tabs for Login / Register -->
+      <ul class="nav nav-pills nav-justified mb-3" id="authTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active fw-bold" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab" style="border-radius: 8px;">Log in</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-bold" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab" style="border-radius: 8px;">Sign up</button>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="authTabContent">
+        <!-- Login Form -->
+        <div class="tab-pane fade show active" id="login" role="tabpanel">
+          <form action="/auth/login-user" method="POST">
+            <div class="mb-3 text-start">
+              <input type="email" class="form-control premium-input" name="email" placeholder="Email address" required>
+            </div>
+            <div class="mb-3 text-start position-relative">
+              <input type="password" class="form-control premium-input pe-5" id="loginUserPwd" name="password" placeholder="Password" required>
+              <i class="fa-regular fa-eye position-absolute top-50 end-0 translate-middle-y me-3 text-secondary" style="cursor: pointer; z-index: 10;" onclick="togglePassword('loginUserPwd', this)"></i>
+            </div>
+            <button type="submit" class="btn w-100 fw-bold text-white mb-3" style="background-color: #E61E4D; border-radius: 8px; font-size: 1rem; padding: 14px; transition: background 0.2s; box-shadow: none !important;" onmouseover="this.style.backgroundColor='#d4184c'" onmouseout="this.style.backgroundColor='#E61E4D'">Log in with Email</button>
+          </form>
+        </div>
+
+        <!-- Register Form -->
+        <div class="tab-pane fade" id="register" role="tabpanel">
+          <form action="/auth/register" method="POST">
+            <input type="hidden" name="role" value="user">
+            <div class="mb-3 text-start">
+              <input type="text" class="form-control premium-input" name="name" placeholder="Full Name" required>
+            </div>
+            <div class="mb-3 text-start">
+              <input type="email" class="form-control premium-input" name="email" placeholder="Email address" required>
+            </div>
+            <div class="mb-3 text-start position-relative">
+              <input type="password" class="form-control premium-input pe-5" id="registerUserPwd" name="password" placeholder="Create Password" required>
+              <i class="fa-regular fa-eye position-absolute top-50 end-0 translate-middle-y me-3 text-secondary" style="cursor: pointer; z-index: 10;" onclick="togglePassword('registerUserPwd', this)"></i>
+            </div>
+            <button type="submit" class="btn w-100 fw-bold text-white mb-3" style="background-color: #E61E4D; border-radius: 8px; font-size: 1rem; padding: 14px; transition: background 0.2s; box-shadow: none !important;" onmouseover="this.style.backgroundColor='#d4184c'" onmouseout="this.style.backgroundColor='#E61E4D'">Sign up</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="d-flex align-items-center justify-content-center mb-4 mt-2">
+        <hr class="flex-grow-1 m-0" style="border-color: #ebebeb;">
+        <span class="mx-3 text-secondary" style="font-size: 0.85rem;">or</span>
+        <hr class="flex-grow-1 m-0" style="border-color: #ebebeb;">
+      </div>
+      
+      <!-- Social Buttons Horizontal -->
+      <div class="d-flex justify-content-center gap-3 mb-2">
+        <a href="/auth/google" class="btn d-flex align-items-center justify-content-center social-btn social-btn-google">
+          <i class="fa-brands fa-google fs-4"></i>
+        </a>
+        <a href="/auth/apple" class="btn d-flex align-items-center justify-content-center social-btn social-btn-apple">
+          <i class="fa-brands fa-apple fs-4"></i>
+        </a>
+        <a href="/auth/phone" class="btn d-flex align-items-center justify-content-center social-btn social-btn-phone">
+          <i class="fa-solid fa-mobile-screen fs-4"></i>
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<script src="/js/auth.js"></script>

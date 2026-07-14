@@ -1,0 +1,338 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="row mt-4">
+<link rel="stylesheet" href="/css/listing-show.css">
+  <!-- Title & Gallery Section -->
+  <div class="col-12 mb-4">
+    <h2 class="text-dark fw-bold mb-1"><%= listing.title %></h2>
+    <p class="text-secondary mb-2">
+      <i class="fa-solid fa-location-dot text-rose me-1"></i><%= listing.location %>, <%= listing.country %>
+      <span class="mx-2">&middot;</span>
+      <span class="badge bg-light text-dark border"><%= listing.category %></span>
+    </p>
+    
+    <!-- Image Gallery -->
+    <div class="position-relative my-3 rounded-4 overflow-hidden show-gallery-wrapper">
+      <% 
+      let images = [];
+      // Always resolve and push the current main image first
+      let mainUrl = 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80';
+      if (listing.image) {
+        if (typeof listing.image === 'string' && listing.image.trim() !== '') {
+          mainUrl = listing.image;
+        } else if (typeof listing.image === 'object' && listing.image.url) {
+          mainUrl = listing.image.url;
+        }
+      }
+      images.push(mainUrl);
+
+      // Add the other 4 images from the gallery
+      if (listing.images && listing.images.length > 0) {
+        listing.images.forEach(img => {
+          if (img && img.url && img.url.trim() !== '') {
+            images.push(img.url);
+          }
+        });
+      }
+      // Fill up to 5 total images with high-quality fallback pictures if needed
+      const fallbacks = [
+        "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=60",
+        "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=60",
+        "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=60",
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=60"
+      ];
+      let fallbackIdx = 0;
+      while (images.length < 5 && fallbackIdx < fallbacks.length) {
+        images.push(fallbacks[fallbackIdx++]);
+      }
+      %>
+      <!-- Mobile view: Swipeable Horizontal Carousel -->
+      <div class="d-md-none position-relative">
+        <div class="show-mobile-carousel d-flex overflow-auto flex-nowrap hide-scrollbar" style="scroll-snap-type: x mandatory; scroll-behavior: smooth; height: 35vh; min-height: 250px;">
+          <% images.forEach((img, idx) => { %>
+            <div class="w-100 h-100 flex-shrink-0" style="scroll-snap-align: start; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageGalleryModal">
+              <img src="<%= img %>" class="w-100 h-100 object-fit-cover" alt="Hotel Image <%= idx + 1 %>">
+            </div>
+          <% }) %>
+        </div>
+        
+        <!-- Three dot pagination indicator -->
+        <div class="show-carousel-dots d-flex justify-content-center gap-1.5 position-absolute bottom-0 start-50 translate-middle-x mb-3" style="z-index: 5;">
+          <% images.forEach((img, idx) => { %>
+            <span class="show-dot <%= idx === 0 ? 'active' : '' %>" style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, 0.5); transition: all 0.2s ease;"></span>
+          <% }) %>
+        </div>
+      </div>
+
+      <!-- Desktop view: Standard Grid -->
+      <div class="d-none d-md-flex row g-2" style="height: 50vh; min-height: 300px; max-height: 450px;">
+        <!-- Main Image (Left) -->
+        <div class="col-md-6 h-100">
+          <div class="h-100 position-relative overflow-hidden rounded-start">
+            <img src="<%= images[0] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="main_image" style="transition: all 0.3s ease; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageGalleryModal">
+          </div>
+        </div>
+        <!-- Sub Images (Right) -->
+        <div class="col-md-6 h-100">
+          <div class="row h-100 g-2">
+            <div class="col-6 h-50">
+              <div class="h-100 overflow-hidden position-relative">
+                <img src="<%= images[1] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_1" style="transition: all 0.3s ease;">
+              </div>
+            </div>
+            <div class="col-6 h-50">
+              <div class="h-100 overflow-hidden position-relative">
+                <img src="<%= images[2] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_2" style="transition: all 0.3s ease;">
+              </div>
+            </div>
+            <div class="col-6 h-50">
+              <div class="h-100 overflow-hidden position-relative">
+                <img src="<%= images[3] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_3" style="transition: all 0.3s ease;">
+              </div>
+            </div>
+            <div class="col-6 h-50">
+              <div class="h-100 overflow-hidden position-relative">
+                <img src="<%= images[4] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_4" style="transition: all 0.3s ease;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Left: Details & Reviews -->
+  <div class="col-lg-7 col-12 pe-lg-5">
+    <div class="details-card mb-4 pb-4 border-bottom">
+      <h4 class="text-dark fw-bold mb-3">About this destination</h4>
+      <p class="text-secondary leading-relaxed" style="white-space: pre-line;"><%= listing.description %></p>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="reviews-section my-4">
+      <h4 class="text-dark fw-bold mb-3">
+        Reviews (<%= listing.reviews.length %>)
+      </h4>
+      
+      <% if (listing.reviews.length === 0) { %>
+        <div class="alert alert-light border text-center py-4 rounded-3 text-secondary">
+          <i class="fa-regular fa-comment-dots fs-3 mb-2"></i>
+          <p class="m-0">No reviews yet. Be the first to share your stay experience!</p>
+        </div>
+      <% } else { %>
+        <div class="row g-3">
+          <% for(let r of listing.reviews) { %>
+            <div class="col-md-6 col-12">
+              <div class="card review-card h-100 border-0 bg-light p-3 rounded-4 position-relative">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <div>
+                    <h6 class="fw-bold text-dark mb-0" style="font-size: 0.95rem;">Guest User</h6>
+                    <small class="text-muted" style="font-size: 0.8rem;"><%= new Date(r.createdAt).toLocaleDateString() %></small>
+                  </div>
+                  <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= r._id %>?_method=DELETE" class="m-0">
+                    <button class="btn btn-sm btn-outline-danger border-0 p-1"><i class="fa-regular fa-trash-can"></i></button>
+                  </form>
+                </div>
+                <div class="text-warning mb-2" style="font-size: 0.85rem;">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <i class="fa-<%= i <= r.rating ? 'solid' : 'regular' %> fa-star"></i>
+                  <% } %>
+                </div>
+                <p class="card-text text-secondary mb-0" style="font-size: 0.9rem; line-height: 1.4;"><%= r.comment %></p>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Leave Review Form -->
+    <div class="create-review-section border-top pt-4 mt-4">
+      <h4 class="text-dark fw-bold mb-3">Leave a Review</h4>
+      <form method="POST" action="/listings/<%= listing._id %>/reviews" novalidate class="needs-validation">
+        
+        <div class="mb-3">
+          <label class="form-label fw-semibold text-secondary">Your Rating</label>
+          <div class="star-rating-group d-flex flex-row-reverse justify-content-end gap-1 fs-3">
+            <input type="radio" id="star5" name="review[rating]" value="5" class="d-none" required />
+            <label for="star5" class="star-label text-muted" style="cursor: pointer;"><i class="fa-solid fa-star"></i></label>
+            
+            <input type="radio" id="star4" name="review[rating]" value="4" class="d-none" />
+            <label for="star4" class="star-label text-muted" style="cursor: pointer;"><i class="fa-solid fa-star"></i></label>
+            
+            <input type="radio" id="star3" name="review[rating]" value="3" class="d-none" />
+            <label for="star3" class="star-label text-muted" style="cursor: pointer;"><i class="fa-solid fa-star"></i></label>
+            
+            <input type="radio" id="star2" name="review[rating]" value="2" class="d-none" />
+            <label for="star2" class="star-label text-muted" style="cursor: pointer;"><i class="fa-solid fa-star"></i></label>
+            
+            <input type="radio" id="star1" name="review[rating]" value="1" class="d-none" />
+            <label for="star1" class="star-label text-muted" style="cursor: pointer;"><i class="fa-solid fa-star"></i></label>
+          </div>
+          <div class="invalid-feedback">Please select a star rating.</div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="comment" class="form-label fw-semibold text-secondary">Review Comment</label>
+          <textarea name="review[comment]" id="comment" cols="30" rows="4" class="form-control rounded-3" placeholder="Tell us about your experience during the stay..." required></textarea>
+          <div class="invalid-feedback">Please enter a review comment.</div>
+        </div>
+        
+        <button class="btn btn-rose rounded-pill px-4">Submit Review</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Right: Reservation Card & Map -->
+  <div class="col-lg-5 col-12 mt-lg-0 mt-4">
+    <!-- Booking Mock Card -->
+    <div class="card border shadow-sm rounded-4 p-4 mb-4 bg-white sticky-card">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold m-0 text-dark">
+          <span class="price-val" data-inr="<%= listing.price || 0 %>">Rs. <%= listing.price ? listing.price.toLocaleString("en-IN") : "0" %></span> <span class="fw-normal text-muted fs-6">/ night</span>
+        </h4>
+        <span class="text-rose fw-semibold"><i class="fa-solid fa-star me-1"></i>New</span>
+      </div>
+      
+      <div class="d-grid gap-2 my-3">
+        <% if (currentUser && listing.owner && currentUser._id.toString() === listing.owner.toString()) { %>
+          <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-dark rounded-pill py-2">
+            <i class="fa-solid fa-pen-to-square me-2"></i>Edit Listing
+          </a>
+          <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="w-100 d-grid">
+            <button class="btn btn-rose rounded-pill py-2">
+              <i class="fa-solid fa-trash-can me-2"></i>Delete Listing
+            </button>
+          </form>
+        <% } else { %>
+          <button id="reserveBtn" class="btn btn-rose rounded-3 w-100 py-3 fw-bold fs-5 text-white" style="background: linear-gradient(to right, #e61e4d 0%, #e31c5f 50%, #d70466 100%);">
+            Reserve
+          </button>
+        <% } %>
+      </div>
+      
+      <div class="border-top pt-3 mt-3 text-center">
+        <p class="m-0 text-secondary" style="font-size: 0.85rem;">You won't be charged yet</p>
+      </div>
+    </div>
+
+    <!-- Map Preview -->
+    <div class="map-container card border shadow-sm rounded-4 overflow-hidden mb-4 p-0">
+      <div class="card-header bg-white border-0 py-3 px-4">
+        <h5 class="fw-bold m-0 text-dark"><i class="fa-solid fa-map-location-dot me-2 text-rose"></i>Where you'll be</h5>
+      </div>
+      <div id="map" style="height: 40vh; min-height: 250px; max-height: 300px; width: 100%;" class="bg-light"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile Sticky Bottom Bar (Visible on Mobile/Tablet) -->
+<div class="d-lg-none position-fixed bottom-0 start-0 w-100 bg-white border-top p-3 d-flex justify-content-between align-items-center" style="z-index: 1040; box-shadow: 0 -4px 12px rgba(0,0,0,0.08);">
+  <div>
+    <div class="fw-bold text-dark fs-5"><span class="price-val" data-inr="<%= listing.price || 0 %>">Rs. <%= listing.price ? listing.price.toLocaleString("en-IN") : "0" %></span></div>
+    <div class="text-secondary" style="font-size: 0.85rem; text-decoration: underline;">Total before taxes</div>
+  </div>
+  <button class="btn btn-rose rounded-3 px-4 py-2 fw-bold" onclick="document.querySelector('.sticky-card').scrollIntoView({behavior: 'smooth', block: 'center'})">Reserve</button>
+</div>
+
+<!-- Image Gallery Modal (Slider) -->
+<div class="modal fade" id="imageGalleryModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-header border-0 pb-0 justify-content-end">
+        <button type="button" class="btn-close btn-close-white fs-4" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div id="hotelImageCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner rounded-4 shadow-lg">
+            <% images.forEach((img, idx) => { %>
+              <div class="carousel-item <%= idx === 0 ? 'active' : '' %>">
+                <img src="<%= img %>" class="d-block w-100 rounded-4 border border-4 border-white" style="max-height: 80vh; object-fit: contain; background: #000;" alt="Hotel Image">
+              </div>
+            <% }) %>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#hotelImageCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true" style="width: 3rem; height: 3rem;"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#hotelImageCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true" style="width: 3rem; height: 3rem;"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script id="listing-show-config" type="application/json">
+  {
+    "location": <%- JSON.stringify(listing.location) %>,
+    "country": <%- JSON.stringify(listing.country) %>,
+    "title": <%- JSON.stringify(listing.title) %>,
+    "currentUser": <%- currentUser ? JSON.stringify(currentUser) : 'null' %>,
+    "propertyId": "<%= listing._id %>",
+    "mainImage": "<%= images[0] %>",
+    "price": <%= listing.price || 0 %>
+  }
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const config = JSON.parse(document.getElementById('listing-show-config').textContent);
+    
+    // Map geocoding
+    const searchQuery = config.location + ', ' + config.country;
+    const map = L.map('map', { scrollWheelZoom: false }).setView([20.5937, 78.9629], 5);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+    
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.length > 0) {
+          const lat = parseFloat(data[0].lat);
+          const lon = parseFloat(data[0].lon);
+          map.setView([lat, lon], 12);
+          L.marker([lat, lon]).addTo(map)
+            .bindPopup(`<b>${config.title}</b><br>${config.location}`)
+            .openPopup();
+        }
+      }).catch(err => console.error("Listing Map Load Failed", err));
+      
+    // Reserve Button action
+    const reserveBtn = document.getElementById('reserveBtn');
+    if (reserveBtn) {
+      reserveBtn.addEventListener('click', async () => {
+        if (!config.currentUser) {
+          alert("Please login first.");
+          window.location.href = "/auth/login-user";
+          return;
+        }
+        
+        try {
+          const currentPriceHTML = document.querySelector('.price-val[data-inr]')?.outerHTML || '₹' + config.price;
+          const response = await fetch('/api/bookings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              propertyId: config.propertyId,
+              name: config.title,
+              image: config.mainImage,
+              price: currentPriceHTML
+            })
+          });
+          if (response.ok) {
+            alert("Booking Confirmed!");
+            window.location.href = "/my-bookings";
+          } else {
+            alert("Failed to confirm booking. Please try again.");
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    }
+  });
+</script>

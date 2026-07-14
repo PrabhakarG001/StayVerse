@@ -1,0 +1,8 @@
+<% if (hotels && hotels.length > 0) { %>
+  <% hotels.forEach(hotel => { %>
+    <%- include('./hotel-card', { hotel }) %>
+  <% }) %>
+  <%- include('./see-all-card', { city, hotels }) %>
+<% } else { %>
+  <p class="text-secondary">No homes found.</p>
+<% } %>

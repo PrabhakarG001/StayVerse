@@ -1,0 +1,134 @@
+.form-group-custom {
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+.form-group-custom:hover {
+  background-color: #f7f7f7 !important;
+}
+.form-group-custom input {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-size: 0.9rem;
+  color: #222;
+}
+.form-group-custom select.form-select {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-size: 0.9rem;
+  color: #222;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%23222' viewBox='0 0 16 16'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  padding-right: 32px !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Custom Flatpickr calendar theme matching StayVerse */
+.flatpickr-calendar {
+  border-radius: 16px !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+  font-family: inherit !important;
+  padding: 8px;
+}
+.flatpickr-day.selected, 
+.flatpickr-day.selected:hover,
+.flatpickr-day.selected:focus {
+  background: #FF385C !important;
+  border-color: #FF385C !important;
+}
+.flatpickr-day.today {
+  border-color: #FF385C !important;
+}
+.flatpickr-day.today:hover {
+  background: #f7f7f7 !important;
+  color: #222 !important;
+}
+.flatpickr-day:hover {
+  background: #f0f0f0 !important;
+}
+.flatpickr-months .flatpickr-month {
+  color: #222 !important;
+  fill: #222 !important;
+}
+.flatpickr-months .flatpickr-prev-month, 
+.flatpickr-months .flatpickr-next-month {
+  color: #222 !important;
+  fill: #222 !important;
+}
+.show-dot.active {
+  background: #ffffff !important;
+  transform: scale(1.2);
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.sticky-card {
+  position: sticky;
+}
+.rounded-end-top {
+  border-top-right-radius: 1rem;
+}
+.rounded-end-bottom {
+  border-bottom-right-radius: 1rem;
+}
+.btn-rose:hover {
+  opacity: 0.9;
+}
+
+/* Custom select dropdown overlays style */
+.custom-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  z-index: 1000;
+  padding: 8px 0;
+  overflow: hidden;
+  animation: slideDownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes slideDownFade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.custom-dropdown-item {
+  padding: 10px 16px;
+  font-size: 0.88rem;
+  color: #222;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  text-align: left;
+}
+.custom-dropdown-item:hover {
+  background: #f7f7f7;
+}
+.custom-dropdown-item.active {
+  background: #ffe8ec;
+  color: #FF385C;
+  font-weight: 600;
+}
+.checkin-date-container {
+  border-top-left-radius: 12px;
+}
+.checkout-date-container {
+  border-top-right-radius: 12px;
+}
+#rooms-dropdown-group {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}

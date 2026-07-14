@@ -1,0 +1,47 @@
+.premium-input {
+  border-radius: 8px; 
+  padding: 14px 16px; 
+  border: 1px solid #b0b0b0; 
+  font-size: 1rem; 
+  color: #222; 
+  box-shadow: none;
+}
+.premium-input:focus {
+  border-color: #FF385C !important;
+  border-width: 2px !important;
+  padding: 13px 15px !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+#authTab .nav-link {
+  color: #717171;
+}
+#authTab .nav-link.active {
+  background-color: #f7f7f7;
+  color: #222;
+}
+.social-btn {
+  border-radius: 8px;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #b0b0b0 !important;
+  background-color: #fff;
+  color: #222;
+  transition: all 0.25s ease;
+  box-shadow: none !important;
+}
+.social-btn-google:hover {
+  background-color: #ea4335;
+  border-color: #ea4335 !important;
+  color: #fff !important;
+}
+.social-btn-apple:hover {
+  background-color: #000;
+  border-color: #000 !important;
+  color: #fff !important;
+}
+.social-btn-phone:hover {
+  background-color: #FF385C; /* StayVerse Brand Color */
+  border-color: #FF385C !important;
+  color: #fff !important;
+}

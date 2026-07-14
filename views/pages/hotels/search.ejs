@@ -1,0 +1,118 @@
+<% layout("/layouts/boilerplate") %>
+
+<link rel="stylesheet" href="/css/hotel-search.css">
+
+<div class="hotel-search-container">
+  <div class="search-hero">
+    <h1>Find Real Places Worldwide</h1>
+    <p class="lead mb-4" style="font-size: 0.95rem;">Discover cities, neighborhoods, and hotels directly from StayVerse</p>
+    
+    <form id="hotelSearchForm" class="search-input-group">
+      <input type="text" id="hotelQuery" placeholder="e.g. Mumbai, New Delhi, India..." required>
+      <button type="submit">
+        <i class="fa-solid fa-magnifying-glass me-2"></i> Search
+      </button>
+    </form>
+  </div>
+
+  <div class="loader" id="searchLoader">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2 text-secondary">Fetching real data...</p>
+  </div>
+
+  <div id="resultsContainer" class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-7 row-cols-xl-7 row-cols-xxl-7 g-2 g-md-4">
+    <!-- Results will be injected here -->
+  </div>
+  
+  <div id="emptyState" class="text-center py-5 d-none">
+    <i class="fa-solid fa-map-location-dot fs-1 text-muted mb-3"></i>
+    <h4>No places found</h4>
+    <p class="text-secondary">Try searching for a different location.</p>
+  </div>
+
+  <!-- StayAPI Meta Booking Modal -->
+  <div class="modal fade" id="metaBookingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 rounded-4 shadow-lg">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold" id="metaModalTitle">Booking Options</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center pt-2 pb-4">
+          <p class="text-muted small mb-4" id="metaModalLocation">Loading booking options...</p>
+          
+          <div id="metaModalLoader" class="py-4">
+            <div class="spinner-border text-danger" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3 mb-0 text-secondary small">Searching multiple platforms...</p>
+          </div>
+
+          <div id="metaModalLinks" class="d-none d-flex flex-column gap-3">
+            <a id="metaModalAgodaLink" href="#" target="_blank" class="btn btn-outline-danger rounded-pill w-100 text-start px-4 py-2 d-flex justify-content-between align-items-center">
+              <span class="fw-bold">Agoda</span>
+              <i class="fa-solid fa-arrow-up-right-from-square small"></i>
+            </a>
+            <a id="metaModalBookingLink" href="#" target="_blank" class="btn btn-dark rounded-pill w-100 text-start px-4 py-2 d-flex justify-content-between align-items-center">
+              <span class="fw-bold">Booking.com</span>
+              <i class="fa-solid fa-arrow-up-right-from-square small"></i>
+            </a>
+            <a id="metaModalExpediaLink" href="#" target="_blank" class="btn btn-dark rounded-pill w-100 text-start px-4 py-2 d-flex justify-content-between align-items-center">
+              <span class="fw-bold">Expedia</span>
+              <i class="fa-solid fa-arrow-up-right-from-square small"></i>
+            </a>
+            <a id="metaModalHotelsLink" href="#" target="_blank" class="btn btn-dark rounded-pill w-100 text-start px-4 py-2 d-flex justify-content-between align-items-center">
+              <span class="fw-bold">Hotels.com</span>
+              <i class="fa-solid fa-arrow-up-right-from-square small"></i>
+            </a>
+          </div>
+          
+          <div id="metaModalError" class="d-none py-3">
+            <i class="fa-solid fa-circle-exclamation text-danger fs-3 mb-2"></i>
+            <p class="text-secondary small mb-3">Could not find alternative booking links.</p>
+            <a id="metaModalFallbackLink" href="#" target="_blank" class="btn btn-outline-danger w-100 rounded-pill">Continue to Agoda</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script id="hotel-search-config" type="application/json">
+  {
+    "passedQuery": "<%= typeof query !== 'undefined' ? query : '' %>",
+    "passedCategory": "<%= typeof category !== 'undefined' ? category : '' %>"
+  }
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const configEl = document.getElementById('hotel-search-config');
+    if (!configEl) return;
+    const config = JSON.parse(configEl.textContent);
+    
+    if (config.passedQuery) {
+      const qInput = document.getElementById('hotelQuery');
+      if (qInput) qInput.value = config.passedQuery;
+      if (typeof performSearch === 'function') {
+        performSearch(config.passedQuery, config.passedCategory);
+      }
+    } else if (config.passedCategory) {
+      if (typeof performSearch === 'function') {
+        performSearch('', config.passedCategory);
+      }
+    }
+    
+    const form = document.getElementById('hotelSearchForm');
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const query = document.getElementById('hotelQuery')?.value || '';
+        if (typeof performSearch === 'function') {
+          performSearch(query, '');
+        }
+      });
+    }
+  });
+</script>

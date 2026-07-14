@@ -3,7 +3,7 @@
   --rose-hover: #E61E4D;
   --charcoal: #222222;
   --light-gray: #717171;
-  --off-white: #F7F7F7;
+  --off-white: #ffffff;
   --border-color: #DDDDDD;
   --navbar-height: 5rem;
 }
@@ -19,7 +19,7 @@ html, body {
 
 body {
   font-family: "Outfit", "Plus Jakarta Sans", sans-serif !important;
-  background-color: var(--off-white);
+  background-color: #ffffff;
   color: var(--charcoal);
   min-height: 100vh;
   display: flex;
@@ -436,7 +436,7 @@ main {
   .container {
     display: flex;
     flex-direction: column; /* Added column to prevent block layout collapse causing scroll issues */
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .card, .shape {
@@ -499,6 +499,8 @@ main {
   .row-cols-md-3 > *,
   .row-cols-lg-4 > *,
   .row-cols-xl-5 > *,
+  .row-cols-lg-7 > *,
+  .row-cols-xl-7 > *,
   .row-cols-xxl-7 > * {
     flex: 0 0 auto;
     width: 33.33333333% !important;
@@ -519,5 +521,85 @@ main {
   main.container-fluid {
     padding-left: 3rem !important;
     padding-right: 3rem !important;
+  }
+}
+
+/* Image Navigation Arrow Overlay on Stays/Hotels Cards */
+.image-nav-arrow-overlay {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%) translateX(10px);
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  color: #222;
+  font-size: 0.85rem;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.hotel-card-hover:hover .image-nav-arrow-overlay {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.hotel-card-hover:active .image-nav-arrow-overlay {
+  transform: translateY(-50%) scale(0.9);
+}
+
+/* ==========================================
+   GLOBAL RESPONSIVENESS & STABILIZATION RULES
+   ========================================== */
+
+/* Prevent horizontal overflow globally */
+html, body {
+  overflow-x: clip !important;
+  max-width: 100vw !important;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* Ensure all images never break container boundaries */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensure no container breaks layout bounds */
+.container, .container-fluid {
+  max-width: 100% !important;
+  overflow-x: clip;
+}
+
+/* Typography safety to prevent text overlapping and cutoff */
+h1, h2, h3, h4, h5, h6, p, span, a, label {
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Form inputs safety */
+input, textarea, select {
+  max-width: 100% !important;
+}
+
+/* Modal sizing safety on mobile */
+@media (max-width: 576px) {
+  .modal-dialog {
+    max-width: 92% !important;
+    margin: 1rem auto !important;
   }
 }

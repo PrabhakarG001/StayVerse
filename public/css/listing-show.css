@@ -1,0 +1,21 @@
+.show-gallery-container { height: 50vh; min-height: 350px; max-height: 450px; }
+@media (max-width: 768px) {
+  .show-gallery-container { height: 40vh; min-height: 250px; max-height: 300px; }
+}
+
+/* Mobile bottom bar fixes padding on body so it doesn't overlap content */
+@media (max-width: 992px) {
+  body { padding-bottom: 80px; }
+}
+
+.show-dot.active {
+  background: #ffffff !important;
+  transform: scale(1.2);
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

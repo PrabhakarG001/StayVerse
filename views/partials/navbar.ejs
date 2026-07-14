@@ -1,0 +1,297 @@
+
+
+
+<!-- ===================== NAVBAR HTML ===================== -->
+<% const currentFilter = (typeof filter !== 'undefined') ? filter : 'all'; %>
+<header class="sv-header motion-header" id="sv-header">
+  <div class="container px-4" style="max-width: 100%;">
+    <!-- Row 1: Logo + Links -->
+    <div class="sv-header-row1 d-flex align-items-center justify-content-between" style="padding: 20px 0 0; position: relative;">
+      
+      <!-- Left: Logo -->
+      <div class="sv-logo-wrapper d-flex align-items-center">
+        <a class="sv-logo" href="/" style="transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+          <img src="/images/logo.svg" alt="StayVerse Logo">
+          <span class="ms-1" style="color: #FF385C; font-weight: 700;">StayVerse</span>
+        </a>
+      </div>
+      
+      <% if (typeof hideSearch === 'undefined' || !hideSearch) { %>
+      
+      <!-- Center: Category Tabs (visible at top, hidden on scroll) -->
+      <div class="sv-category-tabs d-none d-md-flex">
+        <a href="/listings?filter=all" class="cat-tab motion-nav-item <%= currentFilter === 'all' ? 'active' : '' %>">
+          <img src="/images/all.png" alt="All">
+          <span>All</span>
+        </a>
+        <a href="/listings?filter=india" class="cat-tab motion-nav-item <%= currentFilter === 'india' ? 'active' : '' %>">
+          <img src="/images/india.png" alt="India">
+          <span>India</span>
+        </a>
+        <a href="/listings?filter=foreign" class="cat-tab motion-nav-item <%= currentFilter === 'foreign' ? 'active' : '' %>">
+          <img src="/images/foreign.png" alt="Foreign">
+          <span>Foreign</span>
+        </a>
+      </div>
+
+      <!-- Scroll Pill (appears on scroll) -->
+      <div class="sv-scroll-pill d-none d-md-flex">
+        <a href="/listings?filter=all" class="d-flex align-items-center text-decoration-none rounded-pill sv-cat-pill motion-nav-item <%= currentFilter === 'all' ? 'active-pill text-dark' : 'text-secondary' %>" style="padding: 6px 14px; gap: 6px;">
+          <img src="/images/all.png" alt="All" style="width: 20px; height: 20px;">
+          <span class="fw-semibold" style="font-size: 0.9rem;">All</span>
+        </a>
+        <a href="/listings?filter=india" class="d-flex align-items-center text-decoration-none rounded-pill sv-cat-pill motion-nav-item <%= currentFilter === 'india' ? 'active-pill text-dark' : 'text-secondary' %>" style="padding: 6px 14px; gap: 6px;">
+          <img src="/images/india.png" alt="India" style="width: 20px; height: 20px;">
+          <span class="fw-semibold" style="font-size: 0.9rem;">India</span>
+        </a>
+        <a href="/listings?filter=foreign" class="d-flex align-items-center text-decoration-none rounded-pill sv-cat-pill motion-nav-item <%= currentFilter === 'foreign' ? 'active-pill text-dark' : 'text-secondary' %>" style="padding: 6px 14px; gap: 6px;">
+          <img src="/images/foreign.png" alt="Foreign" style="width: 20px; height: 20px;">
+          <span class="fw-semibold" style="font-size: 0.9rem;">Foreign</span>
+        </a>
+        <form action="/hotels/search" method="GET" class="d-flex align-items-center rounded-pill sv-cat-pill motion-nav-item text-secondary" style="padding: 4px 4px 4px 12px; margin: 0; cursor: text; transition: all 0.2s;" onclick="this.querySelector('input').focus()">
+          <input type="search" name="query" placeholder="Start your search" class="border-0 shadow-none p-0 bg-transparent" style="width: 140px; font-weight: 500; font-size: 0.9rem; color: #222; outline: none;">
+          <button type="submit" class="btn text-white rounded-circle d-flex align-items-center justify-content-center ms-1 flex-shrink-0" style="background: #FF385C; width: 30px; height: 30px; padding:0; transition: background 0.2s;" onmouseover="this.style.background='#E31C5F'" onmouseout="this.style.background='#FF385C'">
+            <i class="fa-solid fa-magnifying-glass" style="font-size: 0.75rem;"></i>
+          </button>
+        </form>
+      </div>
+      <% } %>
+
+      <!-- Right: Actions & Profile -->
+      <div class="sv-right-links d-flex align-items-center justify-content-end" style="flex-grow: 1; flex-basis: 0;">
+        <% if (!currentUser) { %>
+          <div class="dropdown sv-hover-dropdown me-1">
+            <a href="/auth/login-host" class="btn border-0 rounded-circle bg-transparent text-dark d-flex align-items-center justify-content-center host-link" style="width: 40px; height: 40px; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
+              <i class="fa-solid fa-house-medical"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2" style="border-radius: 12px; min-width: max-content; font-size: 0.9rem;">
+              <li><a class="dropdown-item fw-semibold rounded-2 py-2" href="/auth/login-host">Become a host</a></li>
+            </ul>
+          </div>
+        <% } else if (currentUser.role === 'user') { %>
+          <div class="dropdown sv-hover-dropdown me-1">
+            <a href="/my-bookings" class="btn border-0 rounded-circle bg-transparent text-dark d-flex align-items-center justify-content-center host-link" style="width: 40px; height: 40px; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
+              <i class="fa-solid fa-suitcase-rolling"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2" style="border-radius: 12px; min-width: max-content; font-size: 0.9rem;">
+              <li><a class="dropdown-item fw-semibold rounded-2 py-2" href="/my-bookings">My Booking</a></li>
+            </ul>
+          </div>
+        <% } else if (currentUser.role === 'host') { %>
+          <div class="dropdown sv-hover-dropdown me-1">
+            <a href="/my-host" class="btn border-0 rounded-circle bg-transparent text-dark d-flex align-items-center justify-content-center host-link" style="width: 40px; height: 40px; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
+              <i class="fa-solid fa-house-medical"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2" style="border-radius: 12px; min-width: max-content; font-size: 0.9rem;">
+              <li><a class="dropdown-item fw-semibold rounded-2 py-2" href="/my-host">My Host</a></li>
+            </ul>
+          </div>
+        <% } %>
+        
+
+        <div class="dropdown sv-hover-dropdown me-1">
+          <button class="btn border-0 rounded-circle bg-transparent d-flex align-items-center justify-content-center" type="button" style="width: 40px; height: 40px; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
+            <i class="fa-solid fa-globe" style="font-size: 1.1rem; color: #222;"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="border-radius: 12px; min-width: auto; font-size: 0.9rem;">
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeLanguage('hi'); return false;">Hindi</a></li>
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeLanguage('en'); return false;">English</a></li>
+          </ul>
+        </div>
+        
+        <div class="dropdown sv-hover-dropdown me-2">
+          <button class="btn border-0 rounded-circle bg-transparent d-flex align-items-center justify-content-center" type="button" style="width: 40px; height: 40px; transition: background 0.2s; font-weight: 600; color: #222;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
+            <span class="currentCurrSymbol">₹</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="border-radius: 12px; min-width: auto; font-size: 0.9rem;">
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeCurrency('USD'); return false;">$ Dollar</a></li>
+            <li><a class="dropdown-item fw-medium" href="#" onclick="changeCurrency('INR'); return false;">₹ Rupees</a></li>
+          </ul>
+        </div>
+        
+        <% if (!currentUser) { %>
+          <a href="/auth/login-user" class="btn d-none d-md-flex align-items-center justify-content-center ms-2" style="font-size: 0.90rem; padding: 8px 20px; border-radius: 50px; background: white; color: #FF385C; text-decoration: none; border: 1.5px solid #FF385C; font-weight: 600; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 12px rgba(255,56,92,0.2)'; this.style.background='#FF385C'; this.style.color='white';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.background='white'; this.style.color='#FF385C';">
+            Login / Sign Up
+          </a>
+          <div class="dropdown d-md-none">
+            <button class="btn border-0 rounded-circle bg-transparent d-flex align-items-center justify-content-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 16px; padding: 12px 0; min-width: 300px; box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;">
+              <li><a class="dropdown-item py-2 fw-semibold" href="#" data-bs-toggle="modal" data-bs-target="#helpCentreModal" style="font-size: 0.95rem;">Help Centre</a></li>
+              <li><hr class="dropdown-divider my-2"></li>
+              <li>
+                <a class="dropdown-item py-3 px-3 d-flex align-items-center justify-content-between" href="/auth/login-host" style="white-space: normal; margin: 4px 0;">
+                  <div style="padding-right: 16px;">
+                    <div class="fw-bold text-dark" style="font-size: 0.95rem;">Become a host</div>
+                    <div class="text-muted mt-1" style="font-size: 0.85rem; line-height: 1.3;">It's easy to start hosting and earn extra income.</div>
+                  </div>
+                  <img src="/images/host_cartoon.png" alt="Host Illustration" style="height: 54px; width: auto; flex-shrink: 0; object-fit: contain; mix-blend-mode: multiply;">
+                </a>
+              </li>
+              <li><hr class="dropdown-divider my-2"></li>
+              <li><a class="dropdown-item py-2 fw-semibold" href="/auth/login-user" style="font-size: 0.95rem;">Log in or sign up</a></li>
+            </ul>
+          </div>
+        <% } else { %>
+          <div class="dropdown ms-2">
+            <button class="btn border-0 rounded-circle bg-transparent d-flex align-items-center justify-content-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px; transition: background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='transparent'">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 16px; padding: 12px 0; min-width: 300px; box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;">
+              <li class="px-3 py-2">
+                <div class="fw-bold"><%= currentUser.name %></div>
+                <div class="text-muted small"><%= currentUser.email %></div>
+              </li>
+              <li><hr class="dropdown-divider my-2"></li>
+              <li><a class="dropdown-item py-2 fw-semibold" href="/wishlists">Wishlists</a></li>
+              <% if(currentUser.role === 'host') { %>
+                <li><a class="dropdown-item py-2 fw-semibold" href="/my-host">My Host</a></li>
+                <li><a class="dropdown-item py-2 fw-semibold" href="/listings/new">Create Listing</a></li>
+              <% } else { %>
+                <li><a class="dropdown-item py-2 fw-semibold" href="/my-bookings">My Booking</a></li>
+              <% } %>
+              <li><hr class="dropdown-divider my-2"></li>
+              <li><a class="dropdown-item py-2 fw-semibold" href="#" data-bs-toggle="modal" data-bs-target="#helpCentreModal">Help Centre</a></li>
+              <li><a class="dropdown-item py-2 fw-semibold text-danger" href="/auth/logout">Log out</a></li>
+            </ul>
+          </div>
+        <% } %>
+      </div>
+      
+      <!-- Mobile Right: Icons (<= 750px) -->
+      <div class="sv-mobile-right ms-auto">
+        <div class="dropdown">
+          <button class="btn border bg-light text-dark d-flex align-items-center justify-content-center rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px; padding: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);" title="Menu">
+            <i class="fa-solid fa-bars" style="font-size: 1.1rem;"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2" style="border-radius: 16px; padding: 12px 0; min-width: 220px; box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;">
+            <% if (!currentUser) { %>
+              <li><a class="dropdown-item py-2 fw-semibold" href="/auth/login-host"><i class="fa-solid fa-house-medical me-2" style="width: 16px; text-align: center;"></i> Become a host</a></li>
+            <% } else { %>
+              <% if (currentUser.role === 'user') { %>
+                <li><a class="dropdown-item py-2 fw-semibold" href="/my-bookings"><i class="fa-solid fa-suitcase-rolling me-2" style="width: 16px; text-align: center;"></i> My Booking</a></li>
+              <% } else if (currentUser.role === 'host') { %>
+                <li><a class="dropdown-item py-2 fw-semibold" href="/my-host"><i class="fa-solid fa-house-medical me-2" style="width: 16px; text-align: center;"></i> My Host</a></li>
+              <% } %>
+            <% } %>
+            
+            <li><hr class="dropdown-divider my-2"></li>
+            
+            <li><h6 class="dropdown-header text-secondary fw-bold" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Currency</h6></li>
+            <li><a class="dropdown-item py-2 fw-medium" href="#" onclick="changeCurrency('INR'); return false;">₹ Rupees</a></li>
+            <li><a class="dropdown-item py-2 fw-medium" href="#" onclick="changeCurrency('USD'); return false;">$ Dollar</a></li>
+            
+            <li><hr class="dropdown-divider my-2"></li>
+            
+            <li><h6 class="dropdown-header text-secondary fw-bold" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Language</h6></li>
+            <li><a class="dropdown-item py-2 fw-medium" href="#" onclick="changeLanguage('en'); return false;">English</a></li>
+            <li><a class="dropdown-item py-2 fw-medium" href="#" onclick="changeLanguage('hi'); return false;">Hindi</a></li>
+            
+            <% if (currentUser) { %>
+              <li><hr class="dropdown-divider my-2"></li>
+              <li><a class="dropdown-item py-2 fw-semibold text-danger" href="/auth/logout"><i class="fa-solid fa-right-from-bracket me-2" style="width: 16px; text-align: center;"></i> Log out</a></li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <% if (typeof hideSearch === 'undefined' || !hideSearch) { %>
+    <!-- Mobile Search Pill (Visible on Mobile & Tablet) -->
+    <div class="d-md-none w-100 pb-3 sv-mobile-search-wrapper" style="padding-top: 4px;">
+      <form action="/hotels/search" method="GET" class="w-100 m-0 position-relative">
+        <button type="submit" class="sv-mobile-search-pill btn w-100 bg-white border d-flex align-items-center justify-content-center" style="border-radius: 40px; box-shadow: 0 3px 12px rgba(0,0,0,0.08); padding: 8px; height: 46px; gap: 8px;">
+          <i class="fa-solid fa-magnifying-glass" style="font-size: 0.95rem; color: #222;"></i>
+          <span class="fw-bold text-dark" style="font-size: 0.92rem; letter-spacing: -0.1px;">Start your search</span>
+          <!-- Hidden input to allow submitting empty query -->
+          <input type="hidden" name="query" value="">
+        </button>
+      </form>
+    </div>
+    
+    <!-- Mobile Categories Filter (Visible on Mobile & Tablet) -->
+    <div class="d-md-none w-100 pb-2 overflow-auto hide-scrollbar sv-mobile-cats-container" style="display: flex; gap: 10px; padding-top: 8px; padding-bottom: 12px; padding-left: 16px; padding-right: 16px;">
+        <a href="/listings?filter=all" class="d-flex align-items-center text-decoration-none rounded-pill sv-cat-pill motion-nav-item <%= currentFilter === 'all' ? 'active-pill text-dark' : 'text-secondary' %>" style="padding: 8px 16px; gap: 6px; min-width: max-content;">
+          <img src="/images/cat_all.png" alt="All" style="width: 18px; height: 18px; opacity: <%= currentFilter === 'all' ? '1' : '0.6' %>;">
+          <span class="<%= currentFilter === 'all' ? 'fw-bold' : 'fw-semibold' %>" style="font-size: 0.85rem;">All</span>
+        </a>
+        <a href="/listings?filter=india" class="d-flex align-items-center text-decoration-none rounded-pill sv-cat-pill motion-nav-item <%= currentFilter === 'india' ? 'active-pill text-dark' : 'text-secondary' %>" style="padding: 8px 16px; gap: 6px; min-width: max-content; margin-left: 4px;">
+          <img src="/images/cat_india.png" alt="India" style="width: 18px; height: 18px; opacity: <%= currentFilter === 'india' ? '1' : '0.6' %>;">
+          <span class="<%= currentFilter === 'india' ? 'fw-bold' : 'fw-semibold' %>" style="font-size: 0.85rem;">India</span>
+        </a>
+        <a href="/listings?filter=foreign" class="d-flex align-items-center text-decoration-none rounded-pill sv-cat-pill motion-nav-item <%= currentFilter === 'foreign' ? 'active-pill text-dark' : 'text-secondary' %>" style="padding: 8px 16px; gap: 6px; min-width: max-content; margin-left: 4px;">
+          <img src="/images/cat_foreign.png" alt="Foreign" style="width: 18px; height: 18px; opacity: <%= currentFilter === 'foreign' ? '1' : '0.6' %>;">
+          <span class="<%= currentFilter === 'foreign' ? 'fw-bold' : 'fw-semibold' %>" style="font-size: 0.85rem;">Foreign</span>
+        </a>
+    </div>
+    <% } %>
+
+    <!-- Mobile Sidebar Menu -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
+      <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title fw-bold text-dark" id="mobileSidebarLabel" style="color: #FF385C !important;">StayVerse</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-0">
+        <div class="list-group list-group-flush border-0">
+          <a href="/" class="list-group-item list-group-item-action py-3 fw-semibold border-0"><i class="fa-solid fa-house me-3 text-secondary"></i>Home</a>
+          <a href="/wishlists" class="list-group-item list-group-item-action py-3 fw-semibold border-0"><i class="fa-solid fa-heart me-3 text-secondary"></i>Wishlists</a>
+          <% if(!currentUser) { %>
+            <a href="/auth/login-host" class="list-group-item list-group-item-action py-3 fw-semibold border-0"><i class="fa-solid fa-house-user me-3 text-secondary"></i>Become a Host</a>
+            <a href="/auth/login-user" class="list-group-item list-group-item-action py-3 fw-semibold border-0"><i class="fa-solid fa-right-to-bracket me-3 text-secondary"></i>Login / Sign up</a>
+          <% } else if (currentUser.role === 'user') { %>
+            <a href="/my-bookings" class="list-group-item list-group-item-action py-3 fw-semibold border-0"><i class="fa-solid fa-suitcase-rolling me-3 text-secondary"></i>My Booking</a>
+            <a href="/auth/logout" class="list-group-item list-group-item-action py-3 fw-semibold border-0 text-danger"><i class="fa-solid fa-right-from-bracket me-3"></i>Log out</a>
+          <% } else if (currentUser.role === 'host') { %>
+            <a href="/my-host" class="list-group-item list-group-item-action py-3 fw-semibold border-0"><i class="fa-solid fa-house-medical me-3 text-secondary"></i>My Host</a>
+            <a href="/listings/new" class="list-group-item list-group-item-action py-3 fw-semibold border-0"><i class="fa-solid fa-plus me-3 text-secondary"></i>Create Listing</a>
+            <a href="/auth/logout" class="list-group-item list-group-item-action py-3 fw-semibold border-0 text-danger"><i class="fa-solid fa-right-from-bracket me-3"></i>Log out</a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <% if (typeof hideSearch === 'undefined' || !hideSearch) { %>
+    <div class="sv-booking-bar-container d-none d-md-flex" style="position: relative;">
+      <div id="sv-booking-bar"></div>
+    </div>
+    <% } %>
+  </div>
+</header>
+
+<!-- Help Centre Modal -->
+<div class="modal fade" id="helpCentreModal" tabindex="-1" aria-labelledby="helpCentreModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header border-bottom-0 pb-0">
+        <h5 class="modal-title fw-bold text-dark fs-4" id="helpCentreModalLabel">Help Centre</h5>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body px-4 pt-3 pb-4">
+        <p class="text-secondary mb-4" style="font-size: 0.95rem;">Welcome to the StayVerse Help Centre. How can we assist you today?</p>
+        
+        <div class="mb-4">
+          <h6 class="fw-bold text-dark mb-2">Frequently Asked Questions</h6>
+          <div class="p-3 bg-light rounded-3 mb-2">
+            <span class="fw-semibold text-dark d-block mb-1">How do I cancel a booking?</span>
+            <span class="text-secondary" style="font-size: 0.85rem;">You can cancel a booking directly from your "My Booking" page. Cancellation policies vary by listing.</span>
+          </div>
+          <div class="p-3 bg-light rounded-3">
+            <span class="fw-semibold text-dark d-block mb-1">When will I be charged?</span>
+            <span class="text-secondary" style="font-size: 0.85rem;">You are charged immediately upon booking confirmation to secure your reservation.</span>
+          </div>
+        </div>
+        
+        <div>
+          <h6 class="fw-bold text-dark mb-2">Still need help?</h6>
+          <p class="text-secondary mb-0" style="font-size: 0.9rem;">If you can't find what you're looking for, feel free to <a href="/pages/contact-us" class="fw-bold text-decoration-none" style="color: #FF385C;">Contact Us</a> directly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="/js/searchbar.js"></script>

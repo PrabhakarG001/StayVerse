@@ -1,0 +1,242 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+  /* Premium Listing Form Styles */
+  .create-listing-wrapper {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: stretch;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    margin: 2rem 0;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+  }
+
+  .create-listing-left {
+    background: linear-gradient(135deg, var(--rose) 0%, #ff5a5f 100%);
+    color: white;
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .create-listing-left::after {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    right: -20%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+    border-radius: 50%;
+  }
+
+  .create-listing-right {
+    background: #ffffff;
+    padding: 3rem 4rem;
+    flex-grow: 1;
+  }
+
+  .premium-input {
+    border: 1px solid #b0b0b0;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    font-size: 1.1rem;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .premium-input:focus {
+    border-color: #222222;
+    box-shadow: 0 0 0 1px #222222;
+    outline: none;
+    background-color: #fcfcfc;
+  }
+
+  .premium-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #484848;
+    margin-bottom: 0.5rem;
+  }
+
+  .submit-btn {
+    background: linear-gradient(90deg, var(--rose) 0%, #e61e4d 100%);
+    color: white;
+    font-size: 1.15rem;
+    font-weight: 600;
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
+    border: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(227, 28, 95, 0.2);
+  }
+
+  .submit-btn:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 992px) {
+    .create-listing-wrapper {
+      flex-direction: column;
+      margin: 1rem 0;
+    }
+    .create-listing-left {
+      padding: 3rem 2rem;
+    }
+    .create-listing-right {
+      padding: 2rem 1.5rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .create-listing-left h1 {
+      font-size: 2rem !important;
+    }
+    .create-listing-left h5 {
+      font-size: 1.1rem;
+    }
+    .create-listing-left {
+      padding: 2rem 1.25rem;
+    }
+    .create-listing-right {
+      padding: 1.5rem 1.25rem;
+    }
+    .create-listing-wrapper {
+      border-radius: 1rem;
+    }
+  }
+</style>
+
+<div class="container-fluid px-md-5">
+  <div class="create-listing-wrapper">
+    <!-- Left Side: Engaging Branding -->
+    <div class="col-lg-5 create-listing-left">
+      <h1 class="display-4 fw-bold mb-4" style="line-height: 1.1;">It's easy to get started on StayVerse</h1>
+      <ul class="list-unstyled mt-4">
+        <li class="d-flex align-items-start mb-4">
+          <i class="fa-solid fa-list-check fs-3 me-3 mt-1 opacity-75"></i>
+          <div>
+            <h5 class="fw-bold mb-1">1. Tell us about your place</h5>
+            <p class="opacity-75 mb-0">Share some basic info, like where it is and how many guests can stay.</p>
+          </div>
+        </li>
+        <li class="d-flex align-items-start mb-4">
+          <i class="fa-solid fa-camera-retro fs-3 me-3 mt-1 opacity-75"></i>
+          <div>
+            <h5 class="fw-bold mb-1">2. Make it stand out</h5>
+            <p class="opacity-75 mb-0">Add a stunning photo and a catchy description.</p>
+          </div>
+        </li>
+        <li class="d-flex align-items-start">
+          <i class="fa-solid fa-door-open fs-3 me-3 mt-1 opacity-75"></i>
+          <div>
+            <h5 class="fw-bold mb-1">3. Finish up and publish</h5>
+            <p class="opacity-75 mb-0">Set your pricing, choose a category, and start hosting!</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Right Side: The Form -->
+    <div class="col-lg-7 create-listing-right">
+      <h3 class="fw-bold text-dark mb-4 pb-2 border-bottom">Listing Details</h3>
+
+      <form method="POST" action="/listings" novalidate class="needs-validation">
+        
+        <div class="mb-4">
+          <label for="title" class="premium-label">Title</label>
+          <input id="title" name="listing[title]" placeholder="e.g. Stunning Beachfront Villa with Private Pool" type="text" class="form-control premium-input" required>
+          <div class="invalid-feedback">Please enter a catchy title.</div>
+        </div>
+
+        <div class="mb-4">
+          <label for="description" class="premium-label">Description</label>
+          <textarea id="description" name="listing[description]" placeholder="Describe the ambiance, amenities, and unique features of your space..." rows="4" class="form-control premium-input" required></textarea>
+          <div class="invalid-feedback">Please provide a description.</div>
+        </div>
+
+        <div class="mb-4">
+          <label for="image" class="premium-label">Cover Image URL</label>
+          <input id="image" name="listing[image]" placeholder="https://images.unsplash.com/..." type="url" class="form-control premium-input">
+          <small class="text-muted mt-2 d-block"><i class="fa-solid fa-circle-info me-1"></i>Leave empty to use a beautiful auto-generated placeholder.</small>
+        </div>
+
+        <div class="mb-4">
+          <label class="premium-label">Gallery Image URLs (Optional - Add up to 4 more images)</label>
+          <div class="row g-2">
+            <div class="col-6 col-md-3">
+              <input name="listing[galleryImages][0]" placeholder="Gallery Image 1 URL" type="url" class="form-control premium-input py-2 fs-6">
+            </div>
+            <div class="col-6 col-md-3">
+              <input name="listing[galleryImages][1]" placeholder="Gallery Image 2 URL" type="url" class="form-control premium-input py-2 fs-6">
+            </div>
+            <div class="col-6 col-md-3">
+              <input name="listing[galleryImages][2]" placeholder="Gallery Image 3 URL" type="url" class="form-control premium-input py-2 fs-6">
+            </div>
+            <div class="col-6 col-md-3">
+              <input name="listing[galleryImages][3]" placeholder="Gallery Image 4 URL" type="url" class="form-control premium-input py-2 fs-6">
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-6 mb-4 mb-md-0">
+            <label for="price" class="premium-label">Price per night (₹)</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0 text-secondary" style="border-radius: 0.75rem 0 0 0.75rem; border: 1px solid #b0b0b0;">₹</span>
+              <input id="price" name="listing[price]" placeholder="4500" type="number" class="form-control premium-input border-start-0" style="border-radius: 0 0.75rem 0.75rem 0;" min="0" required>
+              <div class="invalid-feedback">Please specify a valid price.</div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="category" class="premium-label">Category</label>
+            <select id="category" name="listing[category]" class="form-select premium-input" required>
+              <option value="" disabled selected>Select home type...</option>
+              <option value="Trending">🔥 Trending</option>
+              <option value="Beachfront">🏖️ Beachfront</option>
+              <option value="Iconic Cities">🏙️ Iconic Cities</option>
+              <option value="Mountains">⛰️ Mountains</option>
+              <option value="Castles">🏰 Castles</option>
+              <option value="Pools">🏊 Pools</option>
+              <option value="Camping">🏕️ Camping</option>
+              <option value="Lakefront">🏞️ Lakefront</option>
+              <option value="Jungle">🌴 Jungle</option>
+              <option value="Historic">🏛️ Historic</option>
+            </select>
+            <div class="invalid-feedback">Please select a category.</div>
+          </div>
+        </div>
+
+        <div class="row mb-5">
+          <div class="col-md-6 mb-4 mb-md-0">
+            <label for="location" class="premium-label">City / Location</label>
+            <input id="location" name="listing[location]" placeholder="e.g. Anjuna, Goa" type="text" class="form-control premium-input" required>
+            <div class="invalid-feedback">City/Location is required.</div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="country" class="premium-label">Country</label>
+            <input id="country" name="listing[country]" placeholder="e.g. India" type="text" class="form-control premium-input" required>
+            <div class="invalid-feedback">Country is required.</div>
+          </div>
+        </div>
+
+        <div class="d-grid pt-2">
+          <button type="submit" class="submit-btn w-100 shadow">
+            Create your listing
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

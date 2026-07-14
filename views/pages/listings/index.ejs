@@ -1,0 +1,148 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- City Sliders -->
+<div class="mt-4">
+  
+
+<!-- Mobile "Continue Searching" Mock Card -->
+<div class="d-md-none mb-4 px-1">
+  <a href="/listings?search=Varanasi" class="text-decoration-none text-dark d-block">
+    <div class="card border rounded-4 shadow-sm p-3 d-flex flex-row align-items-center justify-content-between motion-card" style="background-color: #ffffff; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+      <div class="pe-3">
+        <h5 class="fw-bold mb-1" style="font-size: 1.1rem; line-height: 1.3;">Continue searching for homes in Varanasi</h5>
+        <p class="text-secondary mb-0" style="font-size: 0.85rem;">11-12 Aug &middot; 1 guest <i class="fa-solid fa-chevron-right ms-1" style="font-size: 0.7rem;"></i></p>
+      </div>
+      <div style="flex-shrink: 0;">
+        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=100&q=80" alt="Varanasi Home" class="rounded-3" style="width: 65px; height: 65px; object-fit: cover;">
+      </div>
+    </div>
+  </a>
+</div>
+
+<%
+  const activeFilter = (typeof filter !== 'undefined') ? filter : 'all';
+  
+  const foreignCities = [
+    { title: "Explore New York Stays", city: "New York", id: "newyorkSlider", region: "foreign" },
+    { title: "Available in London", city: "London", id: "londonSlider", region: "foreign" },
+    { title: "Stay in Paris", city: "Paris", id: "parisSlider", region: "foreign" },
+    { title: "Popular homes in Dubai", city: "Dubai", id: "dubaiSlider", region: "foreign" },
+    { title: "Available in Rome next weekend", city: "Rome", id: "romeSlider", region: "foreign" },
+    { title: "Stay in Tokyo", city: "Tokyo", id: "tokyoSlider", region: "foreign" },
+    { title: "Popular homes in Singapore", city: "Singapore", id: "singaporeSlider", region: "foreign" },
+    { title: "Explore Bangkok Stays", city: "Bangkok", id: "bangkokSlider", region: "foreign" },
+    { title: "Relax in Bali", city: "Bali", id: "baliSlider", region: "foreign" },
+    { title: "Stunning views in Santorini", city: "Santorini", id: "santoriniSlider", region: "foreign" },
+    { title: "Luxury stays in Maldives", city: "Maldives", id: "maldivesSlider", region: "foreign" },
+    { title: "Tropical Phuket Stays", city: "Phuket", id: "phuketSlider", region: "foreign" },
+    { title: "Majestic Swiss Alps", city: "Swiss Alps", id: "swissalpsSlider", region: "foreign" },
+    { title: "Explore Iceland", city: "Iceland", id: "icelandSlider", region: "foreign" },
+    { title: "Unique stays in Cappadocia", city: "Cappadocia", id: "cappadociaSlider", region: "foreign" },
+    { title: "Historic Athens Stays", city: "Athens", id: "athensSlider", region: "foreign" },
+    { title: "Romantic stays in Venice", city: "Venice", id: "veniceSlider", region: "foreign" },
+    { title: "Explore Sydney Stays", city: "Sydney", id: "sydneySlider", region: "foreign" },
+    { title: "Stunning views in Cape Town", city: "Cape Town", id: "capetownSlider", region: "foreign" },
+    { title: "Ski in Zermatt", city: "Zermatt", id: "zermattSlider", region: "foreign" },
+    { title: "Historic Barcelona Stays", city: "Barcelona", id: "barcelonaSlider", region: "foreign" },
+    { title: "Relax in Rio de Janeiro", city: "Rio de Janeiro", id: "rioSlider", region: "foreign" },
+    { title: "Explore Istanbul", city: "Istanbul", id: "istanbulSlider", region: "foreign" },
+    { title: "Modern stays in Seoul", city: "Seoul", id: "seoulSlider", region: "foreign" },
+    { title: "Vibrant Marrakech", city: "Marrakech", id: "marrakechSlider", region: "foreign" },
+    { title: "Stay in Amsterdam", city: "Amsterdam", id: "amsterdamSlider", region: "foreign" },
+    { title: "Explore Reykjavik", city: "Reykjavik", id: "reykjavikSlider", region: "foreign" },
+    { title: "Historic Cairo Stays", city: "Cairo", id: "cairoSlider", region: "foreign" }
+  ];
+  const indianCities = [
+    { title: "Popular homes in Bangalore", city: "Bangalore", id: "bangaloreSlider", region: "india" },
+    { title: "Available in Hyderabad", city: "Hyderabad", id: "hyderabadSlider", region: "india" },
+    { title: "Stay in Pune", city: "Pune", id: "puneSlider", region: "india" },
+    { title: "Popular homes in Gurgaon", city: "Gurgaon", id: "gurgaonSlider", region: "india" },
+    { title: "Available in Noida", city: "Noida", id: "noidaSlider", region: "india" },
+    { title: "Stay in Chennai", city: "Chennai", id: "chennaiSlider", region: "india" },
+    { title: "Popular homes in Mumbai", city: "Mumbai", id: "mumbaiSlider", region: "india" },
+    { title: "Explore Goa Stays", city: "Goa", id: "goaSlider", region: "india" },
+    { title: "Available in Varanasi next weekend", city: "Varanasi", id: "varanasiSlider", region: "india" },
+    { title: "Stay in Jaipur", city: "Jaipur", id: "jaipurSlider", region: "india" },
+    { title: "Popular homes in Agra", city: "Agra", id: "agraSlider", region: "india" },
+    { title: "Available in Udaipur", city: "Udaipur", id: "udaipurSlider", region: "india" },
+    { title: "Stay in New Delhi", city: "New Delhi", id: "newdelhiSlider", region: "india" },
+    { title: "Popular homes in Kolkata", city: "Kolkata", id: "kolkataSlider", region: "india" },
+    { title: "Available in Ahmedabad", city: "Ahmedabad", id: "ahmedabadSlider", region: "india" },
+    { title: "Explore Kochi Stays", city: "Kochi", id: "kochiSlider", region: "india" },
+    { title: "Stay in Rishikesh", city: "Rishikesh", id: "rishikeshSlider", region: "india" },
+    { title: "Popular homes in Chandigarh", city: "Chandigarh", id: "chandigarhSlider", region: "india" },
+    { title: "Stay in Shimla", city: "Shimla", id: "shimlaSlider", region: "india" },
+    { title: "Explore Munnar Stays", city: "Munnar", id: "munnarSlider", region: "india" },
+    { title: "Stay in Darjeeling", city: "Darjeeling", id: "darjeelingSlider", region: "india" },
+    { title: "Mountain retreat in Manali", city: "Manali", id: "manaliSlider", region: "india" },
+    { title: "Backwaters of Kerala", city: "Kerala", id: "keralaSlider", region: "india" },
+    { title: "Tropical Andaman", city: "Andaman", id: "andamanSlider", region: "india" },
+    { title: "French charm in Pondicherry", city: "Pondicherry", id: "pondicherrySlider", region: "india" },
+    { title: "Adventure in Leh-Ladakh", city: "Leh-Ladakh", id: "lehladakhSlider", region: "india" },
+    { title: "Queen of Hills Mussoorie", city: "Mussoorie", id: "mussoorieSlider", region: "india" },
+    { title: "Desert magic in Jaisalmer", city: "Jaisalmer", id: "jaisalmerSlider", region: "india" },
+    { title: "Coffee land Coorg", city: "Coorg", id: "coorgSlider", region: "india" },
+    { title: "Nature's beauty Wayanad", city: "Wayanad", id: "wayanadSlider", region: "india" },
+    { title: "Historic ruins in Hampi", city: "Hampi", id: "hampiSlider", region: "india" },
+    { title: "Houseboats in Alleppey", city: "Alleppey", id: "alleppeySlider", region: "india" },
+    { title: "Cool breeze in Ooty", city: "Ooty", id: "ootySlider", region: "india" }
+  ];
+  
+  let citySections = [...foreignCities, ...indianCities];
+%>
+<% citySections.forEach(section => { 
+    let initialDisplay = "";
+    if (activeFilter !== 'all' && activeFilter !== section.region) {
+      initialDisplay = "d-none";
+    }
+%>
+<div class="mb-5 pb-2 position-relative group-slider <%= initialDisplay %>" data-region="<%= section.region %>" onmouseenter="showSliderBtns(this)" onmouseleave="hideSliderBtns(this)">
+  <div class="d-flex align-items-center justify-content-between mb-3 px-1">
+    <h3 class="fw-bold m-0 text-dark" style="font-size: 1.35rem; letter-spacing: -0.5px;"><%= section.title %></h3>
+    <a href="/listings?search=<%= section.city %>" class="btn btn-light rounded-circle d-flex align-items-center justify-content-center border shadow-sm" style="width: 32px; height: 32px;">
+      <i class="fa-solid fa-arrow-right" style="font-size: 0.85rem;"></i>
+    </a>
+  </div>
+  
+  <button class="slider-btn slider-prev bg-white border shadow-sm rounded-circle position-absolute top-50 start-0 translate-middle-y d-none align-items-center justify-content-center hover-scale" style="width: 32px; height: 32px; z-index: 2; cursor: pointer; left: -16px !important; transition: transform 0.2s, box-shadow 0.2s;" onclick="scrollSlider('<%= section.id %>', -1)"><i class="fa-solid fa-chevron-left" style="font-size: 0.8rem;"></i></button>
+  
+  <button class="slider-btn slider-next bg-white border shadow-sm rounded-circle position-absolute top-50 end-0 translate-middle-y d-none align-items-center justify-content-center hover-scale" style="width: 32px; height: 32px; z-index: 2; cursor: pointer; right: -16px !important; transition: transform 0.2s, box-shadow 0.2s;" onclick="scrollSlider('<%= section.id %>', 1)"><i class="fa-solid fa-chevron-right" style="font-size: 0.8rem;"></i></button>
+
+  <div class="d-flex overflow-auto flex-nowrap pb-4 pt-3 hide-scrollbar slider-container" id="<%= section.id %>" style="scroll-behavior: smooth; gap: 16px; margin-top: -16px;">
+    <!-- Skeleton Loaders -->
+    <% for(let i=0; i<8; i++) { %>
+      <div class="card border-0 skeleton-card bg-transparent hotel-slide h-100">
+        <div class="skeleton-img rounded-4 mb-2" style="aspect-ratio: 1 / 1; width: 100%; height: auto;"></div>
+        <div class="pt-1 pe-1">
+          <div class="d-flex justify-content-between align-items-start mb-1">
+            <div class="skeleton-text w-75 m-0" style="height: 1.3rem;"></div>
+          </div>
+          <div class="skeleton-text w-100 mb-1" style="height: 1.2rem;"></div>
+          <div class="skeleton-text w-50 mt-1 pb-1" style="height: 1.2rem;"></div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</div>
+<% }) %>
+</div>
+
+<!-- Link to index styling -->
+<link rel="stylesheet" href="/css/listings-index.css">
+
+<!-- Configure and initialize listings-index via hybrid search helper -->
+<script id="listings-index-config" type="application/json">
+  {
+    "activeFilter": "<%= filter %>",
+    "foreignCities": <%- JSON.stringify(foreignCities.map(c => ({ city: c.city, id: c.id }))) %>,
+    "indianCities": <%- JSON.stringify(indianCities.map(c => ({ city: c.city, id: c.id }))) %>
+  }
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const configEl = document.getElementById('listings-index-config');
+    if (configEl && typeof initListingsIndex === 'function') {
+      initListingsIndex(JSON.parse(configEl.textContent));
+    }
+  });
+</script>

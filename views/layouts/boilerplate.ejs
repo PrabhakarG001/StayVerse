@@ -28,172 +28,41 @@
   
   <!-- Booking Search Bar -->
   <link rel="stylesheet" href="/css/searchbar.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/footer.css">
+  <link rel="stylesheet" href="/css/wishlist.css">
+  <link rel="stylesheet" href="/css/boilerplate.css">
   
   <!-- Leaflet Map JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
   <!-- Motion Initial States & Instant CSS Animations -->
   <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/motion@11.11.17/+esm">
-  <style>
-    /* JS Scroll animations initial hidden states */
-    html.js-enabled .motion-footer { opacity: 0; transform: translateY(40px); }
-    @media (max-width: 741.98px) {
-      html.js-enabled .motion-footer {
-        opacity: 1 !important;
-        transform: none !important;
-      }
-    }
-    
-    /* Instant Pure CSS Animations for Header, Nav & Cards */
-    @keyframes slideDownFast { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    @keyframes fadeUpStagger { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    @keyframes fadeUpCard { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    
-    .motion-header { animation: slideDownFast 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
-    .motion-nav-item { opacity: 0; animation: fadeUpStagger 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
-    .motion-card { animation: fadeUpCard 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) both; }
-    
-    /* Stagger nav items manually for instant load */
-    .motion-nav-item:nth-child(1) { animation-delay: 0.1s; }
-    .motion-nav-item:nth-child(2) { animation-delay: 0.15s; }
-    .motion-nav-item:nth-child(3) { animation-delay: 0.2s; }
-    .motion-nav-item:nth-child(4) { animation-delay: 0.25s; }
-    .motion-nav-item:nth-child(5) { animation-delay: 0.3s; }
-  </style>
   <script>document.documentElement.classList.add('js-enabled');</script>
 </head>
 <body>
-  <%- include("../includes/navbar.ejs") %>
+  <%- include("../partials/navbar.ejs") %>
   
   <main class="container-fluid px-4 px-lg-5 mb-4 mt-4 mt-md-5 pt-md-4">
     <%- body %>
   </main>
   
-  <%- include("../includes/footer.ejs") %>
+  <%- include("../partials/footer.ejs") %>
 
   <!-- Google Translate Hidden Widget -->
   <div id="google_translate_element" style="display:none;"></div>
-  <script>
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'en,hi', autoDisplay: false}, 'google_translate_element');
-    }
-  </script>
-  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-  <!-- Global Language & Currency Switcher Logic -->
-  <script>
-    function changeLanguage(langCode) {
-      const select = document.querySelector('select.goog-te-combo');
-      if (select) {
-        select.value = langCode;
-        select.dispatchEvent(new Event('change'));
-        
-        // Update UI Text manually to bypass translate loop
-        const text = langCode === 'hi' ? 'Hindi' : 'English';
-        document.querySelectorAll('.currentLangText').forEach(el => el.textContent = text);
-        
-        // Save preference (Google Translate does this automatically in a cookie, but we can enforce it)
-        localStorage.setItem('sv_lang', langCode);
-      }
-    }
-
-    function changeCurrency(currCode) {
-      localStorage.setItem('sv_currency', currCode);
-      applyCurrency(currCode);
-    }
-
-    function applyCurrency(currCode) {
-      const isUSD = currCode === 'USD';
-      const rate = 83; // 1 USD = 83 INR
-      
-      // Update UI buttons
-      const currSymbol = isUSD ? '$' : '₹';
-      const currText = isUSD ? '$ Dollar' : '₹ (Rupees)';
-      document.querySelectorAll('.currentCurrSymbol').forEach(el => el.textContent = currSymbol);
-      document.querySelectorAll('.currentCurrText').forEach(el => el.textContent = currText);
-      
-      // Update all prices on page
-      document.querySelectorAll('.price-val').forEach(el => {
-        const inrVal = parseInt(el.getAttribute('data-inr')) || 0;
-        if(isUSD) {
-           el.innerHTML = '$' + Math.round(inrVal / rate).toLocaleString('en-US');
-        } else {
-           el.innerHTML = '₹' + inrVal.toLocaleString('en-IN');
-        }
-      });
-    }
-
-    // On Load, check for saved currency
-    document.addEventListener("DOMContentLoaded", () => {
-      const savedCurr = localStorage.getItem('sv_currency');
-      if(savedCurr) {
-        applyCurrency(savedCurr);
-      }
-      
-      const savedLang = localStorage.getItem('sv_lang') || 'en';
-      const text = savedLang === 'hi' ? 'Hindi' : 'English';
-      document.querySelectorAll('.currentLangText').forEach(el => el.textContent = text);
-    });
-  </script>
-
+  
   <!-- Bootstrap Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  
-  <!-- Booking Search Bar -->
-  <script src="/js/searchbar.js"></script>
-  
-  <!-- Custom Client-Side Script -->
-  <script src="/js/script.js?v=destination-filter-2"></script>
-  
-  <!-- Global Framer Motion Animations -->
+
+  <!-- StayVerse Core Hybrid Scripts -->
+  <script src="/js/main.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/search.js"></script>
+  <script src="/js/auth.js"></script>
   <script type="module" src="/js/animations.js"></script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   
-  <!-- Wishlist Logic -->
-  <script src="/js/wishlist.js"></script>
-  
-  <!-- Mobile Bottom Navigation (Visible only on < 768px) -->
-  <style>
-    .mobile-bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: #ffffff;
-      border-top: 1px solid #ebebeb;
-      z-index: 1045;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
-    }
-    .mobile-bottom-nav a, .mobile-bottom-nav button {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-decoration: none;
-      color: #717171;
-      background: none;
-      border: none;
-      padding: 0;
-      font-size: 0.65rem;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-    .mobile-bottom-nav a.active, .mobile-bottom-nav a:hover, .mobile-bottom-nav button:hover {
-      color: #FF385C;
-    }
-    .mobile-bottom-nav a i, .mobile-bottom-nav button i {
-      font-size: 1.4rem;
-      margin-bottom: 4px;
-    }
-    @media (max-width: 741.98px) {
-      body { padding-bottom: calc(75px + env(safe-area-inset-bottom)) !important; }
-    }
-    @media (min-width: 742px) {
-      body { padding-bottom: 0 !important; }
-      .mobile-bottom-nav.d-md-none { display: none !important; }
-    }
-  </style>
   <div class="mobile-bottom-nav d-md-none">
     <a href="/" class="active">
       <i class="fa-solid fa-magnifying-glass"></i>
@@ -225,95 +94,5 @@
   <div class="sv-scroll-progress-container">
     <div class="sv-scroll-progress-bar"></div>
   </div>
-
-  <style>
-    /* Hide Default Browser Scrollbar Globally */
-    html {
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* IE and Edge */
-    }
-    html::-webkit-scrollbar {
-      display: none; /* Chrome, Safari and Opera */
-    }
-    
-    /* Scroll Progress Indicator Styles */
-    .sv-scroll-progress-container {
-      position: fixed;
-      z-index: 9999;
-      pointer-events: none; /* Let clicks pass through */
-      background: transparent;
-    }
-    
-    .sv-scroll-progress-bar {
-      background-color: #FF385C; /* Exact logo color */
-      box-shadow: 0 0 6px rgba(255, 56, 92, 0.5); /* Subtle glow */
-      /* Smooth transition avoiding lag */
-      transition: transform 0.1s ease-out;
-      transform-origin: top left;
-      border-radius: 4px;
-    }
-
-    /* Desktop: Vertical on the right */
-    @media (min-width: 742px) {
-      .sv-scroll-progress-container {
-        top: 0;
-        right: 0;
-        width: 4px;
-        height: 100vh;
-      }
-      .sv-scroll-progress-bar {
-        width: 100%;
-        height: 100%;
-        transform: scaleY(var(--scroll-progress, 0));
-      }
-    }
-
-    /* Mobile: Horizontal on the top */
-    @media (max-width: 741.98px) {
-      .sv-scroll-progress-container {
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 4px;
-      }
-      .sv-scroll-progress-bar {
-        width: 100%;
-        height: 100%;
-        transform: scaleX(var(--scroll-progress, 0));
-      }
-    }
-  </style>
-
-  <script>
-    // Optimized Scroll Progress Logic using requestAnimationFrame
-    (function() {
-      let ticking = false;
-
-      const updateScrollProgress = () => {
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
-        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) : 0;
-        const clampedProgress = Math.max(0, Math.min(1, progress));
-        
-        document.documentElement.style.setProperty('--scroll-progress', clampedProgress);
-        ticking = false;
-      };
-
-      const onScroll = () => {
-        if (!ticking) {
-          window.requestAnimationFrame(updateScrollProgress);
-          ticking = true;
-        }
-      };
-      
-      // Update on scroll with passive listener for performance
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', updateScrollProgress);
-      window.addEventListener('load', updateScrollProgress);
-      
-      // Initial call
-      updateScrollProgress();
-    })();
-  </script>
 </body>
 </html>
