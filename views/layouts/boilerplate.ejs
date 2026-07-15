@@ -78,7 +78,7 @@
         <span>My Host</span>
       </a>
     <% } else { %>
-      <a href="javascript:void(0)" onclick="handleProtectedAction(function(){ window.location.href='/bookings?tab=past' })" class="<%= (typeof page !== 'undefined' && page === 'bookings') ? 'active' : '' %>">
+      <a href="javascript:void(0)" onclick="handleProtectedAction(function(){ window.location.href='/my-bookings?tab=past' })" class="<%= (typeof page !== 'undefined' && page === 'bookings') ? 'active' : '' %>">
         <i class="fa-solid fa-suitcase-rolling"></i>
         <span>Past Trips</span>
       </a>

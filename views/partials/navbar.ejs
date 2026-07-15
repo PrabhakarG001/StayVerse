@@ -156,7 +156,7 @@
 
               <!-- DESKTOP MENU (Role-Based) -->
               <% if(currentUser.role === 'user') { %>
-                <li class="d-none d-md-block"><a class="dropdown-item py-2 fw-semibold" href="/user/bookings">Past Bookings</a></li>
+                <li class="d-none d-md-block"><a class="dropdown-item py-2 fw-semibold" href="/my-bookings?tab=past">Past Bookings</a></li>
                 <li class="d-none d-md-block"><a class="dropdown-item py-2 fw-semibold" href="/host/register">Become a Host</a></li>
                 <li class="d-none d-md-block"><a class="dropdown-item py-2 fw-semibold" href="/connections">Connections</a></li>
               <% } else if (currentUser.role === 'host') { %>

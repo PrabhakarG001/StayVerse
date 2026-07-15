@@ -29,10 +29,10 @@
   
   <ul class="nav nav-pills mb-4" id="pills-tab" role="tablist">
     <li class="nav-item" role="presentation">
-      <a class="nav-link <%= activeTab === 'active' ? 'active bg-dark text-white' : 'text-dark fw-medium' %> rounded-pill px-4" href="/bookings?tab=active">Active Trips</a>
+      <a class="nav-link <%= activeTab === 'active' ? 'active bg-dark text-white' : 'text-dark fw-medium' %> rounded-pill px-4" href="/my-bookings?tab=active">Active Trips</a>
     </li>
     <li class="nav-item ms-2" role="presentation">
-      <a class="nav-link <%= activeTab === 'past' ? 'active bg-dark text-white' : 'text-dark fw-medium' %> rounded-pill px-4" href="/bookings?tab=past">Past Trips</a>
+      <a class="nav-link <%= activeTab === 'past' ? 'active bg-dark text-white' : 'text-dark fw-medium' %> rounded-pill px-4" href="/my-bookings?tab=past">Past Trips</a>
     </li>
   </ul>
 
@@ -82,7 +82,7 @@
                 </div>
                 <p class="text-secondary mb-1 text-truncate" style="font-size: 0.9rem; line-height: 1.4;">Booked on <%= new Date(booking.date).toLocaleDateString() %></p>
                 <div class="d-flex align-items-center mt-1 pb-1">
-                  <span class="fw-bold text-dark" style="font-size: 0.98rem;"><%= booking.price %></span>
+                  <span class="fw-bold text-dark" style="font-size: 0.98rem;"><%- booking.price %></span>
                 </div>
               </div>
             </div>
