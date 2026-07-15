@@ -72,10 +72,17 @@
         <i class="fa-regular fa-heart"></i>
         <span>Wishlists</span>
     </a>
-    <a href="javascript:void(0)" onclick="handleProtectedAction(function(){ window.location.href='/bookings?tab=active' })" class="text-dark <%= (typeof page !== 'undefined' && page === 'bookings') ? 'active text-danger' : '' %>">
-        <i class="fa-brands fa-airbnb"></i>
-        <span>Trips</span>
-    </a>
+    <% if (typeof currentUser !== 'undefined' && currentUser && currentUser.role === 'host') { %>
+      <a href="/my-host" class="text-dark <%= (typeof page !== 'undefined' && page === 'my-host') ? 'active text-danger' : '' %>">
+        <i class="fa-solid fa-house-medical"></i>
+        <span>My Host</span>
+      </a>
+    <% } else { %>
+      <a href="javascript:void(0)" onclick="handleProtectedAction(function(){ window.location.href='/bookings?tab=past' })" class="text-dark <%= (typeof page !== 'undefined' && page === 'bookings') ? 'active text-danger' : '' %>">
+        <i class="fa-solid fa-suitcase-rolling"></i>
+        <span>Past Trips</span>
+      </a>
+    <% } %>
     <a href="javascript:void(0)" onclick="handleProtectedRoute('/messages')">
       <i class="fa-regular fa-message"></i>
       <span>Messages</span>
