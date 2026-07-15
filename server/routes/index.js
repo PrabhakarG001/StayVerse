@@ -7,6 +7,7 @@ const listingRoutes = require('./listingRoutes');
 const hotelRoutes = require('./hotelRoutes');
 const bookingRoutes = require('./bookingRoutes');
 const wishlistRoutes = require('./wishlistRoutes');
+const userRoutes = require('./userRoutes');
 const hotelsController = require('../controllers/hotelsController');
 const { wrapAsync } = require('../middlewares/errorMiddleware');
 
@@ -17,6 +18,13 @@ router.use('/hotels', hotelRoutes);
 router.use('/pages', pagesRoutes);
 router.use('/', bookingRoutes);
 router.use('/', wishlistRoutes);
+
+// Compatibility redirects requested by user
+router.get('/home', (req, res) => res.redirect('/'));
+router.get('/user/bookings', (req, res) => res.redirect('/bookings?tab=past'));
+router.get('/host/register', (req, res) => res.redirect('/auth/login-host'));
+
+router.use('/', userRoutes);
 
 // Hotel API Routes (keeping them at root scope matching original app.js)
 router.get('/api/hotels/render-slider', wrapAsync(hotelsController.renderSliderAPI));

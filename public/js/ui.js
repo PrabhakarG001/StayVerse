@@ -277,3 +277,79 @@ document.addEventListener("DOMContentLoaded", () => {
     if (children > 0) { children--; updateHeroGuests(); }
   });
 });
+
+// Toast Notification System
+window.showToast = function(message) {
+  let toastContainer = document.getElementById('toast-container');
+  if (!toastContainer) {
+    toastContainer = document.createElement('div');
+    toastContainer.id = 'toast-container';
+    toastContainer.className = 'position-fixed bottom-0 start-50 translate-middle-x p-3';
+    toastContainer.style.zIndex = '1055';
+    // Style to ensure it shows above everything, specifically on mobile
+    toastContainer.style.bottom = '80px'; 
+    document.body.appendChild(toastContainer);
+  }
+  
+  const toast = document.createElement('div');
+  toast.className = 'toast align-items-center text-bg-dark border-0 show';
+  toast.role = 'alert';
+  toast.style.borderRadius = '8px';
+  toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+  toast.style.transition = 'opacity 0.3s ease';
+  toast.innerHTML = `
+    <div class="d-flex">
+      <div class="toast-body fw-medium" style="font-family: 'Plus Jakarta Sans', sans-serif;">${message}</div>
+    </div>
+  `;
+  toastContainer.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 300);
+  }, 2500);
+};
+
+// Protected Actions (NO REDIRECT)
+window.handleProtectedRoute = function(path) {
+  const userLoggedIn = document.body.getAttribute('data-logged-in') === 'true';
+  if (!userLoggedIn) {
+    showToast("Please login first");
+    return;
+  }
+  window.location.href = path;
+};
+
+// Protected Action callback
+window.handleProtectedAction = function(actionCallback) {
+  const userLoggedIn = document.body.getAttribute('data-logged-in') === 'true';
+  if (!userLoggedIn) {
+    showToast("Please login first");
+    return;
+  }
+  actionCallback();
+};
+
+// Switch Role function for Hosts logging in as User
+window.switchToUser = function() {
+  fetch('/auth/switch-role', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ role: 'user' })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      localStorage.setItem("role", "user");
+      window.location.href = '/home';
+    } else {
+      showToast(data.message || 'Error switching role');
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    showToast('Failed to switch role');
+  });
+};

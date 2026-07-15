@@ -42,6 +42,12 @@ const userSchema = new Schema({
             date: {
                 type: Date,
                 default: Date.now
+            },
+            startDate: {
+                type: Date
+            },
+            endDate: {
+                type: Date
             }
         }
     ],

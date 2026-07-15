@@ -40,7 +40,7 @@
   <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/motion@11.11.17/+esm">
   <script>document.documentElement.classList.add('js-enabled');</script>
 </head>
-<body>
+<body data-logged-in="<%= currentUser ? 'true' : 'false' %>">
   <%- include("../partials/navbar.ejs") %>
   
   <main class="container-fluid px-4 px-lg-5 mb-4 mt-4 mt-md-5 pt-md-4">
@@ -68,24 +68,29 @@
       <i class="fa-solid fa-magnifying-glass"></i>
       <span>Explore</span>
     </a>
-    <a href="/wishlists">
-      <i class="fa-regular fa-heart"></i>
-      <span>Wishlists</span>
+    <a href="javascript:void(0)" onclick="handleProtectedAction(function(){ window.location.href='/wishlists' })" class="text-dark <%= page === 'wishlists' ? 'active text-danger' : '' %>">
+        <i class="fa-regular fa-heart"></i>
+        <span>Wishlists</span>
+    </a>
+    <a href="javascript:void(0)" onclick="handleProtectedAction(function(){ window.location.href='/bookings?tab=active' })" class="text-dark <%= page === 'bookings' ? 'active text-danger' : '' %>">
+        <i class="fa-brands fa-airbnb"></i>
+        <span>Trips</span>
+    </a>
+    <a href="javascript:void(0)" onclick="handleProtectedRoute('/messages')">
+      <i class="fa-regular fa-message"></i>
+      <span>Messages</span>
     </a>
     <% if(!currentUser) { %>
-      <a href="/auth/login-user">
+      <a href="/login">
         <i class="fa-regular fa-circle-user"></i>
         <span>Log in</span>
       </a>
-    <% } else if (currentUser.role === 'user') { %>
-      <a href="/my-bookings">
-        <i class="fa-solid fa-suitcase-rolling"></i>
-        <span>My Booking</span>
-      </a>
-    <% } else if (currentUser.role === 'host') { %>
-      <a href="/my-host">
-        <i class="fa-solid fa-house-medical"></i>
-        <span>My Host</span>
+    <% } else { %>
+      <a href="/profile">
+        <div class="profile-avatar-small" style="width: 24px; height: 24px; border-radius: 50%; background-color: #717171; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; margin: 0 auto 4px auto;">
+          <%= currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U' %>
+        </div>
+        <span>Profile</span>
       </a>
     <% } %>
   </div>

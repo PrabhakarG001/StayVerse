@@ -15,6 +15,7 @@ const connectDB = require("./config/db");
 const User = require("./models/user");
 const routes = require("./routes");
 const { startDailySyncCron } = require("./services/hotelService");
+const { initCronJobs } = require("./services/cronService");
 const { errorHandler, ExpressError } = require("./middlewares/errorMiddleware");
 
 // Database Connection
@@ -22,6 +23,8 @@ connectDB()
   .then(() => {
     // Start Daily Sync Cron Job
     startDailySyncCron();
+    // Start General Scheduled Jobs
+    initCronJobs();
   })
   .catch((err) => {
     console.error("DB Connection Error:", err);

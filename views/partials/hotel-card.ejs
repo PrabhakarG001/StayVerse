@@ -6,21 +6,20 @@
   const rating = hotel.reviewScore ? (hotel.reviewScore / 2).toFixed(2) : (Math.random() * (5.0 - 4.5) + 4.5).toFixed(2);
 %>
 <div class="hotel-slide h-100">
-  <a href="/hotels/show/<%= hotel.propertyId %>" class="text-decoration-none text-dark d-block h-100">
+  <a href="<%= hotel.isListing ? '/listings/' + hotel.propertyId : '/hotels/show/' + hotel.propertyId %>" class="text-decoration-none text-dark d-block h-100">
     <div class="card border-0 h-100 bg-transparent hotel-card-hover rounded-4 position-relative pb-3 motion-card sv-scroll-card">
       <div class="position-relative overflow-hidden rounded-4 mb-2" style="aspect-ratio: 1 / 1; width: 100%;">
         <img src="<%= imageUrl %>" class="w-100 h-100 object-fit-cover" alt="Hotel Image" loading="lazy" style="transition: transform 0.4s ease;">
         
-        <% if (hotel.reviewScore && hotel.reviewScore >= 8.5) { %>
-          <div class="position-absolute top-0 start-0 m-2 ms-3 mt-3">
-            <span class="badge bg-white text-dark rounded-pill shadow-sm px-2 py-1 d-flex align-items-center" style="font-size: 0.8rem;">
-              <span class="fw-bold me-1">Guest</span> <span class="fw-medium">favourite</span>
+        <div class="position-absolute top-0 start-0 w-100 p-3 d-flex justify-content-between align-items-start" style="z-index: 10;">
+          <% if (hotel.reviewScore && hotel.reviewScore >= 8.5) { %>
+            <span class="badge bg-white text-dark shadow-sm px-2 py-1 rounded-pill fw-bold border text-truncate" style="font-size: 0.75rem; max-width: 75%;">
+              Guest favourite
             </span>
-          </div>
-        <% } %>
-        
-        <div class="position-absolute top-0 end-0 m-3" style="z-index: 10;">
-          <i class="fa-regular fa-heart fs-5 text-white heart-wishlist-icon" 
+          <% } else { %>
+            <div></div>
+          <% } %>
+          <i class="fa-regular fa-heart fs-5 text-white heart-wishlist-icon flex-shrink-0" 
              data-id="<%= hotel.propertyId %>" 
              style="text-shadow: 0 1px 3px rgba(0,0,0,0.5); cursor: pointer;" 
              onclick="toggleWishlist(event, '<%= hotel.propertyId %>', '<%= hotel.name.replace(/'/g, '&apos;') %>', '<%= hotel.city.replace(/'/g, '&apos;') %>', '<%= pricePlain %>', '<%= rating %>', '<%= imageUrl %>', false)"></i>

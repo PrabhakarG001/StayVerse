@@ -279,10 +279,18 @@ module.exports.renderSearchAPI = async (req, res) => {
   let category = req.query.category;
   
   let filter = {};
+  let listingsFilter = {};
+  
   if (q && q.toLowerCase() !== 'worldwide' && q.toLowerCase() !== 'anywhere') {
     let queryLower = q.toLowerCase();
     if (queryLower === 'gurgoan' || queryLower === 'gurgaon') {
       q = 'Gurugram';
+    } else if (queryLower === 'leh-ladakh') {
+      q = 'Leh';
+    } else if (queryLower === 'hampi') {
+      q = 'Ise|Hospet|Hampi';
+    } else if (queryLower === 'swiss alps') {
+      q = 'Zermatt';
     }
     const regex = new RegExp(q, 'i');
     filter.$or = [
@@ -291,10 +299,39 @@ module.exports.renderSearchAPI = async (req, res) => {
       { country: regex },
       { area: regex }
     ];
+    listingsFilter.$or = [
+      { location: regex },
+      { country: regex },
+      { title: regex }
+    ];
+  } else {
+    listingsFilter = { title: { $not: /trending|mountain|beachfront/i } };
   }
   
   let hotels = await Hotel.find(filter).limit(30);
-  let results = hotels;
+  let listings = await Listing.find(listingsFilter).limit(30);
+  
+  let mappedListings = listings.map(l => ({
+    propertyId: l._id.toString(),
+    name: l.title,
+    city: l.location,
+    country: l.country,
+    price: l.price,
+    images: l.images && l.images.length > 0 ? l.images.map(img => img.url) : (l.image && l.image.url ? [l.image.url] : []),
+    starRating: 5,
+    reviewScore: 9.5,
+    isPremium: true,
+    isListing: true
+  }));
+  
+  let results = [...mappedListings, ...hotels].slice(0, 30);
+  
+  // If no results and it's a specific city, sync from RapidAPI and retry
+  if (results.length === 0 && q && q.toLowerCase() !== 'worldwide' && q.toLowerCase() !== 'anywhere') {
+    await syncCityHotels(q);
+    hotels = await Hotel.find(filter).limit(30);
+    results = [...mappedListings, ...hotels].slice(0, 30);
+  }
   
   if (category) {
     const categoryLower = category.toLowerCase();

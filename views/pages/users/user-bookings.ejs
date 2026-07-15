@@ -25,18 +25,47 @@
 </style>
 
 <div class="container mt-5 mb-5 px-4" style="max-width: 1400px;">
-  <h2 class="fw-bold mb-4" style="font-size: 2rem;">My Bookings</h2>
+  <h2 class="fw-bold mb-3" style="font-size: 2rem;">My Bookings</h2>
   
+  <ul class="nav nav-pills mb-4" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a class="nav-link <%= activeTab === 'active' ? 'active bg-dark text-white' : 'text-dark fw-medium' %> rounded-pill px-4" href="/bookings?tab=active">Active Trips</a>
+    </li>
+    <li class="nav-item ms-2" role="presentation">
+      <a class="nav-link <%= activeTab === 'past' ? 'active bg-dark text-white' : 'text-dark fw-medium' %> rounded-pill px-4" href="/bookings?tab=past">Past Trips</a>
+    </li>
+  </ul>
+
   <% if (!bookings || bookings.length === 0) { %>
     <div id="empty-state" class="wishlist-empty">
       <i class="fa-solid fa-suitcase-rolling"></i>
-      <h3 class="fw-bold">No bookings yet</h3>
+      <h3 class="fw-bold">No <%= activeTab === 'past' ? 'past' : 'active' %> bookings yet</h3>
       <p class="text-secondary mt-2 mb-4">Time to dust off your bags and start planning your next adventure.</p>
       <a href="/" class="btn btn-dark fw-bold px-4 py-3" style="border-radius: 12px; font-size: 1.1rem;">Start exploring</a>
     </div>
   <% } else { %>
     <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-7 row-cols-xl-7 row-cols-xxl-7 g-4">
-      <% bookings.forEach(booking => { %>
+      <% bookings.forEach(booking => { 
+           let statusText = "Confirmed";
+           let statusColor = "text-success";
+           let icon = "fa-check";
+           const start = booking.startDate ? new Date(booking.startDate) : new Date(booking.date);
+           const end = booking.endDate ? new Date(booking.endDate) : new Date(booking.date);
+           
+           if (today < start) {
+             statusText = "Upcoming";
+             statusColor = "text-primary";
+             icon = "fa-calendar-days";
+           } else if (today >= start && today <= end) {
+             statusText = "Ongoing";
+             statusColor = "text-warning";
+             icon = "fa-spinner fa-spin";
+           } else if (today > end) {
+             statusText = "Completed";
+             statusColor = "text-secondary";
+             icon = "fa-check-double";
+           }
+      %>
         <div class="col">
           <a href="<%= booking.propertyId.length > 20 ? '/listings/' + booking.propertyId : '/hotels/show/' + booking.propertyId %>" class="text-decoration-none text-dark d-block h-100 hotel-card">
             <div class="card border-0 h-100 bg-transparent hotel-card-hover rounded-4 position-relative pb-3">
@@ -44,7 +73,7 @@
                 <img src="<%= booking.image || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80' %>" class="w-100 h-100 object-fit-cover" alt="Property Image" loading="lazy">
                 
                 <div class="position-absolute top-0 end-0 m-3" style="z-index: 10;">
-                  <span class="badge bg-white text-dark rounded-pill fw-bold shadow-sm" style="font-size: 0.75rem;"><i class="fa-solid fa-check text-success me-1"></i>Confirmed</span>
+                  <span class="badge bg-white text-dark rounded-pill fw-bold shadow-sm" style="font-size: 0.75rem;"><i class="fa-solid <%= icon %> <%= statusColor %> me-1"></i><%= statusText %></span>
                 </div>
               </div>
               <div class="pt-1 pe-1">

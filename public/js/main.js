@@ -17,11 +17,16 @@ function changeLanguage(langCode) {
   if (select) {
     select.value = langCode;
     select.dispatchEvent(new Event('change'));
-    document.querySelectorAll('.currentLangText').forEach(el => {
-      el.textContent = langCode === 'hi' ? 'Hindi' : 'English';
-    });
-    localStorage.setItem('sv_lang', langCode);
+  } else {
+    document.cookie = `googtrans=/en/${langCode}; path=/`;
+    document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
+    window.location.reload();
   }
+  
+  document.querySelectorAll('.currentLangText').forEach(el => {
+    el.textContent = langCode === 'hi' ? 'Hindi' : 'English';
+  });
+  localStorage.setItem('sv_lang', langCode);
 }
 
 function changeCurrency(currCode) {

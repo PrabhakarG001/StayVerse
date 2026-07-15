@@ -9,6 +9,7 @@ router.post('/login-user', authController.loginUser);
 router.post('/login-host', authController.loginHost);
 router.post('/register', wrapAsync(authController.register));
 router.get('/logout', authController.logout);
+router.post('/switch-role', wrapAsync(authController.switchRole));
 
 // Social login mock stubs (keeping features identical)
 router.get('/google', (req, res) => {

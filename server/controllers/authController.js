@@ -102,3 +102,23 @@ module.exports.logout = (req, res, next) => {
         res.redirect('/');
     });
 };
+
+module.exports.switchRole = async (req, res, next) => {
+    try {
+        const { role } = req.body;
+        if (!req.user || !['user', 'host'].includes(role)) {
+            return res.status(400).json({ success: false, message: 'Invalid role or unauthenticated' });
+        }
+        const user = await User.findById(req.user._id);
+        user.role = role;
+        await user.save();
+        
+        // Update session by re-logging in
+        req.login(user, (err) => {
+            if (err) return next(err);
+            res.json({ success: true });
+        });
+    } catch (e) {
+        res.status(500).json({ success: false, message: e.message });
+    }
+};
