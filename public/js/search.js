@@ -155,7 +155,6 @@ function initListingsIndex(config) {
       if (!loadedCities.has(item.city)) {
         loadedCities.add(item.city);
         await loadCityHotels(item.city, item.id);
-        await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
   };
