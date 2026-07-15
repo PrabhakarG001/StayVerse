@@ -68,11 +68,11 @@
       <i class="fa-solid fa-magnifying-glass"></i>
       <span>Explore</span>
     </a>
-    <a href="javascript:void(0)" onclick="handleProtectedAction(function(){ window.location.href='/wishlists' })" class="text-dark <%= page === 'wishlists' ? 'active text-danger' : '' %>">
+    <a href="javascript:void(0)" onclick="handleProtectedAction(function(){ window.location.href='/wishlists' })" class="text-dark <%= (typeof page !== 'undefined' && page === 'wishlists') ? 'active text-danger' : '' %>">
         <i class="fa-regular fa-heart"></i>
         <span>Wishlists</span>
     </a>
-    <a href="javascript:void(0)" onclick="handleProtectedAction(function(){ window.location.href='/bookings?tab=active' })" class="text-dark <%= page === 'bookings' ? 'active text-danger' : '' %>">
+    <a href="javascript:void(0)" onclick="handleProtectedAction(function(){ window.location.href='/bookings?tab=active' })" class="text-dark <%= (typeof page !== 'undefined' && page === 'bookings') ? 'active text-danger' : '' %>">
         <i class="fa-brands fa-airbnb"></i>
         <span>Trips</span>
     </a>
