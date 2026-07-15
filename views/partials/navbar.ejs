@@ -146,27 +146,23 @@
               <li><hr class="dropdown-divider my-2"></li>
               
               <!-- MOBILE MENU (Unchanged) -->
-              <div class="d-md-none">
-                <li><a class="dropdown-item py-2 fw-semibold" href="/wishlists">Wishlists</a></li>
-                <% if(currentUser.role === 'host') { %>
-                  <li><a class="dropdown-item py-2 fw-semibold" href="/my-host">My Host</a></li>
-                  <li><a class="dropdown-item py-2 fw-semibold" href="/listings/new">Create Listing</a></li>
-                <% } else { %>
-                  <li><a class="dropdown-item py-2 fw-semibold" href="/my-bookings">My Booking</a></li>
-                <% } %>
-              </div>
+              <li class="d-md-none"><a class="dropdown-item py-2 fw-semibold" href="/wishlists">Wishlists</a></li>
+              <% if(currentUser.role === 'host') { %>
+                <li class="d-md-none"><a class="dropdown-item py-2 fw-semibold" href="/my-host">My Host</a></li>
+                <li class="d-md-none"><a class="dropdown-item py-2 fw-semibold" href="/listings/new">Create Listing</a></li>
+              <% } else { %>
+                <li class="d-md-none"><a class="dropdown-item py-2 fw-semibold" href="/my-bookings">My Booking</a></li>
+              <% } %>
 
               <!-- DESKTOP MENU (Role-Based) -->
-              <div class="d-none d-md-block">
-                <% if(currentUser.role === 'user') { %>
-                  <li><a class="dropdown-item py-2 fw-semibold" href="/user/bookings">Past Bookings</a></li>
-                  <li><a class="dropdown-item py-2 fw-semibold" href="/host/register">Become a Host</a></li>
-                  <li><a class="dropdown-item py-2 fw-semibold" href="/connections">Connections</a></li>
-                <% } else if (currentUser.role === 'host') { %>
-                  <li><a class="dropdown-item py-2 fw-semibold" href="javascript:void(0)" onclick="switchToUser()">Login as User</a></li>
-                  <li><a class="dropdown-item py-2 fw-semibold" href="/connections">Connections</a></li>
-                <% } %>
-              </div>
+              <% if(currentUser.role === 'user') { %>
+                <li class="d-none d-md-block"><a class="dropdown-item py-2 fw-semibold" href="/user/bookings">Past Bookings</a></li>
+                <li class="d-none d-md-block"><a class="dropdown-item py-2 fw-semibold" href="/host/register">Become a Host</a></li>
+                <li class="d-none d-md-block"><a class="dropdown-item py-2 fw-semibold" href="/connections">Connections</a></li>
+              <% } else if (currentUser.role === 'host') { %>
+                <li class="d-none d-md-block"><a class="dropdown-item py-2 fw-semibold" href="javascript:void(0)" onclick="switchToUser()">Login as User</a></li>
+                <li class="d-none d-md-block"><a class="dropdown-item py-2 fw-semibold" href="/connections">Connections</a></li>
+              <% } %>
 
               <li><hr class="dropdown-divider my-2"></li>
               <li><a class="dropdown-item py-2 fw-semibold" href="#" data-bs-toggle="modal" data-bs-target="#helpCentreModal">Help Centre</a></li>
