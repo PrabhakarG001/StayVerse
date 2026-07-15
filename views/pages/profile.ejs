@@ -1,67 +1,160 @@
 <% layout('layouts/boilerplate') %>
 
+<style>
+.profile-banner {
+    background: linear-gradient(135deg, #FF385C, #E61E4D);
+    border-radius: 24px;
+    padding: 35px 20px;
+    color: white;
+    box-shadow: 0 12px 35px rgba(230, 30, 77, 0.25);
+    position: relative;
+    overflow: hidden;
+}
+.profile-banner::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('/images/travel_bg.png') center/cover;
+    opacity: 0.15;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+}
+.profile-avatar-wrapper {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 15px;
+}
+.profile-avatar-lg {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #fff;
+    color: #FF385C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    font-weight: 800;
+    margin: 0 auto;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    border: 4px solid rgba(255,255,255,0.9);
+}
+.profile-name {
+    font-size: 1.7rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: -0.5px;
+}
+.profile-role {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+}
+.edit-btn {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.5);
+    color: white;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    font-weight: 600;
+}
+.edit-btn:hover {
+    background: white;
+    color: #FF385C;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Enhancing Cards */
+.interactive-card {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05) !important;
+}
+.interactive-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08) !important;
+}
+.interactive-card img {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.interactive-card:hover img {
+    transform: scale(1.15) translateY(-5px) !important;
+}
+</style>
+
 <div class="container pb-5">
     <div class="row justify-content-center mt-md-4">
         <div class="col-12 col-md-8 col-lg-6">
-            <div class="profile-header text-center mb-4 pt-4">
-                <div class="profile-avatar mx-auto mb-3" style="width: 100px; height: 100px; border-radius: 50%; background-color: #222; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 600;">
-                    <%= currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U' %>
+            <div class="profile-banner text-center mb-4 mt-3">
+                <div class="profile-avatar-wrapper">
+                    <div class="profile-avatar-lg">
+                        <%= currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U' %>
+                    </div>
                 </div>
-                <h2 class="fw-bold mb-1"><%= currentUser.name %></h2>
-                <p class="text-muted mb-3" style="text-transform: capitalize;"><%= currentUser.role === 'user' ? 'Guest / User' : currentUser.role %></p>
-                <button class="btn btn-outline-dark btn-sm rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                <h2 class="profile-name"><%= currentUser.name %></h2>
+                <p class="profile-role" style="text-transform: capitalize;"><%= currentUser.role === 'user' ? 'Guest / User' : currentUser.role %></p>
+                <button class="btn edit-btn btn-sm rounded-pill px-4 mt-2 py-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                     Edit Profile
                 </button>
             </div>
 
             <div class="profile-sections mt-4">
-                <div class="row g-3 d-md-none mb-3">
+                <div class="row g-3 d-md-none mb-4">
                     <div class="col-6">
-                        <div class="card border-0 rounded-4 shadow-sm h-100 p-3 position-relative" onclick="handleProtectedAction(function(){ window.location.href='/bookings?tab=past' })" style="cursor: pointer;">
+                        <div class="card border-0 rounded-4 shadow-sm h-100 p-3 position-relative interactive-card" onclick="handleProtectedAction(function(){ window.location.href='/bookings?tab=past' })" style="cursor: pointer;">
                             <span class="badge bg-danger position-absolute top-0 end-0 mt-2 me-2 rounded-pill shadow-sm" style="font-size: 0.6rem;">NEW</span>
                             <div class="text-center mb-2 mt-2">
                                 <img src="/images/suitcase_3d.png" alt="Past Trips" style="width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
                             </div>
-                            <h6 class="text-center fw-bold mt-3 mb-0">Past trips</h6>
+                            <h6 class="text-center fw-bold mt-3 mb-0" style="color: #222;">Past trips</h6>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="card border-0 rounded-4 shadow-sm h-100 p-3 position-relative" onclick="handleProtectedAction(function(){ window.location.href='/connections' })" style="cursor: pointer;">
+                        <div class="card border-0 rounded-4 shadow-sm h-100 p-3 position-relative interactive-card" onclick="handleProtectedAction(function(){ window.location.href='/connections' })" style="cursor: pointer;">
                             <span class="badge bg-danger position-absolute top-0 end-0 mt-2 me-2 rounded-pill shadow-sm" style="font-size: 0.6rem;">NEW</span>
                             <div class="text-center mb-2 mt-2">
                                 <img src="/images/connections.png" onerror="this.src='https://via.placeholder.com/80/eef1f6/717171?text=3D+Group'" alt="Connections" style="width: 80px; height: 80px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
                             </div>
-                            <h6 class="text-center fw-bold mt-3 mb-0">Connections</h6>
+                            <h6 class="text-center fw-bold mt-3 mb-0" style="color: #222;">Connections</h6>
                         </div>
                     </div>
                 </div>
 
                 <!-- Become a Host full width -->
-                <div class="card border-0 rounded-4 shadow-sm mb-4 d-md-none position-relative overflow-hidden" onclick="window.location.href='/auth/login-host'" style="cursor: pointer; background: linear-gradient(135deg, #ff385c 0%, #d90b36 100%);">
+                <div class="card border-0 rounded-4 shadow-sm mb-4 d-md-none position-relative overflow-hidden interactive-card" onclick="window.location.href='/auth/login-host'" style="cursor: pointer; background: linear-gradient(135deg, #222222 0%, #000000 100%);">
                     <div class="d-flex align-items-center p-3">
                         <div class="host-avatar me-3" style="width: 90px; flex-shrink: 0;">
-                            <img src="/images/host.png" onerror="this.src='https://via.placeholder.com/90x120/ffffff/ff385c?text=3D+Girl'" alt="Host" style="width: 100%; height: auto; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); transform: scale(1.2) translateY(10px);">
+                            <img src="/images/host.png" onerror="this.src='https://via.placeholder.com/90x120/ffffff/ff385c?text=3D+Girl'" alt="Host" style="width: 100%; height: auto; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4)); transform: scale(1.15) translateY(5px);">
                         </div>
                         <div class="text-white">
-                            <h6 class="fw-bold mb-1">Become a Host</h6>
-                            <p class="small mb-0 opacity-75">It’s easy to start hosting and earn extra income.</p>
+                            <h6 class="fw-bold mb-1 fs-5">Become a Host</h6>
+                            <p class="small mb-0 opacity-75" style="line-height: 1.3;">It’s easy to start hosting and earn extra income.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Desktop / Original List for Account Settings -->
-                <div class="list-group list-group-flush border-top border-bottom rounded-0 mt-4">
-                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 border-0">
-                        <div>
-                            <i class="fa-solid fa-gear me-3 text-muted"></i>
-                            <span class="fw-medium">Account Settings</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right text-muted small"></i>
-                    </a>
+                <div class="card border-0 rounded-4 shadow-sm mb-4 interactive-card" style="overflow: hidden;">
+                    <div class="list-group list-group-flush border-0">
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-4 px-4 border-0">
+                            <div>
+                                <i class="fa-solid fa-gear me-3 fs-5" style="color: #FF385C;"></i>
+                                <span class="fw-bold fs-6 text-dark">Account Settings</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-muted small"></i>
+                        </a>
+                    </div>
                 </div>
 
-                <div class="mt-4 text-center">
-                    <a href="/auth/logout" class="text-danger text-decoration-none fw-bold">Log out</a>
+                <div class="mt-5 mb-4 text-center">
+                    <a href="/auth/logout" class="btn btn-light rounded-pill px-5 py-2 text-danger fw-bold shadow-sm" style="border: 1px solid #ffe8eb; transition: all 0.2s;" onmouseover="this.style.background='#fff0f2'" onmouseout="this.style.background='#fff'">Log out</a>
                 </div>
             </div>
         </div>

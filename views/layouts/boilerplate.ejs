@@ -64,26 +64,26 @@
   <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   
   <div class="mobile-bottom-nav d-md-none">
-    <a href="/" class="active">
+    <a href="/" class="<%= (typeof page !== 'undefined' && page === 'home') ? 'active' : '' %>">
       <i class="fa-solid fa-magnifying-glass"></i>
       <span>Explore</span>
     </a>
-    <a href="javascript:void(0)" onclick="handleProtectedAction(function(){ window.location.href='/wishlists' })" class="text-dark <%= (typeof page !== 'undefined' && page === 'wishlists') ? 'active text-danger' : '' %>">
+    <a href="javascript:void(0)" onclick="handleProtectedAction(function(){ window.location.href='/wishlists' })" class="<%= (typeof page !== 'undefined' && page === 'wishlists') ? 'active' : '' %>">
         <i class="fa-regular fa-heart"></i>
         <span>Wishlists</span>
     </a>
     <% if (typeof currentUser !== 'undefined' && currentUser && currentUser.role === 'host') { %>
-      <a href="/my-host" class="text-dark <%= (typeof page !== 'undefined' && page === 'my-host') ? 'active text-danger' : '' %>">
+      <a href="/my-host" class="<%= (typeof page !== 'undefined' && page === 'my-host') ? 'active' : '' %>">
         <i class="fa-solid fa-house-medical"></i>
         <span>My Host</span>
       </a>
     <% } else { %>
-      <a href="javascript:void(0)" onclick="handleProtectedAction(function(){ window.location.href='/bookings?tab=past' })" class="text-dark <%= (typeof page !== 'undefined' && page === 'bookings') ? 'active text-danger' : '' %>">
+      <a href="javascript:void(0)" onclick="handleProtectedAction(function(){ window.location.href='/bookings?tab=past' })" class="<%= (typeof page !== 'undefined' && page === 'bookings') ? 'active' : '' %>">
         <i class="fa-solid fa-suitcase-rolling"></i>
         <span>Past Trips</span>
       </a>
     <% } %>
-    <a href="javascript:void(0)" onclick="handleProtectedRoute('/messages')">
+    <a href="javascript:void(0)" onclick="handleProtectedRoute('/messages')" class="<%= (typeof page !== 'undefined' && page === 'messages') ? 'active' : '' %>">
       <i class="fa-regular fa-message"></i>
       <span>Messages</span>
     </a>
