@@ -413,7 +413,7 @@ module.exports.showHotelDetail = async (req, res) => {
     return res.redirect("/listings");
   }
   
-  res.render("pages/hotels/show.ejs", { hotel });
+  res.render("pages/hotels/show.ejs", { hotel, hideSearch: true });
 };
 
 module.exports.syncHotels = async (req, res) => {
