@@ -47,6 +47,24 @@
   font-weight: 600 !important;
   color: #222 !important;
 }
+
+/* Mobile Alignment Fix */
+@media (max-width: 576px) {
+  .flatpickr-calendar {
+    width: calc(100vw - 30px) !important;
+    left: 15px !important;
+    right: 15px !important;
+    margin-top: 5px !important;
+  }
+  .flatpickr-days {
+    width: 100% !important;
+  }
+  .dayContainer {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+  }
+}
 </style>
 
 <% 
@@ -527,6 +545,7 @@ const reviewsToDisplay = defaultReviews;
         disableMobile: "true",
         mode: "range",
         showMonths: window.innerWidth >= 768 ? 2 : 1,
+        positionElement: document.querySelector('.checkin-date-container') || document.body,
         onChange: function(selectedDates, dateStr, instance) {
           if (selectedDates.length === 1) {
             document.getElementById('checkin_date').value = instance.formatDate(selectedDates[0], "d M Y");
