@@ -55,7 +55,7 @@ module.exports.showListing = async (req, res) => {
   if (!listing) {
     throw new ExpressError(404, "Listing not found.");
   }
-  res.render("pages/listings/show.ejs", { listing, hideSearch: true });
+  res.render("pages/listings/show.ejs", { listing });
 };
 
 module.exports.createListing = async (req, res) => {

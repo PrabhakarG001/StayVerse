@@ -40,7 +40,16 @@ const roomTypes = [
 
 // Location-based default reviews
 const indianCitiesList = ['goa','mumbai','delhi','jaipur','bangalore','chennai','kolkata','pune','hyderabad','agra','udaipur','kochi','manali','shimla','rishikesh','varanasi','amritsar','gurugram','leh','hospet','hampi','kerala'];
-const isIndiaFallback = hotel.country ? hotel.country.toLowerCase().trim() === 'india' : indianCitiesList.includes((hotel.city || '').toLowerCase().trim());
+const foreignCitiesList = ['new york', 'los angeles', 'london', 'dubai', 'paris', 'rome', 'amsterdam', 'tokyo', 'singapore', 'bangkok', 'sydney', 'toronto', 'istanbul', 'cape town', 'rio de janeiro', 'bali', 'santorini', 'maldives', 'phuket', 'swiss alps', 'iceland', 'cappadocia', 'athens', 'venice', 'seoul', 'marrakech', 'reykjavik', 'cairo', 'barcelona'];
+const cityLower = (hotel.city || '').toLowerCase().trim();
+let isIndiaFallback = false;
+if (foreignCitiesList.includes(cityLower)) {
+  isIndiaFallback = false;
+} else if (indianCitiesList.includes(cityLower)) {
+  isIndiaFallback = true;
+} else {
+  isIndiaFallback = hotel.country ? hotel.country.toLowerCase().trim() === 'india' : false;
+}
 const defaultReviews = isIndiaFallback ? [
   { user: "Rahul S.", rating: "4.8", comment: "Absolutely loved our stay! The staff was incredibly welcoming and the room was spotless. Will definitely return.", date: "June 2026" },
   { user: "Priya M.", rating: "4.5", comment: "Great location and fantastic amenities. The breakfast buffet had so many options. Highly recommend!", date: "May 2026" },
@@ -248,9 +257,62 @@ const reviewsToDisplay = defaultReviews;
         <% } %>
       </div>
       
-      <form id="internalBookingForm" class="booking-form d-grid gap-2 my-3">
+      <form id="internalBookingForm" class="booking-form">
+        <div class="border rounded-4 mb-3">
+          <div class="d-flex border-bottom">
+            <div class="w-50 p-2 border-end form-group-custom">
+              <label class="text-uppercase fw-bold text-muted" style="font-size: 0.65rem; cursor: pointer;">Check-in</label>
+              <input type="date" id="checkin_date" class="form-control border-0 p-0 shadow-none text-dark fw-semibold bg-transparent" required>
+            </div>
+            <div class="w-50 p-2 form-group-custom">
+              <label class="text-uppercase fw-bold text-muted" style="font-size: 0.65rem; cursor: pointer;">Check-out</label>
+              <input type="date" id="checkout_date" class="form-control border-0 p-0 shadow-none text-dark fw-semibold bg-transparent" required>
+            </div>
+          </div>
+          <div class="p-2 border-bottom form-group-custom position-relative" id="guests-dropdown-group">
+            <label class="text-uppercase fw-bold text-muted mb-0" style="font-size: 0.65rem; cursor: pointer;">Guests</label>
+            <div class="d-flex justify-content-between align-items-center custom-select-trigger" style="cursor: pointer; padding-top: 2px;">
+              <span id="guests-display-val" class="text-dark fw-semibold" style="font-size: 0.9rem;">2 Guests</span>
+              <i class="fa-solid fa-chevron-down text-muted" style="font-size: 0.75rem;"></i>
+            </div>
+            <input type="hidden" name="guests" id="guests-hidden-val" value="2">
+            
+            <!-- Custom Dropdown Menu -->
+            <div class="custom-dropdown-menu d-none shadow" id="guests-options">
+              <div class="custom-dropdown-item" data-value="1">1 Guest</div>
+              <div class="custom-dropdown-item active" data-value="2">2 Guests</div>
+              <div class="custom-dropdown-item" data-value="3">3 Guests</div>
+              <div class="custom-dropdown-item" data-value="4">4 Guests</div>
+              <div class="custom-dropdown-item" data-value="5">5+ Guests</div>
+              <div class="custom-dropdown-item text-secondary border-top" data-value="custom" id="custom-guest-option" style="border-top-style: dashed !important; font-weight: 600;">Custom...</div>
+              
+              <!-- Custom Input Container (hidden by default) -->
+              <div id="custom-guest-input-container" class="d-none px-3 py-2 border-top bg-light">
+                <div class="d-flex gap-2 align-items-center">
+                  <input type="number" id="custom-guest-input" class="form-control form-control-sm border shadow-sm" min="1" max="100" placeholder="No. of guests" style="font-size: 0.85rem; padding: 4px 8px; width: 110px;">
+                  <button type="button" id="custom-guest-apply" class="btn btn-rose btn-sm text-white fw-bold px-3 py-1" style="font-size: 0.75rem; background: #FF385C; border: none; border-radius: 6px;">Apply</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-2 form-group-custom bg-light position-relative" id="rooms-dropdown-group">
+            <label class="text-uppercase fw-bold text-muted mb-0" style="font-size: 0.65rem; cursor: pointer;">Room Type</label>
+            <div class="d-flex justify-content-between align-items-center custom-select-trigger" style="cursor: pointer; padding-top: 2px;">
+              <span id="rooms-display-val" class="text-dark fw-semibold" style="font-size: 0.9rem;">Standard Room</span>
+              <i class="fa-solid fa-chevron-down text-muted" style="font-size: 0.75rem;"></i>
+            </div>
+            <input type="hidden" name="room_type" id="rooms-hidden-val" value="Standard Room">
+            
+            <!-- Custom Dropdown Menu -->
+            <div class="custom-dropdown-menu d-none shadow" id="rooms-options">
+              <div class="custom-dropdown-item active" data-value="Standard Room" data-extra="0">Standard Room</div>
+              <div class="custom-dropdown-item" data-value="Deluxe Room" data-extra="2500">Deluxe Room (+₹2,500)</div>
+              <div class="custom-dropdown-item" data-value="Executive Suite" data-extra="6000">Executive Suite (+₹6,000)</div>
+            </div>
+          </div>
+        </div>
 
-        <button type="submit" class="btn btn-rose rounded-3 w-100 py-3 fw-bold fs-5 text-white" style="background: linear-gradient(to right, #e61e4d 0%, #e31c5f 50%, #d70466 100%);">
+        <button type="submit" class="btn btn-rose rounded-3 w-100 py-3 fw-bold fs-5 text-white mb-3" style="background: linear-gradient(to right, #e61e4d 0%, #e31c5f 50%, #d70466 100%);">
           Reserve
         </button>
       </form>
@@ -382,6 +444,28 @@ const reviewsToDisplay = defaultReviews;
             new bootstrap.Modal(document.getElementById('bookingSuccessModal')).show();
             this.reset();
             
+            // Reset selectors
+            const guestsHidden = document.getElementById('guests-hidden-val');
+            if (guestsHidden) guestsHidden.value = "2";
+            const guestsDisplay = document.getElementById('guests-display-val');
+            if (guestsDisplay) guestsDisplay.textContent = "2 Guests";
+            document.querySelectorAll('#guests-options .custom-dropdown-item').forEach(i => i.classList.remove('active'));
+            const defaultGuest = document.querySelector('#guests-options [data-value="2"]');
+            if (defaultGuest) defaultGuest.classList.add('active');
+            
+            const customContainer = document.getElementById('custom-guest-input-container');
+            if (customContainer) customContainer.classList.add('d-none');
+            const customInput = document.getElementById('custom-guest-input');
+            if (customInput) customInput.value = "";
+            
+            const roomsHidden = document.getElementById('rooms-hidden-val');
+            if (roomsHidden) roomsHidden.value = "Standard Room";
+            const roomsDisplay = document.getElementById('rooms-display-val');
+            if (roomsDisplay) roomsDisplay.textContent = "Standard Room";
+            document.querySelectorAll('#rooms-options .custom-dropdown-item').forEach(i => i.classList.remove('active'));
+            const defaultRoom = document.querySelector('#rooms-options [data-value="Standard Room"]');
+            if (defaultRoom) defaultRoom.classList.add('active');
+            
             if (priceDisplayEl) {
               priceDisplayEl.setAttribute('data-inr', config.basePrice);
               if (typeof applyCurrency === 'function') {
@@ -447,7 +531,16 @@ const reviewsToDisplay = defaultReviews;
           if (data && data.comments) {
             reviewsContainer.innerHTML = data.comments.map(c => {
               const indianCitiesList = ['goa','mumbai','delhi','jaipur','bangalore','chennai','kolkata','pune','hyderabad','agra','udaipur','kochi','manali','shimla','rishikesh','varanasi','amritsar','gurugram','leh','hospet','hampi','kerala'];
-              const isIndian = config.hotelCountry ? config.hotelCountry.toLowerCase().trim() === 'india' : indianCitiesList.includes((config.hotelCity || '').toLowerCase().trim());
+              const foreignCitiesList = ['new york', 'los angeles', 'london', 'dubai', 'paris', 'rome', 'amsterdam', 'tokyo', 'singapore', 'bangkok', 'sydney', 'toronto', 'istanbul', 'cape town', 'rio de janeiro', 'bali', 'santorini', 'maldives', 'phuket', 'swiss alps', 'iceland', 'cappadocia', 'athens', 'venice', 'seoul', 'marrakech', 'reykjavik', 'cairo', 'barcelona'];
+              const cLower = (config.hotelCity || '').toLowerCase().trim();
+              let isIndian = false;
+              if (foreignCitiesList.includes(cLower)) {
+                isIndian = false;
+              } else if (indianCitiesList.includes(cLower)) {
+                isIndian = true;
+              } else {
+                isIndian = config.hotelCountry ? config.hotelCountry.toLowerCase().trim() === 'india' : false;
+              }
               const namesList = isIndian ? 
                 ["Rahul Sharma", "Priya Patel", "Amit Kumar", "Neha Gupta", "Vikram Singh", "Anjali Desai", "Rohan Mehta", "Kavita Joshi", "Suresh Iyer", "Pooja Reddy", "Karan Malhotra", "Riya Kapoor", "Aditya Verma", "Sneha Rao", "Aarav Singh", "Ishita Bose", "Rakesh Nair", "Simran Kaur"] :
                 ["John Smith", "Emily Johnson", "Carlos Rivera", "Sophie Williams", "Michael Brown", "Emma Davis", "David Miller", "Olivia Garcia", "Daniel Martinez", "Sophia Taylor"];

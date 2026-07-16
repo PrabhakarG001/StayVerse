@@ -127,7 +127,14 @@
                 <div class="d-flex justify-content-between align-items-start mb-2">
                   <div>
                     <% 
-                      const isForeign = listing.country && listing.country.toLowerCase() !== 'india';
+                      const foreignCitiesList = ['new york', 'los angeles', 'london', 'dubai', 'paris', 'rome', 'amsterdam', 'tokyo', 'singapore', 'bangkok', 'sydney', 'toronto', 'istanbul', 'cape town', 'rio de janeiro', 'bali', 'santorini', 'maldives', 'phuket', 'swiss alps', 'iceland', 'cappadocia', 'athens', 'venice', 'seoul', 'marrakech', 'reykjavik', 'cairo', 'barcelona'];
+                      const cLower = (listing.location || '').toLowerCase().trim();
+                      let isForeign = false;
+                      if (foreignCitiesList.includes(cLower)) {
+                        isForeign = true;
+                      } else {
+                        isForeign = listing.country && listing.country.toLowerCase().trim() !== 'india';
+                      }
                       const indianNames = ["Rahul Sharma", "Priya Patel", "Amit Kumar", "Neha Gupta", "Vikram Singh", "Anjali Desai", "Rohan Mehta", "Kavita Joshi", "Suresh Iyer", "Pooja Reddy"];
                       const foreignNames = ["John Smith", "Emily Johnson", "Carlos Rivera", "Sophie Williams", "Michael Brown", "Emma Davis", "David Miller", "Olivia Garcia", "Daniel Martinez", "Sophia Taylor"];
                       // Generate consistent index based on review _id string
