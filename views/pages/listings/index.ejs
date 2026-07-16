@@ -99,7 +99,7 @@
 <div class="mb-5 pb-2 position-relative group-slider <%= initialDisplay %>" data-region="<%= section.region %>" onmouseenter="showSliderBtns(this)" onmouseleave="hideSliderBtns(this)">
   <div class="d-flex align-items-center justify-content-between mb-3 px-1">
     <h3 class="fw-bold m-0 text-dark" style="font-size: 1.35rem; letter-spacing: -0.5px;"><%= section.title %></h3>
-    <a href="/listings?search=<%= section.city %>" class="btn btn-light rounded-circle d-flex align-items-center justify-content-center border shadow-sm" style="width: 32px; height: 32px;">
+    <a href="/listings?search=<%= encodeURIComponent(section.city) %>" class="btn btn-light rounded-circle d-flex align-items-center justify-content-center border shadow-sm" style="width: 32px; height: 32px;">
       <i class="fa-solid fa-arrow-right" style="font-size: 0.85rem;"></i>
     </a>
   </div>
