@@ -109,10 +109,28 @@
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const query = document.getElementById('hotelQuery')?.value || '';
+        const params = new URLSearchParams();
+        params.set('query', query);
+        window.history.pushState({}, '', '/hotels/search?' + params.toString());
         if (typeof performSearch === 'function') {
           performSearch(query, '');
         }
       });
     }
+    
+    document.addEventListener('submit', (e) => {
+      if (e.target && e.target.getAttribute('action') === '/hotels/search' && e.target.id !== 'hotelSearchForm') {
+        e.preventDefault();
+        const query = e.target.querySelector('input[name="query"]')?.value || 'Worldwide';
+        const params = new URLSearchParams();
+        params.set('query', query);
+        window.history.pushState({}, '', '/hotels/search?' + params.toString());
+        const qInput = document.getElementById('hotelQuery');
+        if (qInput) qInput.value = query;
+        if (typeof performSearch === 'function') {
+          performSearch(query, '');
+        }
+      }
+    });
   });
 </script>

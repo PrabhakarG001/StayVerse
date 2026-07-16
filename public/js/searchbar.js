@@ -598,7 +598,16 @@
       if (data.checkin) params.set('checkin', data.checkin);
       if (data.checkout) params.set('checkout', data.checkout);
       if (data.totalGuests > 0) params.set('guests', data.totalGuests);
-      window.location.href = '/hotels/search?' + params.toString();
+      
+      if (window.location.pathname === '/hotels/search' && typeof window.performSearch === 'function') {
+        window.history.pushState({}, '', '/hotels/search?' + params.toString());
+        var qInput = document.getElementById('hotelQuery');
+        if (qInput) qInput.value = data.query;
+        window.performSearch(data.query, '');
+        closeSeg();
+      } else {
+        window.location.href = '/hotels/search?' + params.toString();
+      }
       return;
     }
 
@@ -654,7 +663,15 @@
     if (data.checkin) params.set('checkin', data.checkin);
     if (data.checkout) params.set('checkout', data.checkout);
     if (data.totalGuests > 0) params.set('guests', data.totalGuests);
-    window.location.href = '/hotels/search?' + params.toString();
+    
+    if (window.location.pathname === '/hotels/search' && typeof window.performSearch === 'function') {
+      window.history.pushState({}, '', '/hotels/search?' + params.toString());
+      var qInput = document.getElementById('hotelQuery');
+      if (qInput) qInput.value = 'Worldwide';
+      window.performSearch('Worldwide', '');
+    } else {
+      window.location.href = '/hotels/search?' + params.toString();
+    }
   }
 
   // ---- Init ----

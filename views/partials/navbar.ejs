@@ -213,13 +213,10 @@
     <% if (typeof hideSearch === 'undefined' || !hideSearch) { %>
     <!-- Mobile Search Pill (Visible on Mobile & Tablet) -->
     <div class="d-md-none w-100 pb-3 sv-mobile-search-wrapper" style="padding-top: 4px;">
-      <form action="/hotels/search" method="GET" class="w-100 m-0 position-relative">
-        <button type="submit" class="sv-mobile-search-pill btn w-100 bg-white border d-flex align-items-center justify-content-center" style="border-radius: 40px; box-shadow: 0 3px 12px rgba(0,0,0,0.08); padding: 8px; height: 46px; gap: 8px;">
-          <i class="fa-solid fa-magnifying-glass" style="font-size: 0.95rem; color: #222;"></i>
-          <span class="fw-bold text-dark" style="font-size: 0.92rem; letter-spacing: -0.1px;">Start your search</span>
-          <!-- Hidden input to allow submitting empty query -->
-          <input type="hidden" name="query" value="">
-        </button>
+      <form action="/hotels/search" method="GET" class="w-100 m-0 position-relative d-flex align-items-center bg-white border" style="border-radius: 40px; box-shadow: 0 3px 12px rgba(0,0,0,0.08); padding: 4px 8px; height: 46px;">
+        <i class="fa-solid fa-magnifying-glass ms-2 text-dark" style="font-size: 0.95rem;"></i>
+        <input type="search" name="query" placeholder="Start your search" class="form-control border-0 shadow-none bg-transparent ms-2 p-0 text-dark fw-bold" style="font-size: 0.92rem; letter-spacing: -0.1px;">
+        <button type="submit" class="d-none"></button>
       </form>
     </div>
     

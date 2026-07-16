@@ -298,6 +298,16 @@ module.exports.renderSliderAPI = async (req, res) => {
   
   let combinedResults = [...mappedListings, ...hotels].slice(0, 30);
   
+  if (combinedResults.length === 0) {
+    try {
+      await syncCityHotels(city);
+      hotels = await Hotel.find(filter).limit(30);
+      combinedResults = [...mappedListings, ...hotels].slice(0, 30);
+    } catch (err) {
+      console.log('Error syncing city on slider render:', err.message);
+    }
+  }
+  
   const filteredResults = combinedResults.filter(hotel => {
     const n = (hotel.name || '').toLowerCase();
     return !(n.includes('trending') || n.includes('mountain') || n.includes('beachfront'));
