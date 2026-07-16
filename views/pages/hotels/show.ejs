@@ -612,9 +612,10 @@ const reviewsToDisplay = defaultReviews;
               const isIndian = !config.hotelCountry || config.hotelCountry.toLowerCase() === 'india';
               const namesList = isIndian ? 
                 ["Rahul Sharma", "Priya Patel", "Amit Kumar", "Neha Gupta", "Vikram Singh", "Anjali Desai", "Rohan Mehta", "Kavita Joshi", "Suresh Iyer", "Pooja Reddy", "Karan Malhotra", "Riya Kapoor", "Aditya Verma", "Sneha Rao", "Aarav Singh", "Ishita Bose", "Rakesh Nair", "Simran Kaur"] :
-                ["John Doe", "Emily Smith", "Carlos Garcia", "Sophie Martin", "Michael Johnson", "Emma Williams", "David Brown", "Olivia Jones", "Daniel Miller", "Sophia Davis", "Lucas Silva", "Maria Rodriguez"];
+                ["John Smith", "Emily Johnson", "Carlos Rivera", "Sophie Williams", "Michael Brown", "Emma Davis", "David Miller", "Olivia Garcia", "Daniel Martinez", "Sophia Taylor"];
               
-              const name = namesList[Math.floor(Math.random() * namesList.length)];
+              const nameIndex = c.id || Math.floor(Math.random() * namesList.length);
+              const name = namesList[nameIndex % namesList.length];
               const rating = (Math.random() * (5.0 - 4.0) + 4.0).toFixed(1);
               let stars = '';
               for (let i = 1; i <= 5; i++) {

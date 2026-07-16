@@ -126,7 +126,23 @@
               <div class="card review-card h-100 border-0 bg-light p-3 rounded-4 position-relative">
                 <div class="d-flex justify-content-between align-items-start mb-2">
                   <div>
-                    <h6 class="fw-bold text-dark mb-0" style="font-size: 0.95rem;">Guest User</h6>
+                    <% 
+                      const isForeign = listing.country && listing.country.toLowerCase() !== 'india';
+                      const indianNames = ["Rahul Sharma", "Priya Patel", "Amit Kumar", "Neha Gupta", "Vikram Singh", "Anjali Desai", "Rohan Mehta", "Kavita Joshi", "Suresh Iyer", "Pooja Reddy"];
+                      const foreignNames = ["John Smith", "Emily Johnson", "Carlos Rivera", "Sophie Williams", "Michael Brown", "Emma Davis", "David Miller", "Olivia Garcia", "Daniel Martinez", "Sophia Taylor"];
+                      // Generate consistent index based on review _id string
+                      let nameIndex = 0;
+                      if (r._id) {
+                        const idStr = r._id.toString();
+                        for (let i = 0; i < idStr.length; i++) {
+                          nameIndex += idStr.charCodeAt(i);
+                        }
+                      } else {
+                        nameIndex = Math.floor(Math.random() * 10);
+                      }
+                      const reviewerName = isForeign ? foreignNames[nameIndex % foreignNames.length] : indianNames[nameIndex % indianNames.length];
+                    %>
+                    <h6 class="fw-bold text-dark mb-0" style="font-size: 0.95rem;"><%= reviewerName %></h6>
                     <small class="text-muted" style="font-size: 0.8rem;"><%= new Date(r.createdAt).toLocaleDateString() %></small>
                   </div>
                   <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= r._id %>?_method=DELETE" class="m-0">
