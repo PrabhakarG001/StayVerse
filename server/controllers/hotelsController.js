@@ -3,8 +3,8 @@ const Listing = require('../models/listing');
 const { syncCityHotels } = require('../services/hotelService');
 
 const sortIndiaFirst = (a, b) => {
-  const isIndiaA = (a.country && a.country.toLowerCase() === 'india') ? -1 : 1;
-  const isIndiaB = (b.country && b.country.toLowerCase() === 'india') ? -1 : 1;
+  const isIndiaA = (a && a.country && typeof a.country === 'string' && a.country.toLowerCase() === 'india') ? -1 : 1;
+  const isIndiaB = (b && b.country && typeof b.country === 'string' && b.country.toLowerCase() === 'india') ? -1 : 1;
   return isIndiaA - isIndiaB;
 };
 
@@ -265,6 +265,7 @@ module.exports.renderSliderAPI = async (req, res) => {
     }
   }
   let filter = {};
+  let listingsFilter = {};
   if (city) {
     const regex = new RegExp(city, 'i');
     filter.$or = [
@@ -273,13 +274,36 @@ module.exports.renderSliderAPI = async (req, res) => {
       { country: regex },
       { area: regex }
     ];
+    listingsFilter.$or = [
+      { location: regex },
+      { country: regex }
+    ];
   }
   
   let hotels = await Hotel.find(filter).limit(30);
-  const filteredResults = hotels.filter(hotel => {
+  let listings = await Listing.find(listingsFilter).limit(30);
+  
+  let mappedListings = listings.map(l => ({
+    propertyId: l._id.toString(),
+    name: l.title,
+    city: l.location,
+    country: l.country,
+    price: l.price,
+    images: l.images && l.images.length > 0 ? l.images.map(img => img.url) : (l.image && l.image.url ? [l.image.url] : []),
+    starRating: 5,
+    reviewScore: 9.5,
+    isPremium: true,
+    isListing: true
+  }));
+  
+  let combinedResults = [...mappedListings, ...hotels].slice(0, 30);
+  
+  const filteredResults = combinedResults.filter(hotel => {
     const n = (hotel.name || '').toLowerCase();
     return !(n.includes('trending') || n.includes('mountain') || n.includes('beachfront'));
   });
+  
+  filteredResults.sort(sortIndiaFirst);
   
   res.render("partials/hotel-slider.ejs", { city, hotels: filteredResults });
 };
