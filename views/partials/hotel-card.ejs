@@ -6,7 +6,7 @@
   const rating = hotel.reviewScore ? (hotel.reviewScore / 2).toFixed(2) : (Math.random() * (5.0 - 4.5) + 4.5).toFixed(2);
 %>
 <div class="hotel-slide h-100">
-  <a href="<%= hotel.isListing ? '/listings/' + hotel.propertyId : '/hotels/show/' + hotel.propertyId %>" class="text-decoration-none text-dark d-block h-100">
+  <a href="<%= hotel.isListing ? '/listings/' + (hotel.propertyId || hotel._id) : '/hotels/show/' + (hotel.propertyId || hotel._id) %>" class="text-decoration-none text-dark d-block h-100 hotel-card">
     <div class="card border-0 h-100 bg-transparent hotel-card-hover rounded-4 position-relative pb-3 motion-card sv-scroll-card">
       <div class="position-relative overflow-hidden rounded-4 mb-2" style="aspect-ratio: 1 / 1; width: 100%;">
         <img src="<%= imageUrl %>" class="w-100 h-100 object-fit-cover" alt="Hotel Image" loading="lazy" style="transition: transform 0.4s ease;">

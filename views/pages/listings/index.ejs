@@ -88,7 +88,7 @@
     { title: "Cool breeze in Ooty", city: "Ooty", id: "ootySlider", region: "india" }
   ];
   
-  let citySections = [...foreignCities, ...indianCities];
+  let citySections = [...indianCities, ...foreignCities];
 %>
 <% citySections.forEach(section => { 
     let initialDisplay = "";
@@ -144,5 +144,19 @@
     if (configEl && typeof initListingsIndex === 'function') {
       initListingsIndex(JSON.parse(configEl.textContent));
     }
+    
+    // Prefetch logic on hover for hotel cards
+    document.addEventListener('mouseover', function(e) {
+      const cardLink = e.target.closest('.hotel-slide a, a.hotel-card');
+      if (cardLink && cardLink.href && !cardLink.href.includes('javascript:')) {
+        const url = cardLink.href;
+        if (!document.querySelector(`link[rel="prefetch"][href="${url}"]`)) {
+          const prefetchLink = document.createElement('link');
+          prefetchLink.rel = 'prefetch';
+          prefetchLink.href = url;
+          document.head.appendChild(prefetchLink);
+        }
+      }
+    });
   });
 </script>

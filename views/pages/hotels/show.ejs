@@ -108,7 +108,7 @@ const reviewsToDisplay = defaultReviews;
         <!-- Main Image (Left) -->
         <div class="col-md-6 h-100">
           <div class="h-100 position-relative overflow-hidden rounded-start">
-            <img src="<%= images[0] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="main_image" style="transition: all 0.3s ease; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageGalleryModal">
+            <img src="<%= images[0] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="main_image" loading="lazy" style="transition: all 0.3s ease; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageGalleryModal">
           </div>
         </div>
         <!-- Sub Images (Right) -->
@@ -117,19 +117,19 @@ const reviewsToDisplay = defaultReviews;
             <!-- Top Full Width -->
             <div class="col-12 h-50">
               <div class="h-100 overflow-hidden position-relative rounded-end-top">
-                <img src="<%= images[1] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_1" style="transition: all 0.3s ease; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageGalleryModal">
+                <img src="<%= images[1] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_1" loading="lazy" style="transition: all 0.3s ease; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageGalleryModal">
               </div>
             </div>
             <!-- Bottom Left -->
             <div class="col-6 h-50">
               <div class="h-100 overflow-hidden position-relative">
-                <img src="<%= images[2] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_2" style="transition: all 0.3s ease; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageGalleryModal">
+                <img src="<%= images[2] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_2" loading="lazy" style="transition: all 0.3s ease; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageGalleryModal">
               </div>
             </div>
             <!-- Bottom Right -->
             <div class="col-6 h-50">
               <div class="h-100 overflow-hidden position-relative rounded-end-bottom">
-                <img src="<%= images[3] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_3" style="transition: all 0.3s ease; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageGalleryModal">
+                <img src="<%= images[3] %>" class="w-100 h-100 object-fit-cover photo-zoom" alt="sub_image_3" loading="lazy" style="transition: all 0.3s ease; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageGalleryModal">
               </div>
             </div>
           </div>
@@ -223,7 +223,7 @@ const reviewsToDisplay = defaultReviews;
     <!-- Interactive Map Section -->
     <div class="map-section mb-5">
       <h4 class="text-dark fw-bold mb-4">Where you'll be</h4>
-      <p class="text-secondary mb-3"><%= hotel.area ? hotel.area + ', ' : '' %><%= hotel.city %>, India</p>
+      <p class="text-secondary mb-3"><%= hotel.area ? hotel.area + ', ' : '' %><%= hotel.city %>, <%= hotel.country || 'India' %></p>
       <div id="map" class="rounded-4 border shadow-sm" style="height: 50vh; min-height: 300px; max-height: 400px; width: 100%; z-index: 1;"></div>
     </div>
 
@@ -390,6 +390,7 @@ const reviewsToDisplay = defaultReviews;
     "propertyId": "<%= hotel.propertyId %>",
     "hotelName": <%- JSON.stringify(hotel.name) %>,
     "hotelCity": <%- JSON.stringify(hotel.city) %>,
+    "hotelCountry": <%- JSON.stringify(hotel.country || 'India') %>,
     "hotelArea": <%- JSON.stringify(hotel.area || '') %>,
     "basePrice": <%= price %>,
     "mainImage": "<%= images[0] %>"
@@ -408,6 +409,12 @@ const reviewsToDisplay = defaultReviews;
           new bootstrap.Modal(document.getElementById('loginRequiredModal')).show();
           return;
         }
+        
+        // Show basic loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Booking...';
+        submitBtn.disabled = true;
         
         try {
           const priceDisplayEl = document.querySelector('.price-val[data-inr]');
@@ -454,12 +461,42 @@ const reviewsToDisplay = defaultReviews;
           }
         } catch (err) {
           console.error(err);
+        } finally {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
         }
       });
     }
 
+    // Initialize Flatpickr for checkin/checkout dates
+    if (typeof flatpickr !== 'undefined') {
+      const dateOptions = {
+        minDate: "today",
+        dateFormat: "d M Y",
+        disableMobile: "true",
+        animate: true,
+        onChange: function(selectedDates, dateStr, instance) {
+          // If checkin date is selected, update checkout minDate
+          if(instance.element.id === 'checkin_date') {
+            const checkoutPicker = document.getElementById('checkout_date')._flatpickr;
+            if (checkoutPicker) {
+              let nextDay = new Date(selectedDates[0]);
+              nextDay.setDate(nextDay.getDate() + 1);
+              checkoutPicker.set("minDate", nextDay);
+              if (!checkoutPicker.selectedDates.length || checkoutPicker.selectedDates[0] <= selectedDates[0]) {
+                 checkoutPicker.setDate(nextDay);
+              }
+            }
+          }
+        }
+      };
+      
+      flatpickr("#checkin_date", dateOptions);
+      flatpickr("#checkout_date", dateOptions);
+    }
+
     // Leaflet Interactive Map Load
-    const query = (config.hotelArea ? config.hotelArea + ', ' : '') + config.hotelCity + ', India';
+    const query = (config.hotelArea ? config.hotelArea + ', ' : '') + config.hotelCity + ', ' + config.hotelCountry;
     const map = L.map('map', { scrollWheelZoom: false }).setView([20.5937, 78.9629], 5);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
@@ -476,7 +513,7 @@ const reviewsToDisplay = defaultReviews;
             .bindPopup(`<b>${config.hotelName}</b><br>${config.hotelArea ? config.hotelArea + ', ' : ''}${config.hotelCity}`)
             .openPopup();
         } else {
-          fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(config.hotelCity + ', India')}`)
+          fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(config.hotelCity + ', ' + config.hotelCountry)}`)
             .then(r => r.json())
             .then(cData => {
               if (cData && cData.length > 0) {
@@ -500,8 +537,12 @@ const reviewsToDisplay = defaultReviews;
         .then(data => {
           if (data && data.comments) {
             reviewsContainer.innerHTML = data.comments.map(c => {
-              const indianNames = ["Rahul Sharma", "Priya Patel", "Amit Kumar", "Neha Gupta", "Vikram Singh", "Anjali Desai", "Rohan Mehta", "Kavita Joshi", "Suresh Iyer", "Pooja Reddy", "Karan Malhotra", "Riya Kapoor", "Aditya Verma", "Sneha Rao", "Aarav Singh", "Ishita Bose", "Rakesh Nair", "Simran Kaur"];
-              const name = indianNames[Math.floor(Math.random() * indianNames.length)];
+              const isIndian = !config.hotelCountry || config.hotelCountry.toLowerCase() === 'india';
+              const namesList = isIndian ? 
+                ["Rahul Sharma", "Priya Patel", "Amit Kumar", "Neha Gupta", "Vikram Singh", "Anjali Desai", "Rohan Mehta", "Kavita Joshi", "Suresh Iyer", "Pooja Reddy", "Karan Malhotra", "Riya Kapoor", "Aditya Verma", "Sneha Rao", "Aarav Singh", "Ishita Bose", "Rakesh Nair", "Simran Kaur"] :
+                ["John Doe", "Emily Smith", "Carlos Garcia", "Sophie Martin", "Michael Johnson", "Emma Williams", "David Brown", "Olivia Jones", "Daniel Miller", "Sophia Davis", "Lucas Silva", "Maria Rodriguez"];
+              
+              const name = namesList[Math.floor(Math.random() * namesList.length)];
               const rating = (Math.random() * (5.0 - 4.0) + 4.0).toFixed(1);
               let stars = '';
               for (let i = 1; i <= 5; i++) {

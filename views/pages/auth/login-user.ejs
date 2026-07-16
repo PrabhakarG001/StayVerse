@@ -18,6 +18,7 @@
     <div class="card-body p-0 mt-2 text-center">
       
       <!-- Flash Messages -->
+      <div id="login-alert-container"></div>
       <% if(success && success.length) { %>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
           <%= success %>
@@ -91,13 +92,13 @@
       
       <!-- Social Buttons Horizontal -->
       <div class="d-flex justify-content-center gap-3 mb-2">
-        <a href="javascript:void(0)" onclick="showToast('This feature is coming soon')" class="btn d-flex align-items-center justify-content-center social-btn social-btn-google">
+        <a href="javascript:void(0)" onclick="showLoginMessage('This feature is coming soon')" class="btn d-flex align-items-center justify-content-center social-btn social-btn-google">
           <i class="fa-brands fa-google fs-4"></i>
         </a>
-        <a href="javascript:void(0)" onclick="showToast('This feature is coming soon')" class="btn d-flex align-items-center justify-content-center social-btn social-btn-apple">
+        <a href="javascript:void(0)" onclick="showLoginMessage('This feature is coming soon')" class="btn d-flex align-items-center justify-content-center social-btn social-btn-apple">
           <i class="fa-brands fa-apple fs-4"></i>
         </a>
-        <a href="javascript:void(0)" onclick="showToast('This feature is coming soon')" class="btn d-flex align-items-center justify-content-center social-btn social-btn-phone">
+        <a href="javascript:void(0)" onclick="showLoginMessage('This feature is coming soon')" class="btn d-flex align-items-center justify-content-center social-btn social-btn-phone">
           <i class="fa-solid fa-mobile-screen fs-4"></i>
         </a>
       </div>
@@ -106,4 +107,15 @@
   </div>
 </div>
 
+<script>
+  function showLoginMessage(msg) {
+    const container = document.getElementById('login-alert-container');
+    if (container) {
+      container.innerHTML = `<div class="alert alert-info alert-dismissible fade show text-start shadow-sm" role="alert" style="border-radius: 8px;">
+        <i class="fa-solid fa-circle-info me-2"></i>${msg}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>`;
+    }
+  }
+</script>
 <script src="/js/auth.js"></script>

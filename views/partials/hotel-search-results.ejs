@@ -6,7 +6,7 @@
       const priceVal = Math.floor(Math.abs((seed * 9301 + 49297) % 233280) / 233280 * (15000 - 3000 + 1)) + 3000;
       const pricePlain = '₹' + priceVal.toLocaleString('en-IN');
       const rating = entity.reviewScore ? (entity.reviewScore / 2).toFixed(2) : (Math.random() * (5.0 - 4.5) + 4.5).toFixed(2);
-      const cardUrl = entity.isListing ? `/listings/${entity.propertyId}` : `/hotels/show/${entity.propertyId}`;
+      const cardUrl = entity.isListing ? `/listings/${entity.propertyId || entity._id}` : `/hotels/show/${entity.propertyId || entity._id}`;
     %>
     <div class="col mb-4">
       <a href="<%= cardUrl %>" class="text-decoration-none text-dark d-block h-100 hotel-card">

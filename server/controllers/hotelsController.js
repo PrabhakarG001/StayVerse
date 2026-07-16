@@ -2,6 +2,12 @@ const Hotel = require('../models/hotel');
 const Listing = require('../models/listing');
 const { syncCityHotels } = require('../services/hotelService');
 
+const sortIndiaFirst = (a, b) => {
+  const isIndiaA = (a.country && a.country.toLowerCase() === 'india') ? -1 : 1;
+  const isIndiaB = (b.country && b.country.toLowerCase() === 'india') ? -1 : 1;
+  return isIndiaA - isIndiaB;
+};
+
 module.exports.renderSearchPage = (req, res) => {
   res.render("pages/hotels/search.ejs", { 
     query: req.query.query || "", 
@@ -28,7 +34,8 @@ module.exports.searchHotelsAPI = async (req, res) => {
       isPremium: true,
       isListing: true
     }));
-    return res.json({ searchResults: [...mappedListings, ...hotels].slice(0, 30) });
+    let combined = [...mappedListings, ...hotels].sort(sortIndiaFirst);
+    return res.json({ searchResults: combined.slice(0, 30) });
   }
 
   let queryLower = q.toLowerCase();
@@ -88,6 +95,7 @@ module.exports.searchHotelsAPI = async (req, res) => {
     combinedResults = [...mappedListings, ...hotels];
   }
 
+  combinedResults.sort(sortIndiaFirst);
   res.json({ searchResults: combinedResults.slice(0, 30) });
 };
 
@@ -175,6 +183,7 @@ module.exports.getHotelsAPI = async (req, res) => {
     combinedResults = [...mappedListings, ...hotels].slice(0, 30);
   }
 
+  combinedResults.sort(sortIndiaFirst);
   res.json({ searchResults: combinedResults });
 };
 
@@ -237,6 +246,7 @@ module.exports.getHotelsByCityAPI = async (req, res) => {
     combinedResults = [...mappedListings, ...hotels].slice(0, 30);
   }
 
+  combinedResults.sort(sortIndiaFirst);
   res.json({ searchResults: combinedResults });
 };
 
@@ -332,6 +342,8 @@ module.exports.renderSearchAPI = async (req, res) => {
     hotels = await Hotel.find(filter).limit(30);
     results = [...mappedListings, ...hotels].slice(0, 30);
   }
+  
+  results.sort(sortIndiaFirst);
   
   if (category) {
     const categoryLower = category.toLowerCase();
