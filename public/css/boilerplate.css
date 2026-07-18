@@ -71,25 +71,24 @@ html.js-enabled .motion-footer { opacity: 0; transform: translateY(40px); }
 
 /* Hide Default Browser Scrollbar Globally */
 html {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
 html::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
+  display: none; 
 }
 
 /* Scroll Progress Indicator Styles */
 .sv-scroll-progress-container {
   position: fixed;
   z-index: 9999;
-  pointer-events: none; /* Let clicks pass through */
+  pointer-events: none; 
   background: transparent;
 }
 
 .sv-scroll-progress-bar {
-  background-color: #FF385C; /* Exact logo color */
-  box-shadow: 0 0 6px rgba(255, 56, 92, 0.5); /* Subtle glow */
-  /* Smooth transition avoiding lag */
+  background-color: #FF385C; 
+  box-shadow: 0 0 6px rgba(255, 56, 92, 0.5); 
   transition: transform 0.1s ease-out;
   transform-origin: top left;
   border-radius: 4px;
@@ -125,9 +124,9 @@ html::-webkit-scrollbar {
   }
 }
 
-/* ==========================================
-   MOBILE CARD SCROLL-IN ANIMATION
-   ========================================== */
+
+   /* MOBILE CARD SCROLL-IN ANIMATION */
+
 
 @keyframes sv-card-fadein {
   from {
@@ -140,12 +139,12 @@ html::-webkit-scrollbar {
   }
 }
 
-/* Mobile only: cards start hidden until they enter viewport */
+
 @media (max-width: 768px) {
   .sv-scroll-card {
     opacity: 0;
     transform: translateY(22px);
-    transition: none; /* JS handles this via class */
+    transition: none; 
     will-change: opacity, transform;
   }
 
@@ -154,7 +153,7 @@ html::-webkit-scrollbar {
   }
 }
 
-/* Desktop: always visible, no animation overhead */
+
 @media (min-width: 769px) {
   .sv-scroll-card {
     opacity: 1 !important;
