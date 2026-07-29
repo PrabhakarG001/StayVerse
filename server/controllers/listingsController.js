@@ -36,8 +36,10 @@ module.exports.renderIndex = async (req, res) => {
   const filterAlias = requestedFilter === "foriegn" ? "foreign" : requestedFilter;
   const filter = allowedFilters.has(filterAlias) ? filterAlias : "all";
   
+  const allListings = await Listing.find({});
+  
   res.render("pages/listings/index.ejs", { 
-    allListings: [], 
+    allListings, 
     selectedCategory: req.query.category || "", 
     searchQuery: "",
     isHomepage: true,

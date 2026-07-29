@@ -19,7 +19,7 @@ module.exports.renderSearchPage = (req, res) => {
 module.exports.searchHotelsAPI = async (req, res) => {
   let q = req.query.q;
   
-  if (!q || q.toLowerCase() === 'worldwide' || q.toLowerCase() === 'anywhere') {
+  if (!q || q.toLowerCase() === 'worldwide' || q.toLowerCase() === 'anywhere' || q.toLowerCase() === 'all hotels') {
     const hotels = await Hotel.find({}).limit(30);
     let listings = await Listing.find({ title: { $not: /trending|mountain|beachfront/i } }).limit(30);
     let mappedListings = listings.map(l => ({
@@ -325,7 +325,7 @@ module.exports.renderSearchAPI = async (req, res) => {
   let filter = {};
   let listingsFilter = {};
   
-  if (q && q.toLowerCase() !== 'worldwide' && q.toLowerCase() !== 'anywhere') {
+  if (q && q.toLowerCase() !== 'worldwide' && q.toLowerCase() !== 'anywhere' && q.toLowerCase() !== 'all hotels') {
     let queryLower = q.toLowerCase();
     if (queryLower === 'gurgoan' || queryLower === 'gurgaon') {
       q = 'Gurugram';
