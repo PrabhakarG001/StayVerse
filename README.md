@@ -145,25 +145,6 @@ node init/index.js
 
 ---
 
-### 🏃 5. Run the Application
-
-#### **Development Mode (Auto-reload with Nodemon):**
-```bash
-npx nodemon app.js
-```
-
-#### **Production Mode:**
-```bash
-npm start
-```
-
-Open your browser and navigate to:
-```
-http://localhost:8080
-```
-
----
-
 ## 🔄 How It Works
 
 1. **User Authentication & Session Flow**:
