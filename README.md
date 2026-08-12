@@ -96,55 +96,6 @@ StayVerse/
 
 ---
 
-## ⚙️ Installation & Setup Guide
-
-### 📋 Prerequisites
-Ensure you have the following installed on your machine:
-* [Node.js](https://nodejs.org/) (v18.0.0 or higher)
-* [MongoDB](https://www.mongodb.com/) (Local service running on `mongodb://127.0.0.1:27017` or a MongoDB Atlas connection string)
-* [Git](https://git-scm.com/)
-
----
-
-### 📥 1. Clone the Repository
-```bash
-git clone https://github.com/your-username/StayVerse.git
-cd StayVerse
-```
-
-### 📦 2. Install Dependencies
-```bash
-npm install
-```
-
----
-
-### 🔑 3. Configure Environment Variables
-Create a `.env` file in the root directory of the project:
-
-```env
-# Server Configuration
-PORT=8080
-
-# Database & Sessions
-MONGO_URL=mongodb://127.0.0.1:27017/StayVerse
-SECRET=your_custom_super_secret_session_key
-
-# External APIs
-RAPID_API_KEY=your_rapidapi_agoda_key_here
-```
-
----
-
-### 🌱 4. Seed the Database (Optional)
-To populate the database with initial sample listings:
-
-```bash
-node init/index.js
-```
-
----
-
 ## 🔄 How It Works
 
 1. **User Authentication & Session Flow**:
