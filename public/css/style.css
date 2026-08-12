@@ -603,3 +603,39 @@ input, textarea, select {
     margin: 1rem auto !important;
   }
 }
+
+/* Completely Suppress Google Translate Top Banner, Iframes & Body Push-down */
+body {
+  top: 0px !important;
+  position: static !important;
+}
+
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+iframe.goog-te-banner-frame.skiptranslate,
+.goog-te-banner,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover,
+.goog-text-highlight {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  width: 0 !important;
+}
+
+#google_translate_element,
+.skiptranslate,
+body > .skiptranslate {
+  display: none !important;
+}
+
+font {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
